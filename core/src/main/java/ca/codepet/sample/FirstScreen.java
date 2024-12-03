@@ -1,17 +1,43 @@
 package ca.codepet.sample;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 /** First screen of the application. Displayed after the application is created. */
 public class FirstScreen implements Screen {
+    private final GameRoot game;
+
+    Sprite buttonSprite;
+
+    public FirstScreen(GameRoot game) {
+        this.game = game;
+    }
+
     @Override
     public void show() {
         // Prepare your screen here.
+        game.assetManager.finishLoading(); 
+
+        Texture buttonTexture = game.assetManager.get("images/menu.png");
+        buttonSprite = new Sprite(buttonTexture);
+        
+        int x = Gdx.graphics.getWidth();
+        int y = Gdx.graphics.getHeight();
+
+        buttonSprite.setSize(x, y);
+
+        buttonSprite.setPosition(0, 0);
     }
+    
 
     @Override
     public void render(float delta) {
         // Draw your screen here. "delta" is the time since last render in seconds.
+        game.batch.begin();
+        buttonSprite.draw(game.batch);
+        game.batch.end();
     }
 
     @Override
