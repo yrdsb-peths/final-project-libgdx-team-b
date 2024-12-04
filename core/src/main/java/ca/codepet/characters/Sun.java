@@ -3,11 +3,14 @@ package ca.codepet.characters;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 
 public class Sun {
     private Texture sunTexture;
     private float x, y;
     private float width, height;
+    private Rectangle bounds;
+    private boolean isAlive = true;
 
     private float velocity = 100f; // pixels per second
     private float timeTillDespawn = 5f; // seconds
@@ -22,11 +25,34 @@ public class Sun {
         x = (float) Math.random() * Gdx.graphics.getWidth();
         // Set y position clamp to above 50% of the screen
         y = (float) Math.random() * Gdx.graphics.getHeight() / 2 + Gdx.graphics.getHeight() / 2;
+        bounds = new Rectangle(x, y, width, height);
+    }
+
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public void checkClick() {
+        if (Gdx.input.justTouched()) {
+            float mouseX = Gdx.input.getX();
+            float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY(); // Flip Y coordinate
+            if (bounds.contains(mouseX, mouseY)) {
+                isAlive = false;
+            }
+        }
     }
 
     public void render(SpriteBatch batch) {
+        if (!isAlive) return;
+
         // Move sun
         y -= velocity * Gdx.graphics.getDeltaTime();
+        // Update bounds
+        bounds.setPosition(x, y);
+        
+        // Check for click
+        checkClick();
+
         // If the sun is at the bottom 5% of the screen
         if (y < Gdx.graphics.getHeight() * 0.05f) {
             // Set the velocity to 0 so it stops moving
@@ -35,8 +61,7 @@ public class Sun {
             // Begin despawn timer
             timeTillDespawn -= Gdx.graphics.getDeltaTime();
             if (timeTillDespawn <= 0) {
-                // Remove the sun
-                return;
+                isAlive = false;
             }
         }
 
