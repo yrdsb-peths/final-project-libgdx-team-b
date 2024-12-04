@@ -9,6 +9,9 @@ public class Sun {
     private float x, y;
     private float width, height;
 
+    private float velocity = 100f; // pixels per second
+    private float timeTillDespawn = 5f; // seconds
+
     public Sun() {
         sunTexture = new Texture("characters/sun.png");
         // Calculate size
@@ -22,6 +25,21 @@ public class Sun {
     }
 
     public void render(SpriteBatch batch) {
+        // Move sun
+        y -= velocity * Gdx.graphics.getDeltaTime();
+        // If the sun is at the bottom 5% of the screen
+        if (y < Gdx.graphics.getHeight() * 0.05f) {
+            // Set the velocity to 0 so it stops moving
+            velocity = 0f;
+
+            // Begin despawn timer
+            timeTillDespawn -= Gdx.graphics.getDeltaTime();
+            if (timeTillDespawn <= 0) {
+                // Remove the sun
+                return;
+            }
+        }
+
         batch.draw(sunTexture, x, y, width, height);
     }
 
