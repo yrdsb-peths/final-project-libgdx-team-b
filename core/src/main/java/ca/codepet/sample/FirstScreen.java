@@ -10,6 +10,7 @@ public class FirstScreen implements Screen {
     private final GameRoot game;
 
     Sprite buttonSprite;
+    Texture menuTexture;
 
     public FirstScreen(GameRoot game) {
         this.game = game;
@@ -20,15 +21,15 @@ public class FirstScreen implements Screen {
         // Prepare your screen here.
         game.assetManager.finishLoading(); 
 
-        Texture buttonTexture = game.assetManager.get("images/menu.png");
-        buttonSprite = new Sprite(buttonTexture);
+        menuTexture = game.assetManager.get("images/menu.png");
+        // buttonSprite = new Sprite(buttonTexture);
         
         int x = Gdx.graphics.getWidth();
         int y = Gdx.graphics.getHeight();
 
-        buttonSprite.setSize(x, y);
+        // buttonSprite.setSize(x, y);
 
-        buttonSprite.setPosition(0, 0);
+        // buttonSprite.setPosition(0, 0);
     }
     
 
@@ -36,7 +37,8 @@ public class FirstScreen implements Screen {
     public void render(float delta) {
         // Draw your screen here. "delta" is the time since last render in seconds.
         game.batch.begin();
-        buttonSprite.draw(game.batch);
+        game.batch.draw(menuTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        // buttonSprite.draw(game.batch);
         game.batch.end();
     }
 
