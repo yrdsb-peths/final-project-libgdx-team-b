@@ -29,6 +29,10 @@ public abstract class Plant {
         return rect;
     }
 
+    public boolean damage(int damage) {
+        hp -= damage;
+        return hp <= 0;
+    }
+
     public abstract void update();
-    public abstract void damage(int damage);
 }
