@@ -11,6 +11,8 @@ public class FirstScreen implements Screen {
 
     Sprite buttonSprite;
     Texture menuTexture;
+    
+    Button but;
 
     public FirstScreen(GameRoot game) {
         this.game = game;
@@ -19,13 +21,15 @@ public class FirstScreen implements Screen {
     @Override
     public void show() {
         // Prepare your screen here.
-        game.assetManager.finishLoading(); 
+        game.assetManager.finishLoading();  
 
         menuTexture = game.assetManager.get("images/menu.png");
         // buttonSprite = new Sprite(buttonTexture);
         
         int x = Gdx.graphics.getWidth();
         int y = Gdx.graphics.getHeight();
+        
+        but = new Button("images/menu.png");
 
         // buttonSprite.setSize(x, y);
 
@@ -40,6 +44,8 @@ public class FirstScreen implements Screen {
         game.batch.draw(menuTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         // buttonSprite.draw(game.batch);
         game.batch.end();
+
+        but.render();
     }
 
     @Override
@@ -65,5 +71,6 @@ public class FirstScreen implements Screen {
     @Override
     public void dispose() {
         // Destroy screen's assets here.
+        but.dispose();
     }
 }
