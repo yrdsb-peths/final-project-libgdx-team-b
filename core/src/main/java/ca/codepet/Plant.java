@@ -1,4 +1,4 @@
-package ca.codepet.sample;
+package ca.codepet;
 
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.graphics.g2d.Sprite;

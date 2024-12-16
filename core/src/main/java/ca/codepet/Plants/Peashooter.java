@@ -1,6 +1,6 @@
-package ca.codepet.sample.Plants;
+package ca.codepet.Plants;
 
-import ca.codepet.sample.ShooterPlant;
+import ca.codepet.ShooterPlant;
 
 public class Peashooter extends ShooterPlant {
 

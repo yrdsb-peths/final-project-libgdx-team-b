@@ -1,4 +1,4 @@
-package ca.codepet.sample;
+package ca.codepet;
 
 public class ShooterPlant extends Plant {
     enum State {
