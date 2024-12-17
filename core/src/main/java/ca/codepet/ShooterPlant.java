@@ -15,10 +15,10 @@ public class ShooterPlant extends Plant {
     public void update() {
         switch(state) {
             case IDLE:
-                setSpriteUnique("idle");
+                setAnimationUnique("idle");
             break;
             case ATTACKING:
-                setSpriteUnique("attack");
+                setAnimationUnique("attack");
             break;
         }
     }

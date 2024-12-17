@@ -1,28 +1,29 @@
 package ca.codepet;
 
 import com.badlogic.gdx.utils.ObjectMap;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 
 public abstract class Plant {
     protected int hp = 100;
     protected Rectangle rect = new Rectangle(0, 0, 32, 32);
-    protected ObjectMap<String, Sprite> sprites = new ObjectMap<>();
-    protected String currentSprite = null;
+    protected ObjectMap<String, Animation<TextureRegion>> animations = new ObjectMap<>();
+    protected String currentAnimation = null;
     protected float imageIndex = 0f;
 
-    protected void setSprite(String spr) {
-        currentSprite = spr;
+    protected void setAnimation(String spr) {
+        currentAnimation = spr;
     }
 
-    protected void setSpriteUnique(String spr) {
-        if (!currentSprite.equals(spr))
+    protected void setAnimationUnique(String spr) {
+        if (!currentAnimation.equals(spr))
             imageIndex = 0f;
-        setSprite(spr);
+        setAnimation(spr);
     }
 
-    public Sprite getCurrentSprite() {
-        return sprites.get(currentSprite);
+    public TextureRegion getTexture() {
+        return animations.get(currentAnimation).getKeyFrame(imageIndex, true);
     }
 
     public Rectangle getRect() {
