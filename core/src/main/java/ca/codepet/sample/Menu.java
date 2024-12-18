@@ -2,18 +2,22 @@ package ca.codepet.sample;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 /** First screen of the application. Displayed after the application is created. */
-public class FirstScreen implements Screen {
+public class Menu implements Screen {
     private final GameRoot game;
 
     Sprite buttonSprite;
     Texture menuTexture;
 
-    public FirstScreen(GameRoot game) {
+    Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/menuMusic.mp3"));
+
+    public Menu(GameRoot game) {
         this.game = game;
+        sound.play(1.0f);
     }
 
     @Override
@@ -65,5 +69,6 @@ public class FirstScreen implements Screen {
     @Override
     public void dispose() {
         // Destroy screen's assets here.
+        sound.dispose();
     }
 }

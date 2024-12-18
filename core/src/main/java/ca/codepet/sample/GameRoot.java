@@ -19,6 +19,8 @@ public class GameRoot extends Game {
 
         assetManager.load("images/menu.png", Texture.class);
 
-        setScreen(new FirstScreen(this));
+
+        setScreen(new Menu(this));
+
     }
 }
