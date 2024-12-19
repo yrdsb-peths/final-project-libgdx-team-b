@@ -1,4 +1,4 @@
-package ca.codepet.sample;
+package ca.codepet;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.assets.AssetManager;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import ca.codepet.worlds.DayWorld;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class GameRoot extends Game {
@@ -21,6 +23,7 @@ public class GameRoot extends Game {
 
 
         setScreen(new Menu(this));
+
 
     }
 }
