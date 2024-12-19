@@ -10,7 +10,7 @@ import ca.codepet.ShooterPlant;
 public class Peashooter extends ShooterPlant {
     public Peashooter() {
         Texture tex = new Texture(Gdx.files.internal("plants/plants.png"));
-        TextureRegion[] frames = {new TextureRegion(tex)};
+        TextureRegion[] frames = {new TextureRegion(tex, 0, 0, 36, 32)};
         Animation<TextureRegion> anim = new Animation<>(1f, frames);
         animations.put("idle", anim);
         animations.put("attack", anim);

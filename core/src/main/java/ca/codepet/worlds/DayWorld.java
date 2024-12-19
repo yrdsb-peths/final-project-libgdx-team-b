@@ -20,9 +20,9 @@ public class DayWorld implements Screen {
     final private int LAWN_WIDTH = 9;
     final private int LAWN_HEIGHT = 5;
     final private int LAWN_TILEWIDTH = 80;
-    final private int LAWN_TILEHEIGHT = 96;
-    final private int LAWN_TILEX = 76;
-    final private int LAWN_TILEY = -32;
+    final private int LAWN_TILEHEIGHT = 92;
+    final private int LAWN_TILEX = 72;
+    final private int LAWN_TILEY = 441;
 
     @Override
     public void show() {
@@ -31,7 +31,11 @@ public class DayWorld implements Screen {
         batch = new SpriteBatch();
         plantBar = new PlantBar();
         plants = new Plant[LAWN_WIDTH][LAWN_HEIGHT];
-        plants[0][0] = new Peashooter();
+        for (int x = 0; x < LAWN_WIDTH; x++) {
+            for (int y = 0; y < LAWN_HEIGHT; y++) {
+                plants[x][y] = new Peashooter();
+            }
+        }
     }
 
     @Override
