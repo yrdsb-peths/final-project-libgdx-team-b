@@ -32,14 +32,16 @@ public class Sun {
         return isAlive;
     }
 
-    public void checkClick() {
+    public boolean checkClick() {
         if (Gdx.input.justTouched()) {
             float mouseX = Gdx.input.getX();
             float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY(); // Flip Y coordinate
             if (bounds.contains(mouseX, mouseY)) {
                 isAlive = false;
+                return true; // Return true if sun was collected
             }
         }
+        return false;
     }
 
     public void render(SpriteBatch batch) {
@@ -50,7 +52,6 @@ public class Sun {
         // Update bounds
         bounds.setPosition(x, y);
         
-        // Check for click
         checkClick();
 
         // If the sun is at the bottom 5% of the screen

@@ -17,12 +17,14 @@ public class DayWorld implements Screen {
     // Add array to track suns
     private Array<Sun> suns = new Array<>();
 
+    private int sunBalance = 0;
+
     @Override
     public void show() {
         // Load the background texture
         backgroundTexture = new Texture("backgrounds/day.png");
         batch = new SpriteBatch();
-        plantBar = new PlantBar();
+        plantBar = new PlantBar(sunBalance);
     }
 
     @Override
@@ -40,9 +42,13 @@ public class DayWorld implements Screen {
             suns.add(new Sun());
         }
 
-        // Render all suns using the shared batch
+        // Render all suns and check for collection
         batch.begin();
         for(Sun sun : suns) {
+            if (sun.checkClick()) {
+                sunBalance += 25; // Add 25 suns when collected
+                plantBar.setSunDisplay(sunBalance);
+            }
             sun.render(batch);
         }
         batch.end();
