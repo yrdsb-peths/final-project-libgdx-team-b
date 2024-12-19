@@ -1,90 +1,57 @@
 package ca.codepet.sample;
-import com.badlogic.gdx.Game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
-public class Button extends Game{
+public class Button {
 
-    // Stage stage;W
-    // TextButton button;
-    // TextButtonStyle textButtonStyle;
-    // TextureAtlas buttonAtlas;
-
-    private float x, y;
-
+    private Stage stage;
+    private ImageButton button;
     private SpriteBatch buttonBatch;
-    private Sprite buttonSprite;
     private Texture buttonTexture;
+    private Skin skin;
 
-    private Rectangle hitBox;
+    public Button(String texturePath) {
+        buttonTexture = new Texture(Gdx.files.internal(texturePath));
+        Drawable drawable = new TextureRegionDrawable(buttonTexture);
+        button = new ImageButton(drawable);
 
-
-    public Button(String texture) {
-        buttonTexture = new Texture(texture);
-        buttonSprite = new Sprite(buttonTexture);
-
-        buttonSprite.setSize(199, 399);
-        buttonSprite.setPosition(33, 344);
+        button.setSize(199, 399);
+        button.setPosition(33, 344);
 
         buttonBatch = new SpriteBatch();
+        stage = new Stage();
+        stage.addActor(button);
 
-        hitBox = new Rectangle(250, 250, 500, 600);
-    }
+        Gdx.input.setInputProcessor(stage);
 
-    public void act() {
-
-    }
-
-    @Override
-    public void create() {      
-        
-    }
-
-    @Override
-    public void render() {      
-        float height = 100;
-        float width = 500;
-        
-        // hitBox.setPosition(0, 0);
-
-        buttonBatch.begin();
-        buttonSprite.draw(buttonBatch);
-        buttonBatch.end();
-
-        if(detectTouch()) 
-        {
-            //pass in function
-        }
-    }
-
-    private boolean detectTouch() {
-        if (Gdx.input.justTouched()) {
-            float mouseX = Gdx.input.getX();
-            float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
-
-            if(hitBox.contains(mouseX, mouseY)) {
-             
+        button.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                System.out.println("Button Pressed");
                 return true;
             }
+        });
+    }
 
-        }
-
-        return false;
+    public void render() {
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
     }
 
     public void dispose() {
         buttonTexture.dispose();
+        stage.dispose();
+        buttonBatch.dispose();
     }
 }
-
-//  button.addListener(new ChangeListener() {
-//         @Override
-//         public void changed (ChangeEvent event, Actor actor) {
-//             System.out.println("Button Pressed");
-//         }
-//     });
-// }
