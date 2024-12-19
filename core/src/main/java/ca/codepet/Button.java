@@ -1,4 +1,4 @@
-package ca.codepet.sample;
+package ca.codepet;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,6 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
+import ca.codepet.worlds.DayWorld;
+
 public class Button {
 
     private Stage stage;
@@ -21,7 +23,11 @@ public class Button {
     private Texture buttonTexture;
     private Skin skin;
 
-    public Button(String texturePath) {
+    private GameRoot game;
+
+    public Button(String texturePath, GameRoot game) {
+        this.game = game;
+
         buttonTexture = new Texture(Gdx.files.internal(texturePath));
         Drawable drawable = new TextureRegionDrawable(buttonTexture);
         button = new ImageButton(drawable);
@@ -34,14 +40,10 @@ public class Button {
         stage.addActor(button);
 
         Gdx.input.setInputProcessor(stage);
+    }
 
-        button.addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                System.out.println("Button Pressed");
-                return true;
-            }
-        });
+    public void setButtonListener(InputListener listener) {
+        button.addListener(listener);
     }
 
     public void render() {

@@ -1,10 +1,14 @@
-package ca.codepet.sample;
+package ca.codepet;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+
+import ca.codepet.worlds.DayWorld;
 
 public class Menu implements Screen {
     private final GameRoot game;
@@ -18,6 +22,22 @@ public class Menu implements Screen {
     public Menu(GameRoot game) {
         this.game = game;
         sound.play(1.0f);
+
+        // Initialize the button with the texture path
+        button = new Button("images/button.png", game);
+
+        // Add a listener to the button
+        button.setButtonListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                game.setScreen(new DayWorld(game));
+                return true;
+            }
+        });
+    }
+
+    private void test() {
+        System.out.println("Button clicked!");
     }
 
     @Override
@@ -25,9 +45,6 @@ public class Menu implements Screen {
         game.assetManager.finishLoading(); 
 
         menuTexture = game.assetManager.get("images/menu.png");
-
-        // Initialize the button with the texture path
-        button = new Button("images/button.png");
     }
 
     @Override
