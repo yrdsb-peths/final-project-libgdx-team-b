@@ -1,6 +1,6 @@
 package ca.codepet;
 
-public class ShooterPlant extends Plant {
+public abstract class ShooterPlant extends Plant {
     enum State {
         IDLE,
         ATTACKING
@@ -8,11 +8,9 @@ public class ShooterPlant extends Plant {
     State state = State.IDLE;
     int range = 5;
 
-    public ShooterPlant() {
-        //sprites.put()
-    }
-
+    @Override
     public void update() {
+        imageIndex += 0.35;
         switch(state) {
             case IDLE:
                 setAnimationUnique("idle");

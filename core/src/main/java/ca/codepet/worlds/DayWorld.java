@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 
 import ca.codepet.Plant;
+import ca.codepet.Plants.Peashooter;
 import ca.codepet.ui.PlantBar;
 
 public class DayWorld implements Screen {
@@ -18,10 +19,10 @@ public class DayWorld implements Screen {
     // "final" denotes that this is a constant and cannot be reassigned
     final private int LAWN_WIDTH = 9;
     final private int LAWN_HEIGHT = 5;
-    final private int LAWN_TILEWIDTH = 32;
-    final private int LAWN_TILEHEIGHT = 32;
-    final private int LAWN_TILEX = 32;
-    final private int LAWN_TILEY = 32;
+    final private int LAWN_TILEWIDTH = 80;
+    final private int LAWN_TILEHEIGHT = 96;
+    final private int LAWN_TILEX = 76;
+    final private int LAWN_TILEY = -32;
 
     @Override
     public void show() {
@@ -30,6 +31,7 @@ public class DayWorld implements Screen {
         batch = new SpriteBatch();
         plantBar = new PlantBar();
         plants = new Plant[LAWN_WIDTH][LAWN_HEIGHT];
+        plants[0][0] = new Peashooter();
     }
 
     @Override
@@ -40,8 +42,11 @@ public class DayWorld implements Screen {
         for (int x = 0; x < LAWN_WIDTH; x++) {
             for (int y = 0; y < LAWN_HEIGHT; y++) {
                 Plant p = plants[x][y];
-                TextureRegion tex = p.getTexture();
-                batch.draw(tex, LAWN_TILEX + x * LAWN_TILEX, LAWN_TILEY + y * LAWN_TILEY);
+                if (p != null) {
+                    p.update();
+                    TextureRegion tex = p.getTexture();
+                    batch.draw(tex, LAWN_TILEX + x * LAWN_TILEWIDTH, LAWN_TILEY - y * LAWN_TILEHEIGHT);
+                }
             }
         }
         batch.end();

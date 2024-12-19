@@ -1,6 +1,8 @@
 package ca.codepet;
 
 import com.badlogic.gdx.utils.ObjectMap;
+import com.badlogic.gdx.utils.ObjectMap.Entry;
+
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -17,7 +19,7 @@ public abstract class Plant {
     }
 
     protected void setAnimationUnique(String spr) {
-        if (!currentAnimation.equals(spr))
+        if (currentAnimation == null || !currentAnimation.equals(spr))
             imageIndex = 0f;
         setAnimation(spr);
     }
@@ -33,6 +35,14 @@ public abstract class Plant {
     public boolean damage(int damage) {
         hp -= damage;
         return hp <= 0;
+    }
+
+    public void dispose() {
+        for (Entry<String, Animation<TextureRegion>> e : animations) {
+            for (TextureRegion t : e.value.getKeyFrames()) {
+                t.getTexture().dispose();
+            }
+        } 
     }
 
     public abstract void update();
