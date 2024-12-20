@@ -44,13 +44,27 @@ public class DayWorld implements Screen {
 
         // Render all suns and check for collection
         batch.begin();
-        for(Sun sun : suns) {
+        // Loop through suns
+        for (int i = 0; i < suns.size; i++) {
+            Sun sun = suns.get(i);
+            // Check if the sun was collected
             if (sun.checkClick()) {
-                sunBalance += 25; // Add 25 suns when collected
+                // Add 25 balance
+                sunBalance += 25;
                 plantBar.setSunDisplay(sunBalance);
+                // Remove sun from array and dispose
+                suns.removeIndex(i);
+                sun.dispose();
+            } else if (!sun.isAlive()) {
+                // If the sun is dead (expired), remove and dispose
+                suns.removeIndex(i);
+                sun.dispose();
+            } else {
+                // Render the sun
+                sun.render(batch);
             }
-            sun.render(batch);
         }
+        
         batch.end();
 
         // Draw the plant bar
