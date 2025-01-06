@@ -68,9 +68,10 @@ public class DayWorld implements Screen {
             && clickedTileY < LAWN_HEIGHT) {
                 if (plants[clickedTileX][clickedTileY] == null)
                     plants[clickedTileX][clickedTileY] = new Peashooter();
-                else
+                else {
                     plants[clickedTileX][clickedTileY].dispose();
                     plants[clickedTileX][clickedTileY] = null;
+                }
             }
         }
         for (int x = 0; x < LAWN_WIDTH; x++) {
