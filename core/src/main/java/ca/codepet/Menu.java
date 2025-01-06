@@ -30,6 +30,7 @@ public class Menu implements Screen {
         button.setButtonListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                dispose();
                 game.setScreen(new DayWorld(game));
                 return true;
             }
