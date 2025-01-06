@@ -1,14 +1,21 @@
 package ca.codepet.sample;
 
-public abstract class Zombie {
-    private String type;
-    private int hp;
-    private int atk;
-    private int spd;
-    private int armor;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-    public Zombie(String type, int hp, int atk, int spd, int armor)
+public abstract class Zombie {
+    protected Sprite sprite;
+    protected String type;
+    protected int hp;
+    protected int atk;
+    protected int spd;
+    protected int armor;
+
+    public Zombie(String spritePath, String type, int hp, int atk, int spd, int armor)
     {
+        this.sprite = new Sprite(new Texture(spritePath));
         this.type = type;
         this.hp = hp;
         this.atk = atk;
@@ -18,22 +25,33 @@ public abstract class Zombie {
 
     public void move()
     {
-        // move left based on zombie's speed
+        float deltaTime = Gdx.graphics.getDeltaTime();
+        // move right
+        sprite.setX(sprite.getX() - spd * deltaTime);
     }
 
-    public void takeDamage()
+    // zombie takes damage
+    public void takeDamage(int dmg)
     {
-        // lower the zombie's hp
+        hp -= dmg;
     }
 
-    public void damage()
+    // zombie damages a plant
+    public void damage(int dmg)
     {
-        // damage the plants
+        
     }
 
     public void die()
     {
         // if zombie's hp is equal to or lower than 0
-        // remove zombie's sprite
+        if(hp <= 0)
+        {
+            // remove zombie sprite
+        }
+    }
+
+    public void draw(SpriteBatch batch) {
+        sprite.draw(batch);
     }
 }
