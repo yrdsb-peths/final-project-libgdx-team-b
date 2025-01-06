@@ -1,5 +1,8 @@
 package ca.codepet.worlds;
 
+import com.badlogic.gdx.math.MathUtils;
+
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -41,7 +44,7 @@ public class DayWorld implements Screen {
         plants = new Plant[LAWN_WIDTH][LAWN_HEIGHT];
         for (int x = 0; x < LAWN_WIDTH; x++) {
             for (int y = 0; y < LAWN_HEIGHT; y++) {
-                plants[x][y] = new Peashooter();
+                plants[x][y] = null;
             }
         }
     }
@@ -51,6 +54,25 @@ public class DayWorld implements Screen {
         // Draw the background texture
         batch.begin();
         batch.draw(backgroundTexture, -200, 0);
+
+        // Draw plants
+        // To-do: align plants better
+        float mouseX = Gdx.input.getX();
+        float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
+        int clickedTileX = MathUtils.floor((mouseX - LAWN_TILEX) / LAWN_TILEWIDTH);
+        int clickedTileY = -MathUtils.floor((mouseY - LAWN_TILEY) / LAWN_TILEHEIGHT);
+        if (Gdx.input.justTouched()) {
+            if (clickedTileX >= 0 
+            && clickedTileX < LAWN_WIDTH 
+            && clickedTileY >= 0 
+            && clickedTileY < LAWN_HEIGHT) {
+                if (plants[clickedTileX][clickedTileY] == null)
+                    plants[clickedTileX][clickedTileY] = new Peashooter();
+                else
+                    plants[clickedTileX][clickedTileY].dispose();
+                    plants[clickedTileX][clickedTileY] = null;
+            }
+        }
         for (int x = 0; x < LAWN_WIDTH; x++) {
             for (int y = 0; y < LAWN_HEIGHT; y++) {
                 Plant p = plants[x][y];
@@ -58,10 +80,11 @@ public class DayWorld implements Screen {
                     p.update();
                     TextureRegion tex = p.getTexture();
                     batch.draw(tex, LAWN_TILEX + x * LAWN_TILEWIDTH, LAWN_TILEY - y * LAWN_TILEHEIGHT);
+                } else if (x == clickedTileX && y == clickedTileY) {
+                    // Draw "ghost" of plant here
                 }
             }
         }
-        batch.end();
 
         // Update sun spawning
         sunSpawnTimer += delta;
@@ -72,7 +95,6 @@ public class DayWorld implements Screen {
         }
 
         // Render all suns and check for collection
-        batch.begin();
         // Loop through suns
         for (int i = 0; i < suns.size; i++) {
             Sun sun = suns.get(i);
@@ -97,7 +119,6 @@ public class DayWorld implements Screen {
                 sun.render(batch);
             }
         }
-        
         batch.end();
 
         // Draw the plant bar
