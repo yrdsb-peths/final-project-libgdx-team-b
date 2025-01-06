@@ -4,6 +4,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import ca.codepet.ui.PlantBar;
+import ca.codepet.GameRoot;
 import ca.codepet.characters.Sun;
 
 public class DayWorld implements Screen {
@@ -18,6 +19,11 @@ public class DayWorld implements Screen {
 
     private int sunBalance = 0;
 
+    private final GameRoot game;
+
+    public DayWorld(GameRoot game) {
+        this.game = game;
+    }
     @Override
     public void show() {
         // Load the background texture
