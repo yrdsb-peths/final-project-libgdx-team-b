@@ -17,14 +17,29 @@ public class Menu implements Screen {
     Texture menuTexture;
     Button button;
 
+    float xRatio = 360f / Gdx.graphics.getWidth();
+    float yRatio =  300f / Gdx.graphics.getHeight();
+    int buttonX = (int) (Gdx.graphics.getWidth() * xRatio);
+    int buttonY = (int) (Gdx.graphics.getHeight() * yRatio);
+
+
+    float widthRatio =  394f / Gdx.graphics.getWidth() ;
+    float heightRatio = 200f / Gdx.graphics.getHeight();
+    int buttonWidth = (int) (Gdx.graphics.getWidth() * widthRatio);
+    int buttonHeight = (int) (Gdx.graphics.getHeight() * heightRatio);
+
     Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/menuMusic.mp3"));
 
     public Menu(GameRoot game) {
+        
+    System.out.println(buttonX);
+     System.out.println(buttonY);
+
         this.game = game;
         sound.play(1.0f);
 
         // Initialize the button with the texture path
-        button = new Button("images/button.png", game);
+        button = new Button("images/button.png", game, buttonX , buttonY, buttonWidth, buttonHeight);
 
         // Add a listener to the button
         button.setButtonListener(new InputListener() {

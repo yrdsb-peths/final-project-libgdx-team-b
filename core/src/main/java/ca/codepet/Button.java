@@ -25,15 +25,22 @@ public class Button {
 
     private GameRoot game;
 
-    public Button(String texturePath, GameRoot game) {
+    public Button(String texturePath, GameRoot game, int x, int y, int width, int height) {
+        
+        
         this.game = game;
 
+        
         buttonTexture = new Texture(Gdx.files.internal(texturePath));
         Drawable drawable = new TextureRegionDrawable(buttonTexture);
+            
         button = new ImageButton(drawable);
+        
 
-        button.setSize(199, 399);
-        button.setPosition(33, 344);
+        
+
+        button.setSize(width, height);
+        button.setPosition(x, y);
 
         buttonBatch = new SpriteBatch();
         stage = new Stage();
