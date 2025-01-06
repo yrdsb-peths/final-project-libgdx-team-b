@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import ca.codepet.ui.PlantBar;
 import ca.codepet.characters.Sun;
-import com.badlogic.gdx.utils.Array;
 
 public class DayWorld implements Screen {
     private Texture backgroundTexture;
@@ -55,10 +54,14 @@ public class DayWorld implements Screen {
                 // Remove sun from array and dispose
                 suns.removeIndex(i);
                 sun.dispose();
+                // Since we've removed our current index, decrement i
+                i--;
             } else if (!sun.isAlive()) {
                 // If the sun is dead (expired), remove and dispose
                 suns.removeIndex(i);
                 sun.dispose();
+                // Since we've removed our current index, decrement i
+                i--;
             } else {
                 // Render the sun
                 sun.render(batch);
