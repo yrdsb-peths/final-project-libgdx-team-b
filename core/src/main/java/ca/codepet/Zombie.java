@@ -1,4 +1,4 @@
-package ca.codepet.sample;
+package ca.codepet;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
