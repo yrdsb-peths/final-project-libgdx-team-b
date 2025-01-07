@@ -63,22 +63,6 @@ public class DayWorld implements Screen {
         // Draw the background texture
         batch.begin();
         batch.draw(backgroundTexture, -200, 0);
-        batch.end();
-        
-        shape.begin(ShapeType.Filled);
-        for (int x = 0; x < LAWN_WIDTH; x++) {
-            for (int y = 0; y < LAWN_HEIGHT; y++) {
-                shape.setColor((float) x / LAWN_WIDTH, (float) y / LAWN_HEIGHT, 0, 1);
-                shape.rect(LAWN_TILEX + x * LAWN_TILEWIDTH, LAWN_TILEY + y * -LAWN_TILEHEIGHT, LAWN_TILEWIDTH, LAWN_TILEHEIGHT);
-                Plant p = plants[x][y];
-                if (p != null) {
-                    TextureRegion tex = p.getTexture();
-                    shape.setColor((float) x / LAWN_WIDTH, (float) y / LAWN_HEIGHT, 1, 1);
-                    shape.rect(LAWN_TILEX + x * LAWN_TILEWIDTH + tex.getRegionWidth() / 2, LAWN_TILEY - y * LAWN_TILEHEIGHT + tex.getRegionHeight() / 2, tex.getRegionWidth(), tex.getRegionHeight());
-                }
-            }
-        }
-        shape.end();
 
         batch.begin();
         // Draw plants
@@ -106,7 +90,9 @@ public class DayWorld implements Screen {
                 if (p != null) {
                     p.update();
                     TextureRegion tex = p.getTexture();
-                    batch.draw(tex, LAWN_TILEX + x * LAWN_TILEWIDTH + tex.getRegionWidth() / 2, LAWN_TILEY - y * LAWN_TILEHEIGHT + tex.getRegionHeight() / 2);
+                    int pX = LAWN_TILEX + x * LAWN_TILEWIDTH + (LAWN_TILEWIDTH - tex.getRegionWidth()) / 2;
+                    int pY = LAWN_TILEY - y * LAWN_TILEHEIGHT + (LAWN_TILEHEIGHT - tex.getRegionHeight()) / 2;
+                    batch.draw(tex, pX, pY);
                 } else if (x == clickedTileX && y == clickedTileY) {
                     // Draw "ghost" of plant here
                 }
