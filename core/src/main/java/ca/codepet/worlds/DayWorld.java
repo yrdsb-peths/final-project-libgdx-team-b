@@ -64,7 +64,6 @@ public class DayWorld implements Screen {
         batch.begin();
         batch.draw(backgroundTexture, -200, 0);
 
-        batch.begin();
         // Draw plants
         // To-do: align plants better
         float mouseX = Gdx.input.getX();
@@ -90,8 +89,8 @@ public class DayWorld implements Screen {
                 if (p != null) {
                     p.update();
                     TextureRegion tex = p.getTexture();
-                    int pX = LAWN_TILEX + x * LAWN_TILEWIDTH + (LAWN_TILEWIDTH - tex.getRegionWidth()) / 2;
-                    int pY = LAWN_TILEY - y * LAWN_TILEHEIGHT + (LAWN_TILEHEIGHT - tex.getRegionHeight()) / 2;
+                    float pX = LAWN_TILEX + x * LAWN_TILEWIDTH + (LAWN_TILEWIDTH - tex.getRegionWidth()) / 2;
+                    float pY = LAWN_TILEY - y * LAWN_TILEHEIGHT + (LAWN_TILEHEIGHT - tex.getRegionHeight()) / 2;
                     batch.draw(tex, pX, pY);
                 } else if (x == clickedTileX && y == clickedTileY) {
                     // Draw "ghost" of plant here
