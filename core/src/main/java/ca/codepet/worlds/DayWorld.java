@@ -16,6 +16,8 @@ import ca.codepet.Plants.Peashooter;
 import ca.codepet.ui.PlantBar;
 import ca.codepet.GameRoot;
 import ca.codepet.characters.Sun;
+import ca.codepet.ui.PlantPicker;
+import com.badlogic.gdx.math.Rectangle;
 
 public class DayWorld implements Screen {
     private Texture backgroundTexture;
@@ -31,13 +33,22 @@ public class DayWorld implements Screen {
     final private int LAWN_TILEHEIGHT = 96;
     final private int LAWN_TILEX = 56;
     final private int LAWN_TILEY = 416;
+  
+    private PlantPicker plantPicker;
 
     private static final float SUN_SPAWN_RATE = 1f; // seconds
     private float sunSpawnTimer = 0f;
     // Add array to track suns
     private Array<Sun> suns = new Array<>();
-
     private int sunBalance = 0;
+    private boolean gameStarted = false;
+
+    private Texture pickerTexture;
+    private Texture buttonEnabledTexture;
+    private Texture buttonDisabledTexture;
+    private Rectangle buttonBounds;
+    private boolean buttonEnabled;
+    private boolean picked;
 
     private final GameRoot game;
 
@@ -50,12 +61,21 @@ public class DayWorld implements Screen {
         backgroundTexture = new Texture("backgrounds/day.png");
         batch = new SpriteBatch();
         plantBar = new PlantBar(sunBalance);
+      
         plants = new Plant[LAWN_WIDTH][LAWN_HEIGHT];
         for (int x = 0; x < LAWN_WIDTH; x++) {
             for (int y = 0; y < LAWN_HEIGHT; y++) {
                 plants[x][y] = null;
             }
         }
+      
+        plantPicker = new PlantPicker();
+        pickerTexture = new Texture("ui-components/plant-picker.png");
+        buttonEnabledTexture = new Texture("ui-components/lets-rock-enabled.png");
+        buttonDisabledTexture = new Texture("ui-components/lets-rock-disabled.png");
+        buttonBounds = new Rectangle(50, 50, 100, 50);
+        buttonEnabled = true;
+        picked = false;
     }
 
     @Override
@@ -113,13 +133,22 @@ public class DayWorld implements Screen {
             }
         }
 
-        // Update sun spawning
-        sunSpawnTimer += delta;
-        if (sunSpawnTimer >= SUN_SPAWN_RATE) {
-            sunSpawnTimer = 0f;
-            // Create new sun and add to array
-            suns.add(new Sun());
-        }
+        // Always draw the plant bar first (underneath)
+        plantBar.render();
+
+        if (!gameStarted) {
+            // Show plant picker above plant bar
+            plantPicker.render();
+            if (plantPicker.isPicked()) {
+                gameStarted = true;
+            }
+        } else {
+            // Update sun spawning
+            sunSpawnTimer += delta;
+            if (sunSpawnTimer >= SUN_SPAWN_RATE) {
+                sunSpawnTimer = 0f;
+                suns.add(new Sun());
+            }
 
         // Render all suns and check for collection
         // Loop through suns
@@ -148,8 +177,14 @@ public class DayWorld implements Screen {
         }
         batch.end();
 
-        // Draw the plant bar
-        plantBar.render();
+        // Check for button click
+        if (Gdx.input.justTouched() && buttonEnabled) {
+            float mouseX = Gdx.input.getX();
+            float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY(); // Flip Y coordinate
+            if (buttonBounds.contains(mouseX, mouseY)) {
+                picked = true;
+            }
+        }
     }
 
     @Override
@@ -182,5 +217,8 @@ public class DayWorld implements Screen {
         for(Sun sun : suns) {
             sun.dispose();
         }
+        pickerTexture.dispose();
+        buttonEnabledTexture.dispose();
+        buttonDisabledTexture.dispose();
     }
 }
