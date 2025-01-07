@@ -22,9 +22,9 @@ public class Sun {
         height = 100;
         width = height * aspectRatio;
         // Set random x position
-        x = (float) Math.random() * Gdx.graphics.getWidth();
+        x = (float) Math.random() * Gdx.graphics.getWidth() - width / 2;
         // Set y position clamp to above 50% of the screen
-        y = (float) Math.random() * Gdx.graphics.getHeight() / 2 + Gdx.graphics.getHeight() / 2;
+        y = (float) Math.random() * Gdx.graphics.getHeight() / 2 + Gdx.graphics.getHeight() / 2 - height / 2;
         bounds = new Rectangle(x, y, width, height);
     }
 

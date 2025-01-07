@@ -65,7 +65,6 @@ public class DayWorld implements Screen {
         batch.draw(backgroundTexture, -200, 0);
 
         // Draw plants
-        // To-do: align plants better
         float mouseX = Gdx.input.getX();
         float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
         int clickedTileX = MathUtils.floor((mouseX - LAWN_TILEX) / LAWN_TILEWIDTH);
