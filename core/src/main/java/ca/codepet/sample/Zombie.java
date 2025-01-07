@@ -49,10 +49,10 @@ public abstract class Zombie {
 
     public void die()
     {
-        // if zombie's hp is equal to or lower than 0
+        // once zombie hp reaches 0, remove zombie sprite
         if(hp <= 0)
         {
-            // remove zombie sprite
+            sprite = null;
         }
     }
 
