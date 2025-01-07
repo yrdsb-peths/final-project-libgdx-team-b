@@ -5,6 +5,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+// info
+// gargantuar 3000 hp, instakill any permanent plant except spikerock which takes 9 hits
+// basic zombie 200 hp
+// https://plantsvszombies.fandom.com/wiki/Plants_(PvZ)#List_of_plants
+// https://pvzstrategy.fandom.com/wiki/Plant_Stats
+
 public abstract class Zombie {
     protected Sprite sprite;
     protected String type;
@@ -37,10 +43,7 @@ public abstract class Zombie {
     }
 
     // zombie damages a plant
-    public void damage(int dmg)
-    {
-        
-    }
+    public void damage(Plant plant, int dmg);
 
     public void die()
     {
@@ -51,6 +54,7 @@ public abstract class Zombie {
         }
     }
 
+    // draw zombie sprite
     public void draw(SpriteBatch batch) {
         sprite.draw(batch);
     }
