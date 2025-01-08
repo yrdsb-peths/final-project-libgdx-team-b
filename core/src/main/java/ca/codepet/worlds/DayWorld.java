@@ -13,6 +13,8 @@ import com.badlogic.gdx.utils.Array;
 
 import ca.codepet.Plant;
 import ca.codepet.Plants.Peashooter;
+import ca.codepet.Zombies.BasicZombie;
+import ca.codepet.Zombies.Zombie;
 import ca.codepet.ui.PlantBar;
 import ca.codepet.GameRoot;
 import ca.codepet.characters.Sun;
@@ -41,8 +43,11 @@ public class DayWorld implements Screen {
 
     private final GameRoot game;
 
+    private Zombie zombie = new BasicZombie();
+
     public DayWorld(GameRoot game) {
         this.game = game;
+
     }
     @Override
     public void show() {
@@ -134,6 +139,8 @@ public class DayWorld implements Screen {
 
         // Draw the plant bar
         plantBar.render();
+
+        zombie.render();
     }
 
     @Override

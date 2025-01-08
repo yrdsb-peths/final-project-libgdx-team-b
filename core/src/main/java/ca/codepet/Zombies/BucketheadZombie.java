@@ -1,7 +1,7 @@
 package ca.codepet.Zombies;
 
-import ca.codepet.Zombie;
+// import ca.codepet.Zombie;
 
-public class BucketheadZombie extends Zombie{
+// public class BucketheadZombie extends Zombie{
     
-}
+// }
