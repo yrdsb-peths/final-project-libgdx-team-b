@@ -43,7 +43,7 @@ public class DayWorld implements Screen {
 
     private final GameRoot game;
 
-    private Zombie zombie = new BasicZombie();
+    private Zombie zombie = new BasicZombie(this);
 
     public DayWorld(GameRoot game) {
         this.game = game;
@@ -161,6 +161,14 @@ public class DayWorld implements Screen {
     @Override
     public void hide() {
         // This method is called when another screen replaces this one.
+    }
+
+    public int getLawnHeight() {
+        return LAWN_HEIGHT;
+    }
+
+    public int getLawnTileHeight() {
+        return LAWN_TILEHEIGHT;
     }
 
     @Override
