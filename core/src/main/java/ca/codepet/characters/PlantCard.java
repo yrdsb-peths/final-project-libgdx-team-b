@@ -18,9 +18,18 @@ public class PlantCard {
         this.cardTexture = new Texture(Gdx.files.internal(texturePath));
         this.cost = cost;
         this.cooldown = cooldown;
-        this.plantType = plantType;
-        this.bounds = new Rectangle(x, y, cardTexture.getWidth(), cardTexture.getHeight());
         this.cooldownTimer = 0;
         this.isSelected = false;
+        this.plantType = plantType;
+        this.bounds = new Rectangle(x, y, cardTexture.getWidth(), cardTexture.getHeight());
     }
+
+    public void render(SpriteBatch batch) {
+        batch.draw(cardTexture, bounds.x, bounds.y);
+    }
+
+    public void dispose() {
+        cardTexture.dispose();
+    }
+
 }
