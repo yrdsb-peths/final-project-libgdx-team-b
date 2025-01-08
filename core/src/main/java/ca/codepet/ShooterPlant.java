@@ -9,8 +9,8 @@ public abstract class ShooterPlant extends Plant {
     int range = 5;
 
     @Override
-    public void update() {
-        imageIndex += 0.35;
+    public void update(float delta) {
+        imageIndex += delta;
         switch(state) {
             case IDLE:
                 setAnimationUnique("idle");
