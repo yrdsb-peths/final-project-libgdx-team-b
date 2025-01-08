@@ -86,7 +86,7 @@ public class DayWorld implements Screen {
             for (int y = 0; y < LAWN_HEIGHT; y++) {
                 Plant p = plants[x][y];
                 if (p != null) {
-                    p.update();
+                    p.update(delta);
                     TextureRegion tex = p.getTexture();
                     float pX = LAWN_TILEX + x * LAWN_TILEWIDTH + (LAWN_TILEWIDTH - tex.getRegionWidth()) / 2;
                     float pY = LAWN_TILEY - y * LAWN_TILEHEIGHT + (LAWN_TILEHEIGHT - tex.getRegionHeight()) / 2;
