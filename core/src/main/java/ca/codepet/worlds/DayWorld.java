@@ -43,7 +43,8 @@ public class DayWorld implements Screen {
 
     private final GameRoot game;
 
-    private Zombie zombie = new BasicZombie(this);
+    // private Zombie zombie = new BasicZombie(this);
+    private Array<BasicZombie> zombies = new Array<>();
 
     public DayWorld(GameRoot game) {
         this.game = game;
@@ -51,6 +52,8 @@ public class DayWorld implements Screen {
     }
     @Override
     public void show() {
+        addZombie(new BasicZombie(this));
+
         // Load the background texture
         backgroundTexture = new Texture("backgrounds/day.png");
         batch = new SpriteBatch();
@@ -61,6 +64,7 @@ public class DayWorld implements Screen {
                 plants[x][y] = null;
             }
         }
+
     }
 
     @Override
@@ -135,12 +139,33 @@ public class DayWorld implements Screen {
                 sun.render(batch);
             }
         }
+
+        for(BasicZombie zombie : zombies) {
+            zombie.move();
+            // System.out.println(zombie.getRow());
+            batch.draw(zombie.getTexture(), zombie.getX(), zombie.getRow() * LAWN_TILEHEIGHT);
+
+            if(plants[zombie.getRow()][zombie.getCol()] != null) {
+                plants[zombie.getRow()][zombie.getCol()].dispose();
+            }
+        }
+
         batch.end();
+
+        
 
         // Draw the plant bar
         plantBar.render();
 
-        zombie.render();
+    }
+
+    public void addZombie(BasicZombie zombie) {
+        System.out.println(3333);
+        zombies.add(zombie);
+    }
+    
+    public void removeZombie(BasicZombie zombie) {
+        zombies.removeValue(zombie, true);
     }
 
     @Override
@@ -181,5 +206,10 @@ public class DayWorld implements Screen {
         for(Sun sun : suns) {
             sun.dispose();
         }
+
+        for(BasicZombie zombie : zombies) {
+            zombie.dispose();
+        }
+        zombies.clear();
     }
 }

@@ -12,34 +12,46 @@ import ca.codepet.worlds.DayWorld;
 public class BasicZombie extends Zombie {
 
     Random rand = new Random();
-    //basic zombie moves 1 tile in 15 seconds
     private Texture zombieTexture;
-    private SpriteBatch batch;
 
     private int x = Gdx.graphics.getWidth();
     private int y;
     
+    private int row, col;
 
     public BasicZombie(DayWorld world) {
         zombieTexture = new Texture("images/zombie.png");
-        batch = new SpriteBatch();
 
-        final int lawnRow = rand.nextInt(world.getLawnHeight());
-        y = world.getLawnTileHeight() * lawnRow;
+        row = rand.nextInt(world.getLawnHeight());
+
+        System.out.println("row: " + row);
     }
 
-    public void render() {
-        batch.begin();
-        
-        batch.draw(zombieTexture, x, y);
-        x-=1;
-        batch.end();
+    public Texture getTexture() {
+        return zombieTexture;
     }
+
+    public int getX() {
+        return x;
+    }
+
+    public void move() {
+        x -= 1;
+    }
+
         
     @Override
     public void damage(Plant plant, int dmg) {
         // zombie damages a plant
         plant.damage(dmg);
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getCol() {
+        return col;
     }
     
 }
