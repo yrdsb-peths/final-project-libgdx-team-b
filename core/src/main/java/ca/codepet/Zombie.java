@@ -32,7 +32,7 @@ public abstract class Zombie {
     public void move()
     {
         float deltaTime = Gdx.graphics.getDeltaTime();
-        // move right
+        // move left
         sprite.setX(sprite.getX() - spd * deltaTime);
     }
 
