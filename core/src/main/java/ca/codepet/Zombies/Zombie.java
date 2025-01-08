@@ -1,4 +1,4 @@
-package ca.codepet.zombies;
+package ca.codepet.Zombies;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
