@@ -2,7 +2,6 @@ package ca.codepet;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.assets.AssetManager;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
