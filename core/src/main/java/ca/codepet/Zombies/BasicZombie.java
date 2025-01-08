@@ -1,4 +1,6 @@
-package ca.codepet;
+package ca.codepet.Zombies;
+
+import ca.codepet.Plant;
 
 public class BasicZombie extends Zombie {
     //basic zombie moves 1 tile in 15 seconds
@@ -9,7 +11,7 @@ public class BasicZombie extends Zombie {
     @Override
     public void damage(Plant plant, int dmg) {
         // zombie damages a plant
-        plant.reduceHealth(dmg);
+        plant.damage(dmg);
     }
     
 }
