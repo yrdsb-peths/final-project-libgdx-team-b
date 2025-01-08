@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -87,9 +88,9 @@ public class DayWorld implements Screen {
                 Plant p = plants[x][y];
                 if (p != null) {
                     p.update(delta);
-                    TextureRegion tex = p.getTexture();
-                    float pX = LAWN_TILEX + x * LAWN_TILEWIDTH + (LAWN_TILEWIDTH - tex.getRegionWidth()) / 2;
-                    float pY = LAWN_TILEY - y * LAWN_TILEHEIGHT + (LAWN_TILEHEIGHT - tex.getRegionHeight()) / 2;
+                    AtlasRegion tex = p.getTexture();
+                    float pX = LAWN_TILEX + x * LAWN_TILEWIDTH + tex.offsetX + (LAWN_TILEWIDTH - tex.originalWidth) / 2;
+                    float pY = LAWN_TILEY - y * LAWN_TILEHEIGHT + tex.offsetY + (LAWN_TILEHEIGHT - tex.originalHeight) / 2;
                     batch.draw(tex, pX, pY);
                 } else if (x == clickedTileX && y == clickedTileY) {
                     // Draw "ghost" of plant here
