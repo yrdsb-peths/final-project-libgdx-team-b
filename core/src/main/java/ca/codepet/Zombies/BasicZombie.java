@@ -1,4 +1,4 @@
-package ca.codepet.zombies;
+package ca.codepet.Zombies;
 
 import ca.codepet.Plant;
 
