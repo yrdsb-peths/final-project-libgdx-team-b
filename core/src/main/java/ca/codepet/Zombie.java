@@ -45,7 +45,10 @@ public abstract class Zombie {
     // zombie damages a plant
     // 1 bite = 1 dmg
     // typical plants have 6 hp
-    public abstract void damage(Plant plant, int dmg);
+    public void damage(Plant plant, int dmg)
+    {
+        
+    }
 
     public void die()
     {
