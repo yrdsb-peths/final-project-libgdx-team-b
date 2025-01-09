@@ -27,6 +27,7 @@ public class BasicZombie extends Zombie {
         world = theWorld;
 
         row = rand.nextInt(world.getLawnHeight());
+        
 
         System.out.println("row: " + row);
     }
@@ -41,10 +42,10 @@ public class BasicZombie extends Zombie {
 
     public void move() {
         x -= 1;
-        col = (int) (x/world.getLawnTileWidth());
-        if(col > 9) col = 9;
+        col = (int) (x/world.getLawnTileWidth()) - 1 ;
+        if(col > 9) col = 8;
         
-        System.out.println("col: " + col);
+        System.out.println("collll: " + col);
     }
 
         
@@ -59,7 +60,7 @@ public class BasicZombie extends Zombie {
     }
 
     public int getCol() {
-        return col-1;
+        return col;
     }
     
 }

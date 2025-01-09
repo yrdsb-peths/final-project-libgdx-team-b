@@ -140,14 +140,15 @@ public class DayWorld implements Screen {
             }
         }
 
+        
         for(BasicZombie zombie : zombies) {
             zombie.move();
             // System.out.println(zombie.getRow());
-            batch.draw(zombie.getTexture(), zombie.getX(), zombie.getRow() * LAWN_TILEHEIGHT);
+            batch.draw(zombie.getTexture(), zombie.getX(), (LAWN_HEIGHT - zombie.getRow()) * LAWN_TILEHEIGHT);
             
             // print out the entire plants array
-            for (int x = 0; x < LAWN_WIDTH; x++) {
-                for (int y = 0; y < LAWN_HEIGHT; y++) {
+            for (int y = 0; y < LAWN_HEIGHT; y++) {
+                for (int x = 0; x < LAWN_WIDTH; x++) {
                     if (plants[y][x] != null) {
                         System.out.print("P ");
                     } else {
@@ -157,7 +158,8 @@ public class DayWorld implements Screen {
                 System.out.println();
             }
 
-            // System.out.println("col: " + zombie.getCol());
+            System.out.println("col: " + zombie.getCol());
+            System.out.println("row: " + zombie.getRow());
             // System.out.println(zombie.getRow());
             System.out.println(plants[zombie.getRow()][zombie.getCol()]);
             if(plants[zombie.getRow()][zombie.getCol()] != null) {
