@@ -1,5 +1,5 @@
 package ca.codepet.Zombies;
 
-public class Gargantuar {
+public class Gargantuar extends Zombie {
     
 }
