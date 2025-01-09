@@ -15,6 +15,8 @@ public class PlantCard {
     private float cooldownTimer;
     private boolean isSelected;
     private String plantType;
+    private boolean isDarkened;
+    private float darkenAmount = 0.5f; // 0-1 value for darkening
     
     public PlantCard(TextureRegion texture, int cost, float cooldown, String plantType, float x, float y) {
         if (cardBackground == null) {
@@ -27,6 +29,7 @@ public class PlantCard {
         this.isSelected = false;
         this.plantType = plantType;
         this.bounds = new Rectangle(x, y, 60, 70);
+        this.isDarkened = false;
     }
 
     public boolean contains(float x, float y) {
@@ -45,7 +48,46 @@ public class PlantCard {
         bounds.setPosition(x, y);
     }
 
+    public void setDarkened(boolean darkened) {
+        isDarkened = darkened;
+    }
+
+    public TextureRegion getCardTexture() {
+        return cardTexture;
+    }
+    
+    public int getCost() {
+        return cost;
+    }
+    
+    public float getCooldown() {
+        return cooldown;
+    }
+    
+    public String getPlantType() {
+        return plantType;
+    }
+    
+    public Rectangle getBounds() {
+        return bounds;
+    }
+
     public void render(SpriteBatch batch) {
+        // Store original color
+        float originalR = batch.getColor().r;
+        float originalG = batch.getColor().g; 
+        float originalB = batch.getColor().b;
+        float originalA = batch.getColor().a;
+
+        if (isDarkened) {
+            batch.setColor(
+                originalR * darkenAmount,
+                originalG * darkenAmount,
+                originalB * darkenAmount,
+                originalA
+            );
+        }
+
         // Draw card background
         batch.draw(cardBackground, bounds.x, bounds.y, bounds.width, bounds.height);
         
@@ -57,6 +99,9 @@ public class PlantCard {
         
         // Draw plant sprite
         batch.draw(cardTexture, plantX, plantY, plantWidth, plantHeight);
+
+        // Restore original color
+        batch.setColor(originalR, originalG, originalB, originalA);
     }
 
     public void dispose() {

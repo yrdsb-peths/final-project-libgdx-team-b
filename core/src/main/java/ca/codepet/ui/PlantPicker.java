@@ -94,10 +94,8 @@ public class PlantPicker {
             float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
             
             for (PlantCard card : plantCards) {
-                if (!card.isSelected() && card.contains(mouseX, mouseY)) {
-                    card.setSelected(true);
-                    plantBar.addCard(card);
-                    
+                if (card.contains(mouseX, mouseY)) {
+                    handleCardSelection(card);
                     break;
                 }
             }
@@ -111,6 +109,30 @@ public class PlantPicker {
             float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY(); // Flip Y coordinate
             if (buttonBounds.contains(mouseX, mouseY)) {
                 picked = true;
+            }
+        }
+    }
+
+    private void handleCardSelection(PlantCard card) {
+        if (!card.isSelected()) {
+            card.setSelected(true);
+            
+            // Create a new card instance for the plant bar
+            PlantCard barCard = new PlantCard(
+                card.getCardTexture(),
+                card.getCost(),
+                card.getCooldown(),
+                card.getPlantType(),
+                card.getBounds().x,
+                card.getBounds().y
+            );
+            
+            if (plantBar.addCard(barCard)) {
+                // Darken the original card in picker
+                card.setDarkened(true);
+            } else {
+                // If card couldn't be added to bar, unselect it
+                card.setSelected(false);
             }
         }
     }
