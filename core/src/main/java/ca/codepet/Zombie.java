@@ -47,7 +47,7 @@ public abstract class Zombie {
     // typical plants have 6 hp
     public void damage(Plant plant, int dmg)
     {
-        
+        plant.damage(dmg);
     }
 
     public void die()
