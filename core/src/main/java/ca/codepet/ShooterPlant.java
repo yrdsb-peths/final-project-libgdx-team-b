@@ -8,6 +8,10 @@ public abstract class ShooterPlant extends Plant {
     State state = State.IDLE;
     int range = 5;
 
+    public ShooterPlant(float x, float y) {
+        super(x, y);
+    }
+
     @Override
     public void update(float delta) {
         imageIndex += delta;

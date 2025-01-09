@@ -75,8 +75,11 @@ public class DayWorld implements Screen {
             && clickedTileX < LAWN_WIDTH 
             && clickedTileY >= 0 
             && clickedTileY < LAWN_HEIGHT) {
-                if (plants[clickedTileX][clickedTileY] == null)
-                    plants[clickedTileX][clickedTileY] = new Peashooter();
+                if (plants[clickedTileX][clickedTileY] == null) {
+                    float pX = LAWN_TILEX + clickedTileX * LAWN_TILEWIDTH + LAWN_TILEWIDTH / 2;
+                    float pY = LAWN_TILEY - clickedTileY * LAWN_TILEHEIGHT + LAWN_TILEHEIGHT / 2;
+                    plants[clickedTileX][clickedTileY] = new Peashooter(pX, pY);
+                }
                 else {
                     plants[clickedTileX][clickedTileY].dispose();
                     plants[clickedTileX][clickedTileY] = null;
@@ -88,10 +91,7 @@ public class DayWorld implements Screen {
                 Plant p = plants[x][y];
                 if (p != null) {
                     p.update(delta);
-                    AtlasRegion tex = p.getTexture();
-                    float pX = LAWN_TILEX + x * LAWN_TILEWIDTH + tex.offsetX + (LAWN_TILEWIDTH - tex.originalWidth) / 2;
-                    float pY = LAWN_TILEY - y * LAWN_TILEHEIGHT + tex.offsetY + (LAWN_TILEHEIGHT - tex.originalHeight) / 2;
-                    batch.draw(tex, pX, pY);
+                    p.render(batch);
                 } else if (x == clickedTileX && y == clickedTileY) {
                     // Draw "ghost" of plant here
                 }
