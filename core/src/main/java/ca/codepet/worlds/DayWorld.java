@@ -58,10 +58,10 @@ public class DayWorld implements Screen {
         backgroundTexture = new Texture("backgrounds/day.png");
         batch = new SpriteBatch();
         plantBar = new PlantBar(sunBalance);
-        plants = new Plant[LAWN_WIDTH][LAWN_HEIGHT];
-        for (int x = 0; x < LAWN_WIDTH; x++) {
-            for (int y = 0; y < LAWN_HEIGHT; y++) {
-                plants[x][y] = null;
+        plants = new Plant[LAWN_HEIGHT][LAWN_WIDTH];
+        for (int y = 0; y < LAWN_HEIGHT; y++) {
+            for (int x = 0; x < LAWN_WIDTH; x++) {
+                plants[y][x] = null;
             }
         }
 
@@ -83,17 +83,17 @@ public class DayWorld implements Screen {
             && clickedTileX < LAWN_WIDTH 
             && clickedTileY >= 0 
             && clickedTileY < LAWN_HEIGHT) {
-                if (plants[clickedTileX][clickedTileY] == null)
-                    plants[clickedTileX][clickedTileY] = new Peashooter();
+                if (plants[clickedTileY][clickedTileX] == null)
+                    plants[clickedTileY][clickedTileX] = new Peashooter();
                 else {
-                    plants[clickedTileX][clickedTileY].dispose();
-                    plants[clickedTileX][clickedTileY] = null;
+                    plants[clickedTileY][clickedTileX].dispose();
+                    plants[clickedTileY][clickedTileX] = null;
                 }
             }
         }
-        for (int x = 0; x < LAWN_WIDTH; x++) {
-            for (int y = 0; y < LAWN_HEIGHT; y++) {
-                Plant p = plants[x][y];
+        for (int y = 0; y < LAWN_HEIGHT; y++) {
+            for (int x = 0; x < LAWN_WIDTH; x++) {
+                Plant p = plants[y][x];
                 if (p != null) {
                     p.update();
                     TextureRegion tex = p.getTexture();
@@ -144,9 +144,25 @@ public class DayWorld implements Screen {
             zombie.move();
             // System.out.println(zombie.getRow());
             batch.draw(zombie.getTexture(), zombie.getX(), zombie.getRow() * LAWN_TILEHEIGHT);
+            
+            // print out the entire plants array
+            for (int x = 0; x < LAWN_WIDTH; x++) {
+                for (int y = 0; y < LAWN_HEIGHT; y++) {
+                    if (plants[y][x] != null) {
+                        System.out.print("P ");
+                    } else {
+                        System.out.print("0 ");
+                    }
+                }
+                System.out.println();
+            }
 
+            // System.out.println("col: " + zombie.getCol());
+            // System.out.println(zombie.getRow());
+            System.out.println(plants[zombie.getRow()][zombie.getCol()]);
             if(plants[zombie.getRow()][zombie.getCol()] != null) {
                 plants[zombie.getRow()][zombie.getCol()].dispose();
+                plants[zombie.getRow()][zombie.getCol()] = null;
             }
         }
 
@@ -194,6 +210,10 @@ public class DayWorld implements Screen {
 
     public int getLawnTileHeight() {
         return LAWN_TILEHEIGHT;
+    }
+
+    public int getLawnTileWidth() {
+        return LAWN_TILEWIDTH;
     }
 
     @Override
