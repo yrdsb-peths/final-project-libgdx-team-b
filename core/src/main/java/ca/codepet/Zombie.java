@@ -1,11 +1,9 @@
-package ca.codepet.Zombies;
+package ca.codepet;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-import ca.codepet.Plant;
 
 // info
 // gargantuar 3000 hp, instakill any permanent plant except spikerock which takes 9 hits

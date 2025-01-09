@@ -1,6 +1,7 @@
 package ca.codepet.Zombies;
 
 import ca.codepet.Plant;
+import ca.codepet.Zombie;
 
 public class BasicZombie extends Zombie {
     //basic zombie moves 1 tile in 15 seconds
