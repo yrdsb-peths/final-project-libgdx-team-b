@@ -69,6 +69,9 @@ public class DayWorld implements Screen {
         batch.draw(backgroundTexture, -200, 0);
         batch.end();
 
+        // Draw the plant bar
+        plantBar.render();
+
         if (!gameStarted) {
             // Render plant picker if game hasn't started
             plantPicker.render();

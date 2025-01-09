@@ -3,7 +3,11 @@ package ca.codepet.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
+
+import ca.codepet.characters.PlantCard;
 
 public class PlantPicker {
     private Texture pickerTexture;
@@ -13,6 +17,13 @@ public class PlantPicker {
     private boolean picked = false;
     private Rectangle buttonBounds;
     private boolean buttonEnabled = true;
+    private Array<PlantCard> plantCards;
+
+    // Constants for card layout
+    private static final int CARD_SPACING = 10;
+    private static final int CARDS_PER_ROW = 4;
+    private static final float CARD_START_X = 50;
+    private static final float CARD_START_Y = 350;
 
     public PlantPicker() {
         pickerTexture = new Texture("ui-components/plant-picker.png");
@@ -24,23 +35,49 @@ public class PlantPicker {
         float buttonWidth = 150;
         float buttonHeight = 45;
         float buttonX = 150;
-        float buttonY = 110; // Position from bottom
+        float buttonY = 10; // Position from bottom
         buttonBounds = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
+
+        // Initialize plant cards
+        plantCards = new Array<>();
+        initializePlantCards();
     }
 
-    public boolean isPicked() {
-        return picked;
+    private void initializePlantCards() {
+        // Load Peashooter atlas and create card
+        TextureAtlas peashooterAtlas = new TextureAtlas(Gdx.files.internal("plants/Peashooter.atlas"));
+        int row = 0;
+        int col = 0;
+        
+        float x = CARD_START_X + (col * (50 + CARD_SPACING));
+        float y = CARD_START_Y - (row * (70 + CARD_SPACING));
+        
+        // Create Peashooter card
+        PlantCard peashooterCard = new PlantCard(
+            peashooterAtlas.findRegion("peashooter_idle1"),  // First frame of animation
+            100,
+            7.5f,
+            "Peashooter",
+            x,
+            y
+        );
+        plantCards.add(peashooterCard);
     }
 
     public void render() {
         float aspectRatio = (float) pickerTexture.getWidth() / pickerTexture.getHeight();
         float newHeight = 500;
         float newWidth = newHeight * aspectRatio;
-        float pickerY = Gdx.graphics.getHeight() - newHeight;
+        float pickerY = 0; // Changed from Gdx.graphics.getHeight() - newHeight to 0
 
         batch.begin();
         // Draw picker background
         batch.draw(pickerTexture, 0, pickerY, newWidth, newHeight);
+        
+        // Draw plant cards
+        for (PlantCard card : plantCards) {
+            card.render(batch);
+        }
         
         // Draw button
         Texture buttonTexture = buttonEnabled ? buttonEnabledTexture : buttonDisabledTexture;
@@ -58,10 +95,17 @@ public class PlantPicker {
         }
     }
 
+    public boolean isPicked() {
+        return picked;
+    }
+
     public void dispose() {
         pickerTexture.dispose();
         buttonEnabledTexture.dispose();
         buttonDisabledTexture.dispose();
         batch.dispose();
+        for (PlantCard card : plantCards) {
+            card.dispose();
+        }
     }
 }
