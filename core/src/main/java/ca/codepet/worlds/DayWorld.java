@@ -142,10 +142,21 @@ public class DayWorld implements Screen {
 
         
         for(BasicZombie zombie : zombies) {
+
+            
+
             zombie.move();
+
+            if(zombie.getCol() < 0) {
+                removeZombie(zombie);
+                break;
+            }
+            
             // System.out.println(zombie.getRow());
             batch.draw(zombie.getTexture(), zombie.getX(), (LAWN_HEIGHT - zombie.getRow()) * LAWN_TILEHEIGHT);
             
+            
+
             // print out the entire plants array
             for (int y = 0; y < LAWN_HEIGHT; y++) {
                 for (int x = 0; x < LAWN_WIDTH; x++) {
@@ -169,8 +180,6 @@ public class DayWorld implements Screen {
         }
 
         batch.end();
-
-        
 
         // Draw the plant bar
         plantBar.render();
