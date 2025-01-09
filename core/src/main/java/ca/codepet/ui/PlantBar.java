@@ -7,11 +7,19 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.utils.Array;
+
+import ca.codepet.characters.PlantCard;
 
 public class PlantBar {
     private Texture barTexture;
     private SpriteBatch batch;
     private BitmapFont font;
+
+    private Array<PlantCard> selectedCards;
+    private static final int MAX_CARDS = 6;
+    private static final float CARD_START_X = 100;
+    private static final float CARD_SPACING = 65;
 
     private int sunDisplay = 0;
 
@@ -29,10 +37,22 @@ public class PlantBar {
         // dispose generator
 
         sunDisplay = sun;
+        selectedCards = new Array<>();
     }
 
     public void setSunDisplay(int sun) {
         sunDisplay = sun;
+    }
+
+    public boolean addCard(PlantCard card) {
+        if (selectedCards.size < MAX_CARDS) {
+            float x = CARD_START_X + (selectedCards.size * CARD_SPACING);
+            float y = Gdx.graphics.getHeight() - 90;
+            card.setPosition(x, y);
+            selectedCards.add(card);
+            return true;
+        }
+        return false;
     }
 
     public void render() {
@@ -53,6 +73,11 @@ public class PlantBar {
         float textX = centerX - (textWidth / 2); // Center around the original x position
         float textY = barY + newHeight - 75;
         font.draw(batch, sunText, textX, textY);
+
+        // Draw selected cards
+        for (PlantCard card : selectedCards) {
+            card.render(batch);
+        }
 
         batch.end();
     }

@@ -29,6 +29,22 @@ public class PlantCard {
         this.bounds = new Rectangle(x, y, 60, 70);
     }
 
+    public boolean contains(float x, float y) {
+        return bounds.contains(x, y);
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setPosition(float x, float y) {
+        bounds.setPosition(x, y);
+    }
+
     public void render(SpriteBatch batch) {
         // Draw card background
         batch.draw(cardBackground, bounds.x, bounds.y, bounds.width, bounds.height);

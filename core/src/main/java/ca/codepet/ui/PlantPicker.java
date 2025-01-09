@@ -22,10 +22,14 @@ public class PlantPicker {
     // Constants for card layout
     private static final int CARD_SPACING = 10;
     private static final int CARDS_PER_ROW = 4;
-    private static final float CARD_START_X = 50;
-    private static final float CARD_START_Y = 350;
+    private static final float CARD_START_X = 15;
+    private static final float CARD_START_Y = 375;
 
-    public PlantPicker() {
+    private PlantBar plantBar;
+
+    public PlantPicker(PlantBar plantBar) {
+        this.plantBar = plantBar;
+
         pickerTexture = new Texture("ui-components/plant-picker.png");
         buttonEnabledTexture = new Texture("ui-components/lets-rock-enabled.png");
         buttonDisabledTexture = new Texture("ui-components/lets-rock-disabled.png");
@@ -83,6 +87,22 @@ public class PlantPicker {
         Texture buttonTexture = buttonEnabled ? buttonEnabledTexture : buttonDisabledTexture;
         batch.draw(buttonTexture, buttonBounds.x, buttonBounds.y, 
                   buttonBounds.width, buttonBounds.height);
+        
+        // Check for card clicks
+        if (Gdx.input.justTouched()) {
+            float mouseX = Gdx.input.getX();
+            float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
+            
+            for (PlantCard card : plantCards) {
+                if (!card.isSelected() && card.contains(mouseX, mouseY)) {
+                    card.setSelected(true);
+                    plantBar.addCard(card);
+                    
+                    break;
+                }
+            }
+        }
+
         batch.end();
 
         // Check for button click

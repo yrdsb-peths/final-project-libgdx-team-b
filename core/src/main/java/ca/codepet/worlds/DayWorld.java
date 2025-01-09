@@ -59,7 +59,7 @@ public class DayWorld implements Screen {
                 plants[x][y] = null;
             }
         }
-        plantPicker = new PlantPicker();
+        plantPicker = new PlantPicker(plantBar);
     }
 
     @Override
