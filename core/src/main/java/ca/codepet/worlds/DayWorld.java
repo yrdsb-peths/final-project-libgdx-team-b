@@ -41,10 +41,13 @@ public class DayWorld implements Screen {
 
     private int sunBalance = 0;
 
-    private final GameRoot game;
+    private final GameRoot game; 
 
     // private Zombie zombie = new BasicZombie(this);
     private Array<BasicZombie> zombies = new Array<>();
+
+    private float waveTimer = 0f;
+    private float timeBetweenWaves = 10f; // seconds
 
     public DayWorld(GameRoot game) {
         this.game = game;
@@ -140,40 +143,28 @@ public class DayWorld implements Screen {
             }
         }
 
+        // Update wave timer
+        waveTimer += delta;
+        if (waveTimer >= timeBetweenWaves) {
+            waveTimer = 0f;
+            spawnWave();
+        }
+
         
         for(BasicZombie zombie : zombies) {
-
             
-
             zombie.move();
 
             if(zombie.getCol() < 0) {
                 removeZombie(zombie);
+                goEndscreen();
                 break;
                 // TODO end screen go there
             }
             
             // System.out.println(zombie.getRow());
             batch.draw(zombie.getTexture(), zombie.getX(), (LAWN_HEIGHT - zombie.getRow()) * LAWN_TILEHEIGHT - 40);
-            
-            
 
-            // print out the entire plants array
-            for (int y = 0; y < LAWN_HEIGHT; y++) {
-                for (int x = 0; x < LAWN_WIDTH; x++) {
-                    if (plants[y][x] != null) {
-                        System.out.print("P ");
-                    } else {
-                        System.out.print("0 ");
-                    }
-                }
-                System.out.println();
-            }
-
-            System.out.println("col: " + zombie.getCol());
-            System.out.println("row: " + zombie.getRow());
-            // System.out.println(zombie.getRow());
-            System.out.println(plants[zombie.getRow()][zombie.getCol()]);
             if(plants[zombie.getRow()][zombie.getCol()] != null) {
                 plants[zombie.getRow()][zombie.getCol()].dispose();
                 plants[zombie.getRow()][zombie.getCol()] = null;
@@ -193,7 +184,19 @@ public class DayWorld implements Screen {
     }
     
     public void removeZombie(BasicZombie zombie) {
+        zombie.dispose();
         zombies.removeValue(zombie, true);
+    }
+
+    public void goEndscreen() {
+        // game.setScreen(new EndScreen(game));
+    }
+
+    private void spawnWave() {
+        int numberOfZombies = 5; // Number of zombies per wave
+        for (int i = 0; i < numberOfZombies; i++) {
+            addZombie(new BasicZombie(this));
+        }
     }
 
     @Override

@@ -63,4 +63,8 @@ public class BasicZombie extends Zombie {
         return col;
     }
     
+    public void dispose() {
+        zombieTexture.dispose();
+    }
+    
 }
