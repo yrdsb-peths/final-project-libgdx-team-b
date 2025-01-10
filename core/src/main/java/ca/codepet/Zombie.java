@@ -28,6 +28,11 @@ public abstract class Zombie {
         this.spd = spd;
         this.armor = armor;
     }
+    
+    public String getType()
+    {
+        return type;
+    }
 
     public void move()
     {

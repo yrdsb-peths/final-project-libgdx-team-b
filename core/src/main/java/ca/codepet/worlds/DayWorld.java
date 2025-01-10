@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.Array;
 
 import ca.codepet.Plant;
 import ca.codepet.Plants.Peashooter;
+import ca.codepet.Zombie;
 import ca.codepet.ui.PlantBar;
 import ca.codepet.GameRoot;
 import ca.codepet.characters.Sun;
