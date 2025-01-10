@@ -7,7 +7,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import ca.codepet.Plant;
+import ca.codepet.Zombie;
 import ca.codepet.worlds.DayWorld;
+
+
 
 public class BasicZombie extends Zombie {
 
@@ -25,6 +28,7 @@ public class BasicZombie extends Zombie {
     DayWorld world;
 
     public BasicZombie(DayWorld theWorld) {
+        super("images/zombie.png", "basic", 100, 1, 10, 1100);
         zombieTexture = new Texture("images/zombie.png");
 
         world = theWorld;
@@ -55,11 +59,11 @@ public class BasicZombie extends Zombie {
     }
         
 
-    @Override
-    public void damage(Plant plant, int dmg) {
-        // zombie damages a plant
-        // plant.damage(dmg);
-    }
+    // @Override
+    // public void damage(Plant plant, int dmg) {
+    //     // zombie damages a plant
+    //     // plant.damage(dmg);
+    // }
 
     public int getRow() {
         return row;

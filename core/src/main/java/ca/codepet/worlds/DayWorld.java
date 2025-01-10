@@ -6,18 +6,19 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.Array;
 
 import ca.codepet.Plant;
 import ca.codepet.Plants.Peashooter;
 import ca.codepet.Zombies.BasicZombie;
-import ca.codepet.Zombies.Zombie;
 import ca.codepet.ui.PlantBar;
 import ca.codepet.GameRoot;
+import ca.codepet.characters.PlantCard;
 import ca.codepet.characters.Sun;
+import ca.codepet.ui.PlantPicker;
 
 public class DayWorld implements Screen {
     private Texture backgroundTexture;
@@ -25,6 +26,9 @@ public class DayWorld implements Screen {
     private PlantBar plantBar;
     private Plant[][] plants;
     private ShapeRenderer shape = new ShapeRenderer();
+    private PlantPicker plantPicker;
+    private boolean gameStarted = false;
+
     
     // "final" denotes that this is a constant and cannot be reassigned
     final private int LAWN_WIDTH = 9;
@@ -67,7 +71,7 @@ public class DayWorld implements Screen {
                 plants[y][x] = null;
             }
         }
-
+        plantPicker = new PlantPicker(plantBar);
     }
 
     @Override
@@ -75,7 +79,33 @@ public class DayWorld implements Screen {
         // Draw the background texture
         batch.begin();
         batch.draw(backgroundTexture, -200, 0);
+        batch.end();
 
+        // Draw the plant bar
+        plantBar.render();
+
+        if (!gameStarted) {
+            // Render plant picker if game hasn't started
+            plantPicker.render();
+            if (plantPicker.isPicked()) {
+                gameStarted = true;
+            }
+
+            if (Gdx.input.justTouched()) {
+                float mouseX = Gdx.input.getX();
+                float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
+                PlantCard clickedCard = plantBar.checkCardClick(mouseX, mouseY);
+                if (clickedCard != null) {
+                    plantPicker.returnCard(clickedCard.getPlantType());
+                }
+            }
+            
+            // Don't continue the game until picked
+            return;
+        }
+
+        batch.begin();
+        
         // Draw plants
         float mouseX = Gdx.input.getX();
         float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
@@ -86,8 +116,11 @@ public class DayWorld implements Screen {
             && clickedTileX < LAWN_WIDTH 
             && clickedTileY >= 0 
             && clickedTileY < LAWN_HEIGHT) {
-                if (plants[clickedTileY][clickedTileX] == null)
-                    plants[clickedTileY][clickedTileX] = new Peashooter();
+                if (plants[clickedTileX][clickedTileY] == null) {
+                    float pX = LAWN_TILEX + clickedTileX * LAWN_TILEWIDTH + LAWN_TILEWIDTH / 2;
+                    float pY = LAWN_TILEY - clickedTileY * LAWN_TILEHEIGHT + LAWN_TILEHEIGHT / 2;
+                    plants[clickedTileX][clickedTileY] = new Peashooter(pX, pY);
+                }
                 else {
                     plants[clickedTileY][clickedTileX].dispose();
                     plants[clickedTileY][clickedTileX] = null;
@@ -98,11 +131,8 @@ public class DayWorld implements Screen {
             for (int x = 0; x < LAWN_WIDTH; x++) {
                 Plant p = plants[y][x];
                 if (p != null) {
-                    p.update();
-                    TextureRegion tex = p.getTexture();
-                    float pX = LAWN_TILEX + x * LAWN_TILEWIDTH + (LAWN_TILEWIDTH - tex.getRegionWidth()) / 2;
-                    float pY = LAWN_TILEY - y * LAWN_TILEHEIGHT + (LAWN_TILEHEIGHT - tex.getRegionHeight()) / 2;
-                    batch.draw(tex, pX, pY);
+                    p.update(delta);
+                    p.render(batch);
                 } else if (x == clickedTileX && y == clickedTileY) {
                     // Draw "ghost" of plant here
                 }

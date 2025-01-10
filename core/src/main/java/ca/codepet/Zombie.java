@@ -1,11 +1,9 @@
-package ca.codepet.Zombies;
+package ca.codepet;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-import ca.codepet.Plant;
 
 // info
 // gargantuar 3000 hp, instakill any permanent plant except spikerock which takes 9 hits
@@ -59,7 +57,10 @@ public abstract class Zombie {
     // zombie damages a plant
     // 1 bite = 1 dmg
     // typical plants have 6 hp
-    public abstract void damage(Plant plant, int dmg);
+    public void damage(Plant plant, int dmg)
+    {
+        
+    }
 
     public void die()
     {
