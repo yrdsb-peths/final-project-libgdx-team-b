@@ -150,10 +150,11 @@ public class DayWorld implements Screen {
             if(zombie.getCol() < 0) {
                 removeZombie(zombie);
                 break;
+                // TODO end screen go there
             }
             
             // System.out.println(zombie.getRow());
-            batch.draw(zombie.getTexture(), zombie.getX(), (LAWN_HEIGHT - zombie.getRow()) * LAWN_TILEHEIGHT);
+            batch.draw(zombie.getTexture(), zombie.getX(), (LAWN_HEIGHT - zombie.getRow()) * LAWN_TILEHEIGHT - 40);
             
             
 
