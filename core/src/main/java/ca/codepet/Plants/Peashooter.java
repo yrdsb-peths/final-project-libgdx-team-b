@@ -22,4 +22,5 @@ public class Peashooter extends ShooterPlant {
         animations.put("idle", idleanim);
         animations.put("attack", idleanim);
     }
+
 }
