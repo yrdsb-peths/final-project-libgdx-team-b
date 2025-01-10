@@ -48,12 +48,7 @@ public class BasicZombie extends Zombie {
         
     }
 
-    public void reduceHealth(int dmg) {
-        health -= dmg;
-        if(health <= 0){
-            dispose();
-        }
-    }
+    
 
     public int getAttack() {
         return damage;
@@ -63,7 +58,7 @@ public class BasicZombie extends Zombie {
     @Override
     public void damage(Plant plant, int dmg) {
         // zombie damages a plant
-        plant.damage(dmg);
+        // plant.damage(dmg);
     }
 
     public int getRow() {

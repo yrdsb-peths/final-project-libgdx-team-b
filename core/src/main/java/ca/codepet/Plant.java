@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 
 public abstract class Plant {
-    protected int hp = 100;
+    protected int health = 100;
     protected Rectangle rect = new Rectangle(0, 0, 32, 32);
     protected ObjectMap<String, Animation<TextureRegion>> animations = new ObjectMap<>();
     protected String currentAnimation = null;
@@ -32,9 +32,13 @@ public abstract class Plant {
         return rect;
     }
 
-    public boolean damage(int damage) {
-        hp -= damage;
-        return hp <= 0;
+    public boolean reduceHealth(int dmg) {
+        health -= dmg;
+        if(health <= 0){
+            dispose();
+            return true;
+        }
+        return false;
     }
 
     public void dispose() {
@@ -43,6 +47,7 @@ public abstract class Plant {
                 t.getTexture().dispose();
             }
         } 
+        
     }
 
     public abstract void update();

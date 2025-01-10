@@ -152,8 +152,6 @@ public class DayWorld implements Screen {
 
         
         for(BasicZombie zombie : zombies) {
-            
-            zombie.move();
 
             if(zombie.getCol() < 0) {
                 removeZombie(zombie);
@@ -165,9 +163,15 @@ public class DayWorld implements Screen {
             // System.out.println(zombie.getRow());
             batch.draw(zombie.getTexture(), zombie.getX(), (LAWN_HEIGHT - zombie.getRow()) * LAWN_TILEHEIGHT - 40);
 
-            if(plants[zombie.getRow()][zombie.getCol()] != null) {
-                plants[zombie.getRow()][zombie.getCol()].dispose();
-                plants[zombie.getRow()][zombie.getCol()] = null;
+            Plant plant = plants[zombie.getRow()][zombie.getCol()];
+
+            if(plant != null) {
+                System.out.println("sdfd");
+                if(plant.reduceHealth(zombie.getAttack())) {  
+                    plants[zombie.getRow()][zombie.getCol()] = null;
+                }
+            } else {
+                zombie.move();
             }
         }
 
@@ -175,7 +179,6 @@ public class DayWorld implements Screen {
 
         // Draw the plant bar
         plantBar.render();
-
     }
 
     public void addZombie(BasicZombie zombie) {
