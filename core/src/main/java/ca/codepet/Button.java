@@ -21,7 +21,6 @@ public class Button {
 
     public Button(String texturePath, GameRoot game, int x, int y, int width, int height) {
         
-        
         this.game = game;
 
         
@@ -30,9 +29,6 @@ public class Button {
             
         button = new ImageButton(drawable);
         
-
-        
-
         button.setSize(width, height);
         button.setPosition(x, y);
 

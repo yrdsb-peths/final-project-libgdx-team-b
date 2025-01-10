@@ -19,6 +19,9 @@ public class BasicZombie extends Zombie {
     
     private int row, col;
     
+    private int health = 100; 
+    private int damage = 10;
+
     DayWorld world;
 
     public BasicZombie(DayWorld theWorld) {
@@ -28,8 +31,6 @@ public class BasicZombie extends Zombie {
 
         row = rand.nextInt(world.getLawnHeight());
         
-
-        System.out.println("row: " + row);
     }
 
     public Texture getTexture() {
@@ -45,10 +46,20 @@ public class BasicZombie extends Zombie {
         col = (int) (x/world.getLawnTileWidth()) - 1 ;
         if(col > 9) col = 8;
         
-        System.out.println("collll: " + col);
     }
 
+    public void reduceHealth(int dmg) {
+        health -= dmg;
+        if(health <= 0){
+            dispose();
+        }
+    }
+
+    public int getAttack() {
+        return damage;
+    }
         
+
     @Override
     public void damage(Plant plant, int dmg) {
         // zombie damages a plant
