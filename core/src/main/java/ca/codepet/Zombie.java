@@ -22,7 +22,7 @@ public abstract class Zombie {
     protected int spd;
     protected int armor;
 
-    public Zombie()
+    public Zombie(String spritePath, String type, int hp, int atk, int spd, int armor)
     {
         // this.sprite = new Sprite(new Texture(spritePath));
         // this.type = type;

@@ -4,19 +4,19 @@ import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.ObjectMap.Entry;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Rectangle;
 
 public abstract class Plant {
-    protected float x;
-    protected float y;
+    protected float x, y;
     protected int health = 100;
     protected Rectangle rect = new Rectangle(0, 0, 32, 32);
     protected ObjectMap<String, Animation<AtlasRegion>> animations = new ObjectMap<>();
     protected String currentAnimation = null;
     protected float imageIndex = 0f;
-    
+
     public Plant(float x, float y) {
         this.x = x;
         this.y = y;
@@ -50,11 +50,9 @@ public abstract class Plant {
     }
 
     public void dispose() {
-        for (Entry<String, Animation<AtlasRegion>> e : animations) {
-            for (AtlasRegion t : e.value.getKeyFrames()) {
-                t.getTexture().dispose();
-            }
-        } 
+        for (Entry<String, Animation<AtlasRegion>> entry : animations.entries()) {
+            entry.value.getKeyFrames()[0].getTexture().dispose();
+        }
         
     }
 
@@ -66,4 +64,5 @@ public abstract class Plant {
     }
 
     public abstract void update(float delta);
+
 }
