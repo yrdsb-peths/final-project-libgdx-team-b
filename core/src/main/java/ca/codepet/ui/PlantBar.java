@@ -55,6 +55,16 @@ public class PlantBar {
         return false;
     }
 
+    public PlantCard checkCardClick(float x, float y) {
+        for (PlantCard card : selectedCards) {
+            if (card.contains(x, y)) {
+                selectedCards.removeValue(card, true);
+                return card;
+            }
+        }
+        return null;
+    }
+
     public void render() {
         float aspectRatio = (float) barTexture.getWidth() / barTexture.getHeight();
         float newHeight = 100;

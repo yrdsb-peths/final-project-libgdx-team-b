@@ -14,6 +14,7 @@ import ca.codepet.Plant;
 import ca.codepet.Plants.Peashooter;
 import ca.codepet.ui.PlantBar;
 import ca.codepet.GameRoot;
+import ca.codepet.characters.PlantCard;
 import ca.codepet.characters.Sun;
 import ca.codepet.ui.PlantPicker;
 
@@ -78,8 +79,18 @@ public class DayWorld implements Screen {
             if (plantPicker.isPicked()) {
                 gameStarted = true;
             }
+
+            if (Gdx.input.justTouched()) {
+                float mouseX = Gdx.input.getX();
+                float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
+                PlantCard clickedCard = plantBar.checkCardClick(mouseX, mouseY);
+                if (clickedCard != null) {
+                    plantPicker.returnCard(clickedCard.getPlantType());
+                }
+            }
+            
             // Don't continue the game until picked
-            return; 
+            return;
         }
 
         batch.begin();

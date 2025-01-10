@@ -137,6 +137,16 @@ public class PlantPicker {
         }
     }
 
+    public void returnCard(String plantType) {
+        for (PlantCard card : plantCards) {
+            if (card.getPlantType().equals(plantType)) {
+                card.setSelected(false);
+                card.setDarkened(false);
+                break;
+            }
+        }
+    }
+
     public boolean isPicked() {
         return picked;
     }
