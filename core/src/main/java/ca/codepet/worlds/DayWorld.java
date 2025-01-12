@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.MathUtils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
@@ -18,6 +19,7 @@ import ca.codepet.Zombie;
 import ca.codepet.ui.PlantBar;
 import ca.codepet.GameRoot;
 import ca.codepet.characters.Sun;
+import ca.codepet.Zombies.BungeeZombie;
 
 public class DayWorld implements Screen {
     private Texture backgroundTexture;
@@ -43,6 +45,8 @@ public class DayWorld implements Screen {
 
     private final GameRoot game;
 
+    private Array<Zombie> zombies = new Array<>();
+
     public DayWorld(GameRoot game) {
         this.game = game;
     }
@@ -58,6 +62,12 @@ public class DayWorld implements Screen {
                 plants[x][y] = null;
             }
         }
+    }
+
+    public void spawnBungeeZombie() {
+        BungeeZombie bungeeZombie = new BungeeZombie(0, 0);
+        bungeeZombie.mark(plants);
+        zombies.add(bungeeZombie);
     }
 
     @Override
@@ -132,6 +142,18 @@ public class DayWorld implements Screen {
                 sun.render(batch);
             }
         }
+
+        // Check for 'E' key press to spawn BungeeZombie
+        if (Gdx.input.isKeyJustPressed(Keys.E)) {
+            spawnBungeeZombie();
+        }
+
+        // Update and draw zombies
+        for (Zombie zombie : zombies) {
+            zombie.move();
+            zombie.draw(batch);
+        }
+
         batch.end();
 
         // Draw the plant bar
@@ -167,6 +189,9 @@ public class DayWorld implements Screen {
         // Dispose suns
         for(Sun sun : suns) {
             sun.dispose();
+        }
+        for (Zombie zombie : zombies) {
+            zombie.getSprite().getTexture().dispose();
         }
     }
 }

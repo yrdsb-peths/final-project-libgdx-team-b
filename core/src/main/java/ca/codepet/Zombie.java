@@ -12,21 +12,43 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 // https://pvzstrategy.fandom.com/wiki/Plant_Stats
 
 public abstract class Zombie {
-    protected Sprite sprite;
+    int x;
+    int y;
+    private Sprite sprite;
     protected String type;
     protected int hp;
     protected int atk;
     protected int spd;
     protected int armor;
 
-    public Zombie(String spritePath, String type, int hp, int atk, int spd, int armor)
+    public Zombie(int x, int y, String sprite, String type, int hp, int atk, int spd, int armor)
     {
-        this.sprite = new Sprite(new Texture(spritePath));
+        this.sprite = new Sprite(new Texture(sprite));
         this.type = type;
         this.hp = hp;
         this.atk = atk;
         this.spd = spd;
         this.armor = armor;
+    }
+
+    public int getX()
+    {
+        return x;
+    }
+
+    public int getY()
+    {
+        return y;
+    }
+
+    public Sprite getSprite()
+    {
+        return sprite;
+    }
+
+    public void setPosition(double x, double y)
+    {
+        sprite.setPosition((float) x, (float) y);
     }
     
     public String getType()
