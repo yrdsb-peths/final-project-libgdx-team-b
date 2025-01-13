@@ -70,6 +70,7 @@ public class DayWorld implements Screen {
     }
 
     // test
+    // put these in wave manager
     public void spawnBungeeZombie() {
         BungeeZombie bungeeZombie = new BungeeZombie(0, 0);
         bungeeZombie.mark(plants);
@@ -79,9 +80,8 @@ public class DayWorld implements Screen {
     public void spawnRandomZombie() {
         Random random = new Random();
         int randomRow = random.nextInt(LAWN_HEIGHT);
-        int x = Gdx.graphics.getWidth(); // Rightmost of the screen
+        int x = Gdx.graphics.getWidth(); // zombies spawn off the screen
         int y = LAWN_TILEY - randomRow * LAWN_TILEHEIGHT;
-        // for some reason spawning mostly coneheads with no bucketheads
         int randomZombie = random.nextInt(3);
         if(randomZombie == 0)
         {
