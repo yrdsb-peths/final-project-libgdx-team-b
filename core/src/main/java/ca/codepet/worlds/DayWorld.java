@@ -20,6 +20,9 @@ import ca.codepet.ui.PlantBar;
 import ca.codepet.GameRoot;
 import ca.codepet.characters.Sun;
 import ca.codepet.Zombies.BungeeZombie;
+import ca.codepet.Zombies.BasicZombie;
+
+import java.util.Random;
 
 public class DayWorld implements Screen {
     private Texture backgroundTexture;
@@ -68,6 +71,15 @@ public class DayWorld implements Screen {
         BungeeZombie bungeeZombie = new BungeeZombie(0, 0);
         bungeeZombie.mark(plants);
         zombies.add(bungeeZombie);
+    }
+
+    public void spawnBasicZombie() {
+        // Random random = new Random();
+        // int randomRow = random.nextInt(LAWN_HEIGHT);
+        // int x = Gdx.graphics.getWidth(); // Rightmost of the screen
+        // int y = LAWN_TILEY - randomRow * LAWN_TILEHEIGHT;
+        BasicZombie basicZombie = new BasicZombie(0, 0);
+        zombies.add(basicZombie);
     }
 
     @Override
@@ -144,8 +156,13 @@ public class DayWorld implements Screen {
         }
 
         // Check for 'E' key press to spawn BungeeZombie
-        if (Gdx.input.isKeyJustPressed(Keys.E)) {
+        if (Gdx.input.isKeyJustPressed(Keys.E) && plants[0][0] != null) {
             spawnBungeeZombie();
+        }
+
+        // Check for 'B' key press to spawn BasicZombie
+        if (Gdx.input.isKeyJustPressed(Keys.B)) {
+            spawnBasicZombie();
         }
 
         // Update and draw zombies

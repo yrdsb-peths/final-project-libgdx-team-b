@@ -4,41 +4,48 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-// info
-// gargantuar 3000 hp, instakill any permanent plant except spikerock which takes 9 hits
-// basic zombie 200 hp
-// https://plantsvszombies.fandom.com/wiki/Plants_(PvZ)#List_of_plants
-// https://pvzstrategy.fandom.com/wiki/Plant_Stats
+import com.badlogic.gdx.math.Rectangle;
 
 public abstract class Zombie {
-    int x;
-    int y;
-    private Sprite sprite;
-    protected String type;
+    protected Texture texture;
+    protected Sprite sprite;
+    protected Rectangle rect;
+    // hit points
     protected int hp;
-    protected int atk;
+    // speed
     protected int spd;
-    protected int armor;
+    // shield
+    protected int shl;
 
-    public Zombie(int x, int y, String sprite, String type, int hp, int atk, int spd, int armor)
+    public Zombie(float x, float y, String spritePath, int hp, int spd, int shl)
     {
-        this.sprite = new Sprite(new Texture(sprite));
-        this.type = type;
+        texture = new Texture(spritePath);
+        sprite = new Sprite(texture);
+        sprite.setPosition(x, y);
+        rect = new Rectangle(x, y, sprite.getWidth(), sprite.getHeight());
         this.hp = hp;
-        this.atk = atk;
         this.spd = spd;
-        this.armor = armor;
+        this.shl = shl;
     }
 
-    public int getX()
+    public void render()
     {
-        return x;
+        
     }
 
-    public int getY()
+    public void update()
     {
-        return y;
+        
+    }
+
+    public float getX()
+    {
+        return sprite.getX();
+    }
+
+    public float getY()
+    {
+        return sprite.getY();
     }
 
     public Sprite getSprite()
@@ -46,48 +53,68 @@ public abstract class Zombie {
         return sprite;
     }
 
-    public void setPosition(double x, double y)
+    public Rectangle getRect()
     {
-        sprite.setPosition((float) x, (float) y);
+        return rect;
     }
-    
-    public String getType()
+
+    public void setPosition(float x, float y)
     {
-        return type;
+        sprite.setPosition(x, y);
+        rect.setPosition(x, y);
     }
 
     public void move()
     {
-        float deltaTime = Gdx.graphics.getDeltaTime();
-        // move left
-        sprite.setX(sprite.getX() - spd * deltaTime);
+        sprite.translateX(-spd);
+        rect.setPosition(sprite.getX(), sprite.getY());
+        // the zombie enters the house
+        if (sprite.getX() + sprite.getWidth() < 0)
+        {
+            // game over
+        }
     }
 
     // zombie takes damage
     public void takeDamage(int dmg)
     {
-        hp -= dmg;
+        if(shl > 0)
+        {
+            shl -= dmg;
+        }
+        else
+        {
+            hp -= dmg;
+        }
     }
 
-    // zombie damages a plant
-    // 1 bite = 1 dmg
-    // typical plants have 6 hp
-    public void damage(Plant plant, int dmg)
+    // change the sprite of the zombie
+    public void removeShield()
     {
-        plant.damage(dmg);
+        
+    }
+
+    // zombie damages plant
+    public void damage(Plant plant)
+    {
+        plant.damage(1);
     }
 
     public void die()
     {
-        // once zombie hp reaches 0, remove zombie sprite
         if(hp <= 0)
         {
-            sprite = null;
+            dispose();
         }
     }
 
     // draw zombie sprite
     public void draw(SpriteBatch batch) {
         sprite.draw(batch);
+    }
+
+    public void dispose() {
+        sprite = null;
+        texture.dispose();
     }
 }

@@ -7,7 +7,7 @@ import ca.codepet.Plant;
 // lobbed plants and piercing plants can bypass the shield
 public class NewspaperZombie extends Zombie {
     public NewspaperZombie(int x, int y) {
-        super(x, y, "spritePath", "newspaper", 200, 1, 10, 160);
+        super(x, y, "spritePath", 200, 10, 160);
     }
 
     public void charge()

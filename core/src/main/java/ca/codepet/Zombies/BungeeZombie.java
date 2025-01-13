@@ -4,10 +4,11 @@ import java.util.Random;
 
 import ca.codepet.Plant;
 import ca.codepet.Zombie;
+import ca.codepet.characters.BungeeTarget;
 
 public class BungeeZombie extends Zombie {
     public BungeeZombie(int x, int y) {
-        super(x, y, "zombies/bungee.png", "bungee", 450, 0, 0, 0);
+        super(x, y, "zombies/bungee.png", 450, 0, 0);
     }
 
     public void mark(Plant[][] plants) {
@@ -23,6 +24,7 @@ public class BungeeZombie extends Zombie {
         }
 
         // Mark the plant
+        BungeeTarget target = new BungeeTarget(selectedPlant.getRect().getX(), selectedPlant.getRect().getY());
 
         // 3 seconds
         
@@ -41,6 +43,6 @@ public class BungeeZombie extends Zombie {
     public void steal(Plant plant) {
         // Zombie gets pulled up along with the plant
         this.setPosition(getX(), getY() + 100);
-        plant.setPosition(getX(), getY() + 100);
+        // plant.setPosition(getX(), getY() + 100);
     }
 }

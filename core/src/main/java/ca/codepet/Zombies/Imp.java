@@ -5,6 +5,6 @@ import ca.codepet.Plant;
 
 public class Imp extends Zombie {
     public Imp(int x, int y) {
-        super(x, y, "spritePath", "imp", 200, 1, 10, 0);
+        super(x, y, "spritePath", 200, 10, 0);
     }
 }
