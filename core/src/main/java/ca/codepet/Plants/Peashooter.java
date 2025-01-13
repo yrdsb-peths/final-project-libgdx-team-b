@@ -11,8 +11,7 @@ import ca.codepet.ShooterPlant;
 
 public class Peashooter extends ShooterPlant {
     static int IDLE_FRAMES = 8;
-    public Peashooter(float x, float y) {
-        super(x, y);
+    public Peashooter() {
         TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("plants/Peashooter.atlas"));
         AtlasRegion[] idle = new AtlasRegion[IDLE_FRAMES];
         for (int i = 0; i < IDLE_FRAMES; i++) {
@@ -22,5 +21,4 @@ public class Peashooter extends ShooterPlant {
         animations.put("idle", idleanim);
         animations.put("attack", idleanim);
     }
-
 }

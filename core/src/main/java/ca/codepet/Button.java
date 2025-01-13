@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class Button {
+
     private Stage stage;
     private ImageButton button;
     private SpriteBatch buttonBatch;
@@ -21,6 +22,7 @@ public class Button {
 
     public Button(String texturePath, GameRoot game, int x, int y, int width, int height) {
         
+        
         this.game = game;
 
         
@@ -29,6 +31,9 @@ public class Button {
             
         button = new ImageButton(drawable);
         
+
+        
+
         button.setSize(width, height);
         button.setPosition(x, y);
 
