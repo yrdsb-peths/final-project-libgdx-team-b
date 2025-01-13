@@ -5,6 +5,7 @@ import ca.codepet.Plant;
 
 public class ConeheadZombie extends Zombie{
     public ConeheadZombie(int x, int y) {
-        super(x, y, "spritePath", 200, 10, 380);
+        super(x, y, "zombies/ConeheadZombie.png", 200, 0.26f, 380);
+        setSize(80, 140);
     }
 }

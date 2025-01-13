@@ -5,7 +5,7 @@ import ca.codepet.Plant;
 
 public class Gargantuar extends Zombie {
     public Gargantuar(int x, int y) {
-        super(x, y, "spritePath", 3000, 10, 0);
+        super(x, y, "spritePath", 3000, 0.26f, 0);
     }
 
     public void smash(Plant plant, int dmg)

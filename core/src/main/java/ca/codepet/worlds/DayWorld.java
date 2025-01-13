@@ -16,11 +16,13 @@ import com.badlogic.gdx.utils.Array;
 import ca.codepet.Plant;
 import ca.codepet.Plants.Peashooter;
 import ca.codepet.Zombie;
+import ca.codepet.Zombies.BungeeZombie;
+import ca.codepet.Zombies.BasicZombie;
+import ca.codepet.Zombies.ConeheadZombie;
+import ca.codepet.Zombies.BucketheadZombie;
 import ca.codepet.ui.PlantBar;
 import ca.codepet.GameRoot;
 import ca.codepet.characters.Sun;
-import ca.codepet.Zombies.BungeeZombie;
-import ca.codepet.Zombies.BasicZombie;
 
 import java.util.Random;
 
@@ -73,13 +75,27 @@ public class DayWorld implements Screen {
         zombies.add(bungeeZombie);
     }
 
-    public void spawnBasicZombie() {
+    public void spawnRandomZombie() {
         Random random = new Random();
         int randomRow = random.nextInt(LAWN_HEIGHT);
         int x = Gdx.graphics.getWidth(); // Rightmost of the screen
         int y = LAWN_TILEY - randomRow * LAWN_TILEHEIGHT;
-        BasicZombie basicZombie = new BasicZombie(x, y);
-        zombies.add(basicZombie);
+        int randomZombie = random.nextInt(3);
+        if(randomZombie == 0)
+        {
+            BasicZombie basicZombie = new BasicZombie(x, y);
+            zombies.add(basicZombie);
+        }
+        else if(randomZombie == 1)
+        {
+            ConeheadZombie coneheadZombie = new ConeheadZombie(x, y);
+            zombies.add(coneheadZombie);
+        }
+        else
+        {
+            BucketheadZombie bucketheadZombie = new BucketheadZombie(x, y);
+            zombies.add(bucketheadZombie);
+        }
     }
 
     @Override
@@ -160,9 +176,9 @@ public class DayWorld implements Screen {
             spawnBungeeZombie();
         }
 
-        // Check for 'B' key press to spawn BasicZombie
-        if (Gdx.input.isKeyJustPressed(Keys.B)) {
-            spawnBasicZombie();
+        // Check for 'R' key press to spawn BasicZombie
+        if (Gdx.input.isKeyJustPressed(Keys.R)) {
+            spawnRandomZombie();
         }
 
         // Update and draw zombies
