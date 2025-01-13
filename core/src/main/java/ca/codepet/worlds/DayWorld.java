@@ -69,6 +69,7 @@ public class DayWorld implements Screen {
         }
     }
 
+    // test
     public void spawnBungeeZombie() {
         BungeeZombie bungeeZombie = new BungeeZombie(0, 0);
         bungeeZombie.mark(plants);
@@ -80,6 +81,7 @@ public class DayWorld implements Screen {
         int randomRow = random.nextInt(LAWN_HEIGHT);
         int x = Gdx.graphics.getWidth(); // Rightmost of the screen
         int y = LAWN_TILEY - randomRow * LAWN_TILEHEIGHT;
+        // for some reason spawning mostly coneheads with no bucketheads
         int randomZombie = random.nextInt(3);
         if(randomZombie == 0)
         {
@@ -95,6 +97,18 @@ public class DayWorld implements Screen {
         {
             BucketheadZombie bucketheadZombie = new BucketheadZombie(x, y);
             zombies.add(bucketheadZombie);
+        }
+    }
+
+    public void testSpawn() {
+        // Check for 'E' key press to spawn BungeeZombie
+        if (Gdx.input.isKeyJustPressed(Keys.E) && plants[0][0] != null) {
+            spawnBungeeZombie();
+        }
+
+        // Check for 'R' key press to spawn BasicZombie
+        if (Gdx.input.isKeyJustPressed(Keys.R)) {
+            spawnRandomZombie();
         }
     }
 
@@ -171,15 +185,7 @@ public class DayWorld implements Screen {
             }
         }
 
-        // Check for 'E' key press to spawn BungeeZombie
-        if (Gdx.input.isKeyJustPressed(Keys.E) && plants[0][0] != null) {
-            spawnBungeeZombie();
-        }
-
-        // Check for 'R' key press to spawn BasicZombie
-        if (Gdx.input.isKeyJustPressed(Keys.R)) {
-            spawnRandomZombie();
-        }
+        testSpawn();
 
         // Update and draw zombies
         for (Zombie zombie : zombies) {
