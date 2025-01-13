@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.Array;
 
 import ca.codepet.Plant;
@@ -22,7 +21,9 @@ import ca.codepet.Zombies.ConeheadZombie;
 import ca.codepet.Zombies.BucketheadZombie;
 import ca.codepet.ui.PlantBar;
 import ca.codepet.GameRoot;
+import ca.codepet.characters.PlantCard;
 import ca.codepet.characters.Sun;
+import ca.codepet.ui.PlantPicker;
 
 import java.util.Random;
 
@@ -32,6 +33,9 @@ public class DayWorld implements Screen {
     private PlantBar plantBar;
     private Plant[][] plants;
     private ShapeRenderer shape = new ShapeRenderer();
+    private PlantPicker plantPicker;
+    private boolean gameStarted = false;
+
     
     // "final" denotes that this is a constant and cannot be reassigned
     final private int LAWN_WIDTH = 9;
@@ -48,25 +52,35 @@ public class DayWorld implements Screen {
 
     private int sunBalance = 0;
 
-    private final GameRoot game;
+    private final GameRoot game; 
+
+    // private Zombie zombie = new BasicZombie(this);
+    private Array<BasicZombie> zombies = new Array<>();
+
+    private float waveTimer = 0f;
+    private float timeBetweenWaves = 10f; // seconds
 
     private Array<Zombie> zombies = new Array<>();
 
     public DayWorld(GameRoot game) {
         this.game = game;
+
     }
     @Override
     public void show() {
+        addZombie(new BasicZombie(this));
+
         // Load the background texture
         backgroundTexture = new Texture("backgrounds/day.png");
         batch = new SpriteBatch();
         plantBar = new PlantBar(sunBalance);
-        plants = new Plant[LAWN_WIDTH][LAWN_HEIGHT];
-        for (int x = 0; x < LAWN_WIDTH; x++) {
-            for (int y = 0; y < LAWN_HEIGHT; y++) {
-                plants[x][y] = null;
+        plants = new Plant[LAWN_HEIGHT][LAWN_WIDTH];
+        for (int y = 0; y < LAWN_HEIGHT; y++) {
+            for (int x = 0; x < LAWN_WIDTH; x++) {
+                plants[y][x] = null;
             }
         }
+        plantPicker = new PlantPicker(plantBar);
     }
 
     // test
@@ -117,7 +131,33 @@ public class DayWorld implements Screen {
         // Draw the background texture
         batch.begin();
         batch.draw(backgroundTexture, -200, 0);
+        batch.end();
 
+        // Draw the plant bar
+        plantBar.render();
+
+        if (!gameStarted) {
+            // Render plant picker if game hasn't started
+            plantPicker.render();
+            if (plantPicker.isPicked()) {
+                gameStarted = true;
+            }
+
+            if (Gdx.input.justTouched()) {
+                float mouseX = Gdx.input.getX();
+                float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
+                PlantCard clickedCard = plantBar.checkCardClick(mouseX, mouseY);
+                if (clickedCard != null) {
+                    plantPicker.returnCard(clickedCard.getPlantType());
+                }
+            }
+            
+            // Don't continue the game until picked
+            return;
+        }
+
+        batch.begin();
+        
         // Draw plants
         float mouseX = Gdx.input.getX();
         float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
@@ -128,23 +168,27 @@ public class DayWorld implements Screen {
             && clickedTileX < LAWN_WIDTH 
             && clickedTileY >= 0 
             && clickedTileY < LAWN_HEIGHT) {
-                if (plants[clickedTileX][clickedTileY] == null)
-                    plants[clickedTileX][clickedTileY] = new Peashooter();
+                if (plants[clickedTileY][clickedTileX] == null) {
+                    float pX = LAWN_TILEX + clickedTileX * LAWN_TILEWIDTH + LAWN_TILEWIDTH / 2;
+                    float pY = LAWN_TILEY - clickedTileY * LAWN_TILEHEIGHT + LAWN_TILEHEIGHT / 2;
+                    plants[clickedTileY][clickedTileX] = new Peashooter(pX, pY);
+                }
                 else {
-                    plants[clickedTileX][clickedTileY].dispose();
-                    plants[clickedTileX][clickedTileY] = null;
+                    // Add null check before disposing
+                    Plant plant = plants[clickedTileY][clickedTileX];
+                    if (plant != null) {
+                        plant.dispose();
+                        plants[clickedTileY][clickedTileX] = null;
+                    }
                 }
             }
         }
-        for (int x = 0; x < LAWN_WIDTH; x++) {
-            for (int y = 0; y < LAWN_HEIGHT; y++) {
-                Plant p = plants[x][y];
+        for (int y = 0; y < LAWN_HEIGHT; y++) {
+            for (int x = 0; x < LAWN_WIDTH; x++) {
+                Plant p = plants[y][x];
                 if (p != null) {
                     p.update(delta);
-                    AtlasRegion tex = p.getTexture();
-                    float pX = LAWN_TILEX + x * LAWN_TILEWIDTH + tex.offsetX + (LAWN_TILEWIDTH - tex.originalWidth) / 2;
-                    float pY = LAWN_TILEY - y * LAWN_TILEHEIGHT + tex.offsetY + (LAWN_TILEHEIGHT - tex.originalHeight) / 2;
-                    batch.draw(tex, pX, pY);
+                    p.render(batch);
                 } else if (x == clickedTileX && y == clickedTileY) {
                     // Draw "ghost" of plant here
                 }
@@ -185,18 +229,63 @@ public class DayWorld implements Screen {
             }
         }
 
-        testSpawn();
+        // Update wave timer
+        waveTimer += delta;
+        if (waveTimer >= timeBetweenWaves) {
+            waveTimer = 0f;
+            spawnWave();
+        }
 
-        // Update and draw zombies
-        for (Zombie zombie : zombies) {
-            zombie.move();
-            zombie.draw(batch);
+        
+        for(BasicZombie zombie : zombies) {
+
+            if(zombie.getCol() < 0) {
+                removeZombie(zombie);
+                goEndscreen();
+                break;
+                // TODO end screen go there
+            }
+            
+            // System.out.println(zombie.getRow());
+            batch.draw(zombie.getTexture(), zombie.getX(), (LAWN_HEIGHT - zombie.getRow()) * LAWN_TILEHEIGHT - 40);
+
+            Plant plant = plants[zombie.getRow()][zombie.getCol()];
+
+            if(plant != null) {
+                System.out.println("sdfd");
+                if(plant.reduceHealth(zombie.getAttack())) {  
+                    plants[zombie.getRow()][zombie.getCol()] = null;
+                }
+            } else {
+                zombie.move();
+            }
         }
 
         batch.end();
 
         // Draw the plant bar
         plantBar.render();
+    }
+
+    public void addZombie(BasicZombie zombie) {
+        System.out.println(3333);
+        zombies.add(zombie);
+    }
+    
+    public void removeZombie(BasicZombie zombie) {
+        zombie.dispose();
+        zombies.removeValue(zombie, true);
+    }
+
+    public void goEndscreen() {
+        // game.setScreen(new EndScreen(game));
+    }
+
+    private void spawnWave() {
+        int numberOfZombies = 5; // Number of zombies per wave
+        for (int i = 0; i < numberOfZombies; i++) {
+            addZombie(new BasicZombie(this));
+        }
     }
 
     @Override
@@ -219,6 +308,18 @@ public class DayWorld implements Screen {
         // This method is called when another screen replaces this one.
     }
 
+    public int getLawnHeight() {
+        return LAWN_HEIGHT;
+    }
+
+    public int getLawnTileHeight() {
+        return LAWN_TILEHEIGHT;
+    }
+
+    public int getLawnTileWidth() {
+        return LAWN_TILEWIDTH;
+    }
+
     @Override
     public void dispose() {
         // Destroy screen's assets here.
@@ -229,8 +330,10 @@ public class DayWorld implements Screen {
         for(Sun sun : suns) {
             sun.dispose();
         }
+        // Dispose zombies
         for (Zombie zombie : zombies) {
-            zombie.getSprite().getTexture().dispose();
+            zombie.dispose();
         }
+        zombies.clear();
     }
 }

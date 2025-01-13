@@ -7,7 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 public abstract class Zombie {
-    protected Texture texture;
+    private Texture zombieTexture;
+    private SpriteBatch batch;
     protected Sprite sprite;
     protected Rectangle rect;
     // hit points
@@ -19,18 +20,14 @@ public abstract class Zombie {
 
     public Zombie(float x, float y, String spritePath, int hp, float spd, int shl)
     {
-        texture = new Texture(spritePath);
-        sprite = new Sprite(texture);
+        zombieTexture = new Texture(spritePath);
+        batch = new SpriteBatch();
+        sprite = new Sprite(zombieTexture);
         sprite.setPosition(x, y);
         rect = new Rectangle(x, y, sprite.getWidth(), sprite.getHeight());
         this.hp = hp;
         this.spd = spd;
         this.shl = shl;
-    }
-
-    public void render()
-    {
-        
     }
 
     public void update()
@@ -67,6 +64,11 @@ public abstract class Zombie {
     public void setSize(float width, float height) {
         sprite.setSize(width, height);
         rect.setSize(width, height);
+
+    public void render() {
+        batch.begin();
+        batch.draw(zombieTexture, 0, 0);
+        batch.end();
     }
 
     public void move()
@@ -117,9 +119,9 @@ public abstract class Zombie {
     public void draw(SpriteBatch batch) {
         sprite.draw(batch);
     }
-
-    public void dispose() {
-        sprite = null;
-        texture.dispose();
+  
+    //dispose 
+    public void dispose(){
+        sprite.getTexture().dispose();
     }
 }

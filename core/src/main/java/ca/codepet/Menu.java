@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 
+import ca.codepet.ui.Button;
 import ca.codepet.worlds.DayWorld;
 
 public class Menu implements Screen {
