@@ -26,6 +26,9 @@ public class BasicZombie extends Zombie {
     private int damage = 10;
 
     DayWorld world;
+    public BasicZombie(int x, int y) {
+        super(x, y, "zombies/BasicZombie.png", 200, 0.26f, 0);
+        setSize(80, 110);
 
     public BasicZombie(DayWorld theWorld) {
         super("images/zombie.png", "basic", 100, 1, 10, 1100);
