@@ -13,11 +13,11 @@ public abstract class Zombie {
     // hit points
     protected int hp;
     // speed
-    protected int spd;
+    protected float spd;
     // shield
     protected int shl;
 
-    public Zombie(float x, float y, String spritePath, int hp, int spd, int shl)
+    public Zombie(float x, float y, String spritePath, int hp, float spd, int shl)
     {
         texture = new Texture(spritePath);
         sprite = new Sprite(texture);
@@ -62,6 +62,11 @@ public abstract class Zombie {
     {
         sprite.setPosition(x, y);
         rect.setPosition(x, y);
+    }
+
+    public void setSize(float width, float height) {
+        sprite.setSize(width, height);
+        rect.setSize(width, height);
     }
 
     public void move()

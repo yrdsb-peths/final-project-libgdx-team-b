@@ -74,11 +74,11 @@ public class DayWorld implements Screen {
     }
 
     public void spawnBasicZombie() {
-        // Random random = new Random();
-        // int randomRow = random.nextInt(LAWN_HEIGHT);
-        // int x = Gdx.graphics.getWidth(); // Rightmost of the screen
-        // int y = LAWN_TILEY - randomRow * LAWN_TILEHEIGHT;
-        BasicZombie basicZombie = new BasicZombie(0, 0);
+        Random random = new Random();
+        int randomRow = random.nextInt(LAWN_HEIGHT);
+        int x = Gdx.graphics.getWidth(); // Rightmost of the screen
+        int y = LAWN_TILEY - randomRow * LAWN_TILEHEIGHT;
+        BasicZombie basicZombie = new BasicZombie(x, y);
         zombies.add(basicZombie);
     }
 
