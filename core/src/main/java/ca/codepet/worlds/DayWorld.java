@@ -60,7 +60,7 @@ public class DayWorld implements Screen {
     private float waveTimer = 0f;
     private float timeBetweenWaves = 10f; // seconds
 
-    private Array<Zombie> zombies = new Array<>();
+    private Array<Zombie> randomZombies = new Array<>();
 
     public DayWorld(GameRoot game) {
         this.game = game;
@@ -88,7 +88,7 @@ public class DayWorld implements Screen {
     public void spawnBungeeZombie() {
         BungeeZombie bungeeZombie = new BungeeZombie(0, 0);
         bungeeZombie.mark(plants);
-        zombies.add(bungeeZombie);
+        randomZombies.add(bungeeZombie);
     }
 
     public void spawnRandomZombie() {
@@ -100,17 +100,17 @@ public class DayWorld implements Screen {
         if(randomZombie == 0)
         {
             BasicZombie basicZombie = new BasicZombie(x, y);
-            zombies.add(basicZombie);
+            randomZombies.add(basicZombie);
         }
         else if(randomZombie == 1)
         {
             ConeheadZombie coneheadZombie = new ConeheadZombie(x, y);
-            zombies.add(coneheadZombie);
+            randomZombies.add(coneheadZombie);
         }
         else
         {
             BucketheadZombie bucketheadZombie = new BucketheadZombie(x, y);
-            zombies.add(bucketheadZombie);
+            randomZombies.add(bucketheadZombie);
         }
     }
 
@@ -228,6 +228,8 @@ public class DayWorld implements Screen {
                 sun.render(batch);
             }
         }
+
+        testSpawn();
 
         // Update wave timer
         waveTimer += delta;

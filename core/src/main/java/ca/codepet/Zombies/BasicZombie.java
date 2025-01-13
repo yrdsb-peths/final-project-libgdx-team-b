@@ -29,9 +29,10 @@ public class BasicZombie extends Zombie {
     public BasicZombie(int x, int y) {
         super(x, y, "zombies/BasicZombie.png", 200, 0.26f, 0);
         setSize(80, 110);
+    }
 
     public BasicZombie(DayWorld theWorld) {
-        super("images/zombie.png", "basic", 100, 1, 10, 1100);
+        super("images/zombie.png", 100, 10, 0);
         zombieTexture = new Texture("images/zombie.png");
 
         world = theWorld;
@@ -44,7 +45,7 @@ public class BasicZombie extends Zombie {
         return zombieTexture;
     }
 
-    public int getX() {
+    public float getX() {
         return x;
     }
 

@@ -30,6 +30,16 @@ public abstract class Zombie {
         this.shl = shl;
     }
 
+    public Zombie(String spritePath, int hp, float spd, int shl)
+    {
+        zombieTexture = new Texture(spritePath);
+        batch = new SpriteBatch();
+        sprite = new Sprite(zombieTexture);
+        this.hp = hp;
+        this.spd = spd;
+        this.shl = shl;
+    }
+
     public void update()
     {
         
@@ -64,6 +74,7 @@ public abstract class Zombie {
     public void setSize(float width, float height) {
         sprite.setSize(width, height);
         rect.setSize(width, height);
+    }
 
     public void render() {
         batch.begin();
@@ -104,7 +115,7 @@ public abstract class Zombie {
     // zombie damages plant
     public void damage(Plant plant)
     {
-        plant.damage(1);
+        plant.reduceHealth(1);
     }
 
     public void die()
