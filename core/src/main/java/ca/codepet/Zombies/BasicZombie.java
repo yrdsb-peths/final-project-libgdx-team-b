@@ -13,7 +13,7 @@ import ca.codepet.worlds.DayWorld;
 
 
 
-public class BasicZombie extends Zombie {
+public class BasicZombie {
 
     Random rand = new Random();
     private Texture zombieTexture;
@@ -33,7 +33,6 @@ public class BasicZombie extends Zombie {
     DayWorld world;
 
     public BasicZombie(DayWorld theWorld) {
-        super("images/zombie.png", "basic", 100, 1, 10, 1100);
         zombieTexture = new Texture("images/zombie.png");
         
         // Load multiple chomp sounds

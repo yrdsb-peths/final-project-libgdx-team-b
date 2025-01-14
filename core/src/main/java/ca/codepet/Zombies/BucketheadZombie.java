@@ -3,8 +3,8 @@ package ca.codepet.Zombies;
 import ca.codepet.Zombie;
 import ca.codepet.Plant;
 
-public class BucketheadZombie extends Zombie {
-    public BucketheadZombie(String spritePath) {
-        super("spritePath", "buckethead", 200, 1, 10, 1100);
-    }
-}
+// public class BucketheadZombie extends BasicZombie {
+//     // public BucketheadZombie(String spritePath) {
+        
+//     // }
+// }
