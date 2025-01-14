@@ -60,6 +60,8 @@ public class DayWorld implements Screen {
     private float waveTimer = 0f;
     private float timeBetweenWaves = 10f; // seconds
 
+    private PlantCard draggedCard = null;
+
     private Array<Zombie> randomZombies = new Array<>();
 
     public DayWorld(GameRoot game) {
@@ -163,26 +165,36 @@ public class DayWorld implements Screen {
         float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
         int clickedTileX = MathUtils.floor((mouseX - LAWN_TILEX) / LAWN_TILEWIDTH);
         int clickedTileY = -MathUtils.floor((mouseY - LAWN_TILEY) / LAWN_TILEHEIGHT);
+
+        // Handle dragging
         if (Gdx.input.justTouched()) {
-            if (clickedTileX >= 0 
-            && clickedTileX < LAWN_WIDTH 
-            && clickedTileY >= 0 
-            && clickedTileY < LAWN_HEIGHT) {
-                if (plants[clickedTileY][clickedTileX] == null) {
-                    float pX = LAWN_TILEX + clickedTileX * LAWN_TILEWIDTH + LAWN_TILEWIDTH / 2;
-                    float pY = LAWN_TILEY - clickedTileY * LAWN_TILEHEIGHT + LAWN_TILEHEIGHT / 2;
-                    plants[clickedTileY][clickedTileX] = new Peashooter(pX, pY);
+            draggedCard = plantBar.checkCardDragStart(mouseX, mouseY);
+        } else if (draggedCard != null) {
+            draggedCard.updateDragPosition(mouseX, mouseY);
+            
+            if (!Gdx.input.isTouched()) {
+                float centerX = draggedCard.getBounds().x + draggedCard.getBounds().width/2;
+                float centerY = draggedCard.getBounds().y + draggedCard.getBounds().height/2;
+                
+                int tileX = MathUtils.floor((centerX - LAWN_TILEX) / LAWN_TILEWIDTH);
+                int tileY = -MathUtils.floor((centerY - LAWN_TILEY) / LAWN_TILEHEIGHT);
+                
+                if (tileX >= 0 && tileX < LAWN_WIDTH && 
+                    tileY >= 0 && tileY < LAWN_HEIGHT &&
+                    plants[tileY][tileX] == null) {
+                    // Calculate grid-aligned position
+                    float plantX = LAWN_TILEX + (tileX * LAWN_TILEWIDTH) + (LAWN_TILEWIDTH / 2);
+                    float plantY = LAWN_TILEY - (tileY * LAWN_TILEHEIGHT) + (LAWN_TILEHEIGHT / 2);
+                    plants[tileY][tileX] = new Peashooter(plantX, plantY);
                 }
-                else {
-                    // Add null check before disposing
-                    Plant plant = plants[clickedTileY][clickedTileX];
-                    if (plant != null) {
-                        plant.dispose();
-                        plants[clickedTileY][clickedTileX] = null;
-                    }
-                }
+                
+                // Reset card position through plant bar
+                plantBar.resetCardPosition(draggedCard);
+                draggedCard.stopDragging();
+                draggedCard = null;
             }
         }
+
         for (int y = 0; y < LAWN_HEIGHT; y++) {
             for (int x = 0; x < LAWN_WIDTH; x++) {
                 Plant p = plants[y][x];
