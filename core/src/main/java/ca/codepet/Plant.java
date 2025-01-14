@@ -40,13 +40,17 @@ public abstract class Plant {
         return rect;
     }
 
-    public boolean reduceHealth(int dmg) {
+    public boolean damage(int dmg) {
         health -= dmg;
         if(health <= 0){
             dispose();
             return true;
         }
         return false;
+    }
+
+    public boolean isDead() {
+        return health <= 0;
     }
 
     public void dispose() {
