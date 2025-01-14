@@ -194,7 +194,7 @@ public class DayWorld implements Screen {
                         if (draggedCard.getPlantType().equals("Peashooter")) {
                             plants[tileY][tileX] = new Peashooter(plantX, plantY);
                         } else if (draggedCard.getPlantType().equals("Sunflower")) {
-                            plants[tileY][tileX] = new Sunflower(plantX, plantY);
+                            plants[tileY][tileX] = new Sunflower(plantX, plantY, this);
                         }
                         draggedCard.startCooldown();
                     }
@@ -312,6 +312,10 @@ public class DayWorld implements Screen {
         for (int i = 0; i < numberOfZombies; i++) {
             addZombie(new BasicZombie(this));
         }
+    }
+
+    public void addSun(Sun sun) {
+        suns.add(sun);
     }
 
     @Override
