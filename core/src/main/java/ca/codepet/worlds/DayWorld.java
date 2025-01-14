@@ -15,7 +15,6 @@ import com.badlogic.gdx.utils.Array;
 import ca.codepet.Plant;
 import ca.codepet.Plants.Peashooter;
 import ca.codepet.Plants.Sunflower;
-import ca.codepet.Zombies.BungeeZombie;
 import ca.codepet.Zombies.BasicZombie;
 import ca.codepet.Zombies.BucketheadZombie;
 import ca.codepet.Zombies.Zombie;

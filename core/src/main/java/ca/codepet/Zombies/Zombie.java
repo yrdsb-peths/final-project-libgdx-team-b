@@ -6,8 +6,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.utils.ObjectMap;
 
 import ca.codepet.Plant;
 import ca.codepet.worlds.DayWorld;
@@ -36,12 +37,15 @@ public abstract class Zombie {
     private float atkDelay; // 1 second between attacks
     private float attackTimer = 0.0f;
 
-    private int width = 64;
+    private int width = 100;
     private int height = 120;
     
     DayWorld world;
 
-  
+    protected ObjectMap<String, Animation<AtlasRegion>> animations;
+    protected String currentAnimation = "walk";
+    protected float stateTime = 0;
+
     public Zombie(DayWorld theWorld, Texture zombieTexture, int hp, int damage, float atkDelay)
     {
         this.hp = hp;
@@ -62,15 +66,21 @@ public abstract class Zombie {
         world = theWorld;
 
         row = rand.nextInt(world.getLawnHeight());
-        
+        this.animations = new ObjectMap<>();
+        currentAnimation = "walk"; // Set default animation
     }
 
-      public Texture getTexture() {
+    public Texture getTexture() {
         return zombieTexture;
     }
 
     public TextureRegion getTextureRegion() {
-        return textureRegion;
+        stateTime += Gdx.graphics.getDeltaTime();
+        Animation<AtlasRegion> currentAnim = animations.get(currentAnimation);
+        if (currentAnim != null) {
+            return currentAnim.getKeyFrame(stateTime, true);
+        }
+        return textureRegion; // Fallback to static texture if no animation
     }
 
     public int getWidth() {
