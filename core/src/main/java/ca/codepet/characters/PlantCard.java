@@ -17,6 +17,9 @@ public class PlantCard {
     private String plantType;
     private boolean isDarkened;
     private float darkenAmount = 0.5f; // 0-1 value for darkening
+    private boolean isDragging = false;
+    private float dragOffsetX, dragOffsetY;
+    private float originalX, originalY;
     
     public PlantCard(TextureRegion texture, int cost, float cooldown, String plantType, float x, float y) {
         if (cardBackground == null) {
@@ -30,6 +33,8 @@ public class PlantCard {
         this.plantType = plantType;
         this.bounds = new Rectangle(x, y, 60, 70);
         this.isDarkened = false;
+        this.originalX = x;
+        this.originalY = y;
     }
 
     public boolean contains(float x, float y) {
@@ -70,6 +75,37 @@ public class PlantCard {
     
     public Rectangle getBounds() {
         return bounds;
+    }
+
+    public void startDragging(float mouseX, float mouseY) {
+        isDragging = true;
+        dragOffsetX = mouseX - bounds.x;
+        dragOffsetY = mouseY - bounds.y;
+    }
+
+    public void updateDragPosition(float mouseX, float mouseY) {
+        if (isDragging) {
+            bounds.x = mouseX - dragOffsetX;
+            bounds.y = mouseY - dragOffsetY;
+        }
+    }
+
+    public void stopDragging() {
+        isDragging = false;
+    }
+
+    public boolean isDragging() {
+        return isDragging;
+    }
+
+    public void resetPosition() {
+        bounds.x = originalX;
+        bounds.y = originalY;
+    }
+
+    public void updateOriginalPosition(float x, float y) {
+        this.originalX = x;
+        this.originalY = y;
     }
 
     public void render(SpriteBatch batch) {
