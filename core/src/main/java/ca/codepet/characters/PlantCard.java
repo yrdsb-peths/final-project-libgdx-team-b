@@ -4,10 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.math.Rectangle;
 
 public class PlantCard {
     private static Texture cardBackground;
+    private static BitmapFont font;
     private TextureRegion cardTexture;
     private Rectangle bounds;
     private int cost;
@@ -24,6 +28,13 @@ public class PlantCard {
     public PlantCard(TextureRegion texture, int cost, float cooldown, String plantType, float x, float y) {
         if (cardBackground == null) {
             cardBackground = new Texture(Gdx.files.internal("characters/card.png"));
+        }
+        if (font == null) {
+            FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/pico12.ttf"));
+            FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+            parameter.size = 15;
+            font = generator.generateFont(parameter);
+            generator.dispose();
         }
         this.cardTexture = texture;
         this.cost = cost;
@@ -128,22 +139,33 @@ public class PlantCard {
         batch.draw(cardBackground, bounds.x, bounds.y, bounds.width, bounds.height);
         
         // Center plant sprite on card
-        float plantWidth = Math.min(bounds.width * 0.8f, cardTexture.getRegionWidth());
-        float plantHeight = Math.min(bounds.height * 0.8f, cardTexture.getRegionHeight());
+        float plantWidth = Math.min(bounds.width * 0.6f, cardTexture.getRegionWidth());
+        float plantHeight = Math.min(bounds.height * 0.6f, cardTexture.getRegionHeight());
         float plantX = bounds.x + (bounds.width - plantWidth) / 2;
         float plantY = bounds.y + (bounds.height - plantHeight) / 2;
         
         // Draw plant sprite
         batch.draw(cardTexture, plantX, plantY, plantWidth, plantHeight);
 
+        // Draw cost with same darkening effect
+        font.setColor(batch.getColor());
+        font.draw(batch, String.valueOf(cost), 
+                 bounds.x + 13, 
+                 bounds.y + 13);
+
         // Restore original color
         batch.setColor(originalR, originalG, originalB, originalA);
+        font.setColor(originalR, originalG, originalB, originalA);
     }
 
     public void dispose() {
         if (cardBackground != null) {
             cardBackground.dispose();
             cardBackground = null;
+        }
+        if (font != null) {
+            font.dispose();
+            font = null;
         }
     }
 }
