@@ -65,7 +65,7 @@ public abstract class Zombie {
         
     }
 
-      public Texture getTexture() {
+    public Texture getTexture() {
         return zombieTexture;
     }
 

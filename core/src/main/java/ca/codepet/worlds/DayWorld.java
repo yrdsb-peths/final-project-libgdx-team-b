@@ -186,6 +186,15 @@ public class DayWorld implements Screen {
         }
 
         
+        renderZombie(delta);
+
+        batch.end();
+
+        // Draw the plant bar
+        plantBar.render();
+    }
+
+    private void renderZombie(float delta) {
         for(Zombie zombie : zombies) {
 
             if(zombie.getCol() < 0) {
@@ -218,11 +227,6 @@ public class DayWorld implements Screen {
                 zombie.move();
             }
         }
-
-        batch.end();
-
-        // Draw the plant bar
-        plantBar.render();
     }
 
     public void addZombie(Zombie zombie) {
