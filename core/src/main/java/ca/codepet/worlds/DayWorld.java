@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.MathUtils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.utils.Array;
 
 import ca.codepet.Plant;
 import ca.codepet.Plants.Peashooter;
+import ca.codepet.Zombies.BungeeZombie;
 import ca.codepet.Zombies.BasicZombie;
 import ca.codepet.Zombies.BucketheadZombie;
 import ca.codepet.Zombies.Zombie;
@@ -21,6 +23,8 @@ import ca.codepet.GameRoot;
 import ca.codepet.characters.PlantCard;
 import ca.codepet.characters.Sun;
 import ca.codepet.ui.PlantPicker;
+
+import java.util.Random;
 
 public class DayWorld implements Screen {
     private Texture backgroundTexture;
@@ -55,6 +59,10 @@ public class DayWorld implements Screen {
     private float waveTimer = 0f;
     private float timeBetweenWaves = 10f; // seconds
 
+    private PlantCard draggedCard = null;
+
+    private Array<Zombie> randomZombies = new Array<>();
+
     public DayWorld(GameRoot game) {
         this.game = game;
 
@@ -76,6 +84,42 @@ public class DayWorld implements Screen {
         plantPicker = new PlantPicker(plantBar);
     }
 
+
+    // public void spawnRandomZombie() {
+    //     Random random = new Random();
+    //     int randomRow = random.nextInt(LAWN_HEIGHT);
+    //     int x = Gdx.graphics.getWidth(); // zombies spawn off the screen
+    //     int y = LAWN_TILEY - randomRow * LAWN_TILEHEIGHT;
+    //     int randomZombie = random.nextInt(3);
+    //     if(randomZombie == 0)
+    //     {
+    //         BasicZombie basicZombie = new BasicZombie(x, y);
+    //         randomZombies.add(basicZombie);
+    //     }
+    //     else if(randomZombie == 1)
+    //     {
+    //         ConeheadZombie coneheadZombie = new ConeheadZombie(x, y);
+    //         randomZombies.add(coneheadZombie);
+    //     }
+    //     else
+    //     {
+    //         BucketheadZombie bucketheadZombie = new BucketheadZombie(x, y);
+    //         randomZombies.add(bucketheadZombie);
+    //     }
+    // }
+
+    // public void testSpawn() {
+    //     // Check for 'E' key press to spawn BungeeZombie
+    //     if (Gdx.input.isKeyJustPressed(Keys.E) && plants[0][0] != null) {
+    //         spawnBungeeZombie();
+    //     }
+
+    //     // Check for 'R' key press to spawn BasicZombie
+    //     if (Gdx.input.isKeyJustPressed(Keys.R)) {
+    //         spawnRandomZombie();
+    //     }
+    // }
+
     @Override
     public void render(float delta) {
         // Draw the background texture
@@ -91,6 +135,8 @@ public class DayWorld implements Screen {
             plantPicker.render();
             if (plantPicker.isPicked()) {
                 gameStarted = true;
+                // Start cooldowns for all plant cards when game starts
+                plantBar.startAllCardCooldowns();
             }
 
             if (Gdx.input.justTouched()) {
@@ -112,26 +158,40 @@ public class DayWorld implements Screen {
         float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
         int clickedTileX = MathUtils.floor((mouseX - LAWN_TILEX) / LAWN_TILEWIDTH);
         int clickedTileY = -MathUtils.floor((mouseY - LAWN_TILEY) / LAWN_TILEHEIGHT);
+
+        // Handle dragging
         if (Gdx.input.justTouched()) {
-            if (clickedTileX >= 0 
-            && clickedTileX < LAWN_WIDTH 
-            && clickedTileY >= 0 
-            && clickedTileY < LAWN_HEIGHT) {
-                if (plants[clickedTileY][clickedTileX] == null) {
-                    float pX = LAWN_TILEX + clickedTileX * LAWN_TILEWIDTH + LAWN_TILEWIDTH / 2;
-                    float pY = LAWN_TILEY - clickedTileY * LAWN_TILEHEIGHT + LAWN_TILEHEIGHT / 2;
-                    plants[clickedTileY][clickedTileX] = new Peashooter(pX, pY);
-                }
-                else {
-                    // Add null check before disposing
-                    Plant plant = plants[clickedTileY][clickedTileX];
-                    if (plant != null) {
-                        plant.dispose();
-                        plants[clickedTileY][clickedTileX] = null;
+            draggedCard = plantBar.checkCardDragStart(mouseX, mouseY);
+        } else if (draggedCard != null) {
+            draggedCard.updateDragPosition(mouseX, mouseY);
+            
+            if (!Gdx.input.isTouched()) {
+                float centerX = draggedCard.getBounds().x + draggedCard.getBounds().width/2;
+                float centerY = draggedCard.getBounds().y + draggedCard.getBounds().height/2;
+                
+                int tileX = MathUtils.floor((centerX - LAWN_TILEX) / LAWN_TILEWIDTH);
+                int tileY = -MathUtils.floor((centerY - LAWN_TILEY) / LAWN_TILEHEIGHT);
+                
+                if (tileX >= 0 && tileX < LAWN_WIDTH && 
+                    tileY >= 0 && tileY < LAWN_HEIGHT &&
+                    plants[tileY][tileX] == null) {
+                    // Check if we can afford the plant
+                    if (plantBar.deductSun(draggedCard.getCost())) {
+                        // Calculate grid-aligned position
+                        float plantX = LAWN_TILEX + (tileX * LAWN_TILEWIDTH) + (LAWN_TILEWIDTH / 2);
+                        float plantY = LAWN_TILEY - (tileY * LAWN_TILEHEIGHT) + (LAWN_TILEHEIGHT / 2);
+                        plants[tileY][tileX] = new Peashooter(plantX, plantY);
+                        draggedCard.startCooldown();
                     }
                 }
+                
+                // Reset card position through plant bar
+                plantBar.resetCardPosition(draggedCard);
+                draggedCard.stopDragging();
+                draggedCard = null;
             }
         }
+
         for (int y = 0; y < LAWN_HEIGHT; y++) {
             for (int x = 0; x < LAWN_WIDTH; x++) {
                 Plant p = plants[y][x];
@@ -177,6 +237,8 @@ public class DayWorld implements Screen {
                 sun.render(batch);
             }
         }
+
+        // testSpawn();
 
         // Update wave timer
         waveTimer += delta;
