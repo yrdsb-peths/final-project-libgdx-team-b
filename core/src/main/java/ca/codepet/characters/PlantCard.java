@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Rectangle;
 public class PlantCard {
     private static Texture cardBackground;
     private static BitmapFont font;
+    private static Texture cooldownOverlay;
     private TextureRegion cardTexture;
     private Rectangle bounds;
     private int cost;
@@ -35,6 +36,14 @@ public class PlantCard {
             parameter.size = 15;
             font = generator.generateFont(parameter);
             generator.dispose();
+        }
+        if (cooldownOverlay == null) {
+            // Create 1x1 grey pixel texture for cooldown overlay
+            com.badlogic.gdx.graphics.Pixmap pixmap = new com.badlogic.gdx.graphics.Pixmap(1, 1, com.badlogic.gdx.graphics.Pixmap.Format.RGBA8888);
+            pixmap.setColor(0.2f, 0.2f, 0.2f, 0.7f);
+            pixmap.fill();
+            cooldownOverlay = new Texture(pixmap);
+            pixmap.dispose();
         }
         this.cardTexture = texture;
         this.cost = cost;
@@ -119,6 +128,20 @@ public class PlantCard {
         this.originalY = y;
     }
 
+    public boolean isOnCooldown() {
+        return cooldownTimer > 0;
+    }
+
+    public void startCooldown() {
+        cooldownTimer = cooldown;
+    }
+
+    public void updateCooldown(float delta) {
+        if (cooldownTimer > 0) {
+            cooldownTimer = Math.max(0, cooldownTimer - delta);
+        }
+    }
+
     public void render(SpriteBatch batch) {
         // Store original color
         float originalR = batch.getColor().r;
@@ -147,6 +170,15 @@ public class PlantCard {
         // Draw plant sprite
         batch.draw(cardTexture, plantX, plantY, plantWidth, plantHeight);
 
+        // Draw cooldown overlay
+        if (isOnCooldown()) {
+            float progress = cooldownTimer / cooldown;
+            float overlayHeight = bounds.height * progress;
+            batch.draw(cooldownOverlay, 
+                      bounds.x, bounds.y,
+                      bounds.width, overlayHeight);
+        }
+
         // Draw cost with same darkening effect
         font.setColor(batch.getColor());
         font.draw(batch, String.valueOf(cost), 
@@ -166,6 +198,10 @@ public class PlantCard {
         if (font != null) {
             font.dispose();
             font = null;
+        }
+        if (cooldownOverlay != null) {
+            cooldownOverlay.dispose();
+            cooldownOverlay = null;
         }
     }
 }

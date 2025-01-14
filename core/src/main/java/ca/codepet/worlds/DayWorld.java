@@ -143,6 +143,8 @@ public class DayWorld implements Screen {
             plantPicker.render();
             if (plantPicker.isPicked()) {
                 gameStarted = true;
+                // Start cooldowns for all plant cards when game starts
+                plantBar.startAllCardCooldowns();
             }
 
             if (Gdx.input.justTouched()) {
@@ -186,6 +188,7 @@ public class DayWorld implements Screen {
                     float plantX = LAWN_TILEX + (tileX * LAWN_TILEWIDTH) + (LAWN_TILEWIDTH / 2);
                     float plantY = LAWN_TILEY - (tileY * LAWN_TILEHEIGHT) + (LAWN_TILEHEIGHT / 2);
                     plants[tileY][tileX] = new Peashooter(plantX, plantY);
+                    draggedCard.startCooldown(); // Only start cooldown if plant was placed
                 }
                 
                 // Reset card position through plant bar
