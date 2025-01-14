@@ -15,11 +15,10 @@ import com.badlogic.gdx.utils.Array;
 import ca.codepet.Plant;
 import ca.codepet.Plants.Peashooter;
 import ca.codepet.Plants.Sunflower;
-import ca.codepet.Zombie;
 import ca.codepet.Zombies.BungeeZombie;
 import ca.codepet.Zombies.BasicZombie;
-import ca.codepet.Zombies.ConeheadZombie;
 import ca.codepet.Zombies.BucketheadZombie;
+import ca.codepet.Zombies.Zombie;
 import ca.codepet.ui.PlantBar;
 import ca.codepet.GameRoot;
 import ca.codepet.characters.PlantCard;
@@ -56,7 +55,7 @@ public class DayWorld implements Screen {
     private final GameRoot game; 
 
     // private Zombie zombie = new BasicZombie(this);
-    private Array<BasicZombie> zombies = new Array<>();
+    private Array<Zombie> zombies = new Array<>();
 
     private float waveTimer = 0f;
     private float timeBetweenWaves = 10f; // seconds
@@ -86,48 +85,41 @@ public class DayWorld implements Screen {
         plantPicker = new PlantPicker(plantBar);
     }
 
-    // test
-    // put these in wave manager
-    public void spawnBungeeZombie() {
-        BungeeZombie bungeeZombie = new BungeeZombie(0, 0);
-        bungeeZombie.mark(plants);
-        randomZombies.add(bungeeZombie);
-    }
 
-    public void spawnRandomZombie() {
-        Random random = new Random();
-        int randomRow = random.nextInt(LAWN_HEIGHT);
-        int x = Gdx.graphics.getWidth(); // zombies spawn off the screen
-        int y = LAWN_TILEY - randomRow * LAWN_TILEHEIGHT;
-        int randomZombie = random.nextInt(3);
-        if(randomZombie == 0)
-        {
-            BasicZombie basicZombie = new BasicZombie(x, y);
-            randomZombies.add(basicZombie);
-        }
-        else if(randomZombie == 1)
-        {
-            ConeheadZombie coneheadZombie = new ConeheadZombie(x, y);
-            randomZombies.add(coneheadZombie);
-        }
-        else
-        {
-            BucketheadZombie bucketheadZombie = new BucketheadZombie(x, y);
-            randomZombies.add(bucketheadZombie);
-        }
-    }
+    // public void spawnRandomZombie() {
+    //     Random random = new Random();
+    //     int randomRow = random.nextInt(LAWN_HEIGHT);
+    //     int x = Gdx.graphics.getWidth(); // zombies spawn off the screen
+    //     int y = LAWN_TILEY - randomRow * LAWN_TILEHEIGHT;
+    //     int randomZombie = random.nextInt(3);
+    //     if(randomZombie == 0)
+    //     {
+    //         BasicZombie basicZombie = new BasicZombie(x, y);
+    //         randomZombies.add(basicZombie);
+    //     }
+    //     else if(randomZombie == 1)
+    //     {
+    //         ConeheadZombie coneheadZombie = new ConeheadZombie(x, y);
+    //         randomZombies.add(coneheadZombie);
+    //     }
+    //     else
+    //     {
+    //         BucketheadZombie bucketheadZombie = new BucketheadZombie(x, y);
+    //         randomZombies.add(bucketheadZombie);
+    //     }
+    // }
 
-    public void testSpawn() {
-        // Check for 'E' key press to spawn BungeeZombie
-        if (Gdx.input.isKeyJustPressed(Keys.E) && plants[0][0] != null) {
-            spawnBungeeZombie();
-        }
+    // public void testSpawn() {
+    //     // Check for 'E' key press to spawn BungeeZombie
+    //     if (Gdx.input.isKeyJustPressed(Keys.E) && plants[0][0] != null) {
+    //         spawnBungeeZombie();
+    //     }
 
-        // Check for 'R' key press to spawn BasicZombie
-        if (Gdx.input.isKeyJustPressed(Keys.R)) {
-            spawnRandomZombie();
-        }
-    }
+    //     // Check for 'R' key press to spawn BasicZombie
+    //     if (Gdx.input.isKeyJustPressed(Keys.R)) {
+    //         spawnRandomZombie();
+    //     }
+    // }
 
     @Override
     public void render(float delta) {
@@ -162,7 +154,6 @@ public class DayWorld implements Screen {
         }
 
         batch.begin();
-        
         // Draw plants
         float mouseX = Gdx.input.getX();
         float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
@@ -253,7 +244,7 @@ public class DayWorld implements Screen {
             }
         }
 
-        testSpawn();
+        // testSpawn();
 
         // Update wave timer
         waveTimer += delta;
@@ -263,7 +254,7 @@ public class DayWorld implements Screen {
         }
 
         
-        for(BasicZombie zombie : zombies) {
+        for(Zombie zombie : zombies) {
 
             if(zombie.getCol() < 0) {
                 removeZombie(zombie);
@@ -273,14 +264,23 @@ public class DayWorld implements Screen {
             }
             
             // System.out.println(zombie.getRow());
-            batch.draw(zombie.getTexture(), zombie.getX(), (LAWN_HEIGHT - zombie.getRow()) * LAWN_TILEHEIGHT - 40);
+            
+            batch.draw(zombie.getTextureRegion(), 
+                      zombie.getX(), 
+                      (LAWN_HEIGHT - zombie.getRow()) * LAWN_TILEHEIGHT - (zombie.getHeight() - LAWN_TILEHEIGHT)/2,
+                      zombie.getWidth(),
+                      zombie.getHeight());
+
 
             Plant plant = plants[zombie.getRow()][zombie.getCol()];
 
+
+            zombie.update(delta);
+            
             if(plant != null) {
-                System.out.println("sdfd");
-                if(plant.reduceHealth(zombie.getAttack())) {  
-                    plants[zombie.getRow()][zombie.getCol()] = null;
+                if(zombie.canAttack()) {  // Only attack if cooldown is ready
+                    zombie.attack(plant);
+                    if(plant.isDead()) plants[zombie.getRow()][zombie.getCol()] = null;
                 }
             } else {
                 zombie.move();
@@ -293,12 +293,12 @@ public class DayWorld implements Screen {
         plantBar.render();
     }
 
-    public void addZombie(BasicZombie zombie) {
+    public void addZombie(Zombie zombie) {
         System.out.println(3333);
         zombies.add(zombie);
     }
     
-    public void removeZombie(BasicZombie zombie) {
+    public void removeZombie(Zombie zombie) {
         zombie.dispose();
         zombies.removeValue(zombie, true);
     }
@@ -310,7 +310,7 @@ public class DayWorld implements Screen {
     private void spawnWave() {
         int numberOfZombies = 5; // Number of zombies per wave
         for (int i = 0; i < numberOfZombies; i++) {
-            addZombie(new BasicZombie(this));
+            addZombie(new BucketheadZombie(this));
         }
     }
 
@@ -360,8 +360,8 @@ public class DayWorld implements Screen {
         for(Sun sun : suns) {
             sun.dispose();
         }
-        // Dispose zombies
-        for (Zombie zombie : zombies) {
+
+        for(Zombie zombie : zombies) {
             zombie.dispose();
         }
         zombies.clear();

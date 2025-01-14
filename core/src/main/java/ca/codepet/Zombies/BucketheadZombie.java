@@ -1,11 +1,12 @@
 package ca.codepet.Zombies;
 
-import ca.codepet.Zombie;
+import com.badlogic.gdx.graphics.Texture;
+
 import ca.codepet.Plant;
+import ca.codepet.worlds.DayWorld;
 
 public class BucketheadZombie extends Zombie {
-    public BucketheadZombie(int x, int y) {
-        super(x, y, "zombies/BucketheadZombie.png", 200, 0.26f, 1100);
-        setSize(80, 140);
+    public BucketheadZombie(DayWorld theWorld) {
+         super(theWorld, new Texture("images/bucketHeadZombie.png"), 300, 50, 2.0f);
     }
 }
