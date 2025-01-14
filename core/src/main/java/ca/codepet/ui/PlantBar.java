@@ -42,6 +42,10 @@ public class PlantBar {
 
     public void setSunDisplay(int sun) {
         sunDisplay = sun;
+        // Update affordability of all cards
+        for (PlantCard card : selectedCards) {
+            card.setAffordable(card.getCost() <= sun);
+        }
     }
 
     public boolean addCard(PlantCard card) {
@@ -68,12 +72,19 @@ public class PlantBar {
 
     public PlantCard checkCardDragStart(float x, float y) {
         for (PlantCard card : selectedCards) {
-            if (card.contains(x, y)) {
+            if (card.contains(x, y) && !card.isOnCooldown()) {
                 card.startDragging(x, y);
                 return card;
             }
         }
         return null;
+    }
+
+    // Add new method to start all cooldowns
+    public void startAllCardCooldowns() {
+        for (PlantCard card : selectedCards) {
+            card.startCooldown();
+        }
     }
 
     public void resetCardPosition(PlantCard card) {
@@ -85,6 +96,18 @@ public class PlantBar {
             card.setPosition(x, y);
             card.updateOriginalPosition(x, y);  // Update the original position
         }
+    }
+
+    public boolean deductSun(int amount) {
+        if (sunDisplay >= amount) {
+            sunDisplay -= amount;
+            // Update affordability of all cards after deduction
+            for (PlantCard card : selectedCards) {
+                card.setAffordable(card.getCost() <= sunDisplay);
+            }
+            return true;
+        }
+        return false;
     }
 
     public void render() {
@@ -105,6 +128,11 @@ public class PlantBar {
         float textX = centerX - (textWidth / 2); // Center around the original x position
         float textY = barY + newHeight - 75;
         font.draw(batch, sunText, textX, textY);
+
+        // Update cooldowns before rendering cards
+        for (PlantCard card : selectedCards) {
+            card.updateCooldown(Gdx.graphics.getDeltaTime());
+        }
 
         // Draw selected cards
         for (PlantCard card : selectedCards) {
