@@ -17,7 +17,7 @@ public class BasicZombie extends Zombie {
    
 
     public BasicZombie(DayWorld theWorld) {
-        super(theWorld, 100, 1, 2.0f);
+        super(theWorld, new Texture("images/zombie.png"), 100, 10, 2.0f);
         
     }
 

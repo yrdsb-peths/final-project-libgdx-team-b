@@ -38,13 +38,13 @@ public abstract class Zombie {
     DayWorld world;
 
   
-    public Zombie(DayWorld theWorld, int hp, int damage, float atkDelay)
+    public Zombie(DayWorld theWorld, Texture zombieTexture, int hp, int damage, float atkDelay)
     {
         this.hp = hp;
         this.damage = damage;
         this.atkDelay = atkDelay;
 
-        zombieTexture = new Texture("images/zombie.png");
+        this.zombieTexture = zombieTexture;
         
         // Load multiple chomp sounds
         chompSounds = new Sound[] {

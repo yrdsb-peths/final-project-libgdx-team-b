@@ -14,6 +14,8 @@ import com.badlogic.gdx.utils.Array;
 import ca.codepet.Plant;
 import ca.codepet.Plants.Peashooter;
 import ca.codepet.Zombies.BasicZombie;
+import ca.codepet.Zombies.BucketheadZombie;
+import ca.codepet.Zombies.Zombie;
 import ca.codepet.ui.PlantBar;
 import ca.codepet.GameRoot;
 import ca.codepet.characters.PlantCard;
@@ -48,7 +50,7 @@ public class DayWorld implements Screen {
     private final GameRoot game; 
 
     // private Zombie zombie = new BasicZombie(this);
-    private Array<BasicZombie> zombies = new Array<>();
+    private Array<Zombie> zombies = new Array<>();
 
     private float waveTimer = 0f;
     private float timeBetweenWaves = 10f; // seconds
@@ -184,7 +186,7 @@ public class DayWorld implements Screen {
         }
 
         
-        for(BasicZombie zombie : zombies) {
+        for(Zombie zombie : zombies) {
 
             if(zombie.getCol() < 0) {
                 removeZombie(zombie);
@@ -218,12 +220,12 @@ public class DayWorld implements Screen {
         plantBar.render();
     }
 
-    public void addZombie(BasicZombie zombie) {
+    public void addZombie(Zombie zombie) {
         System.out.println(3333);
         zombies.add(zombie);
     }
     
-    public void removeZombie(BasicZombie zombie) {
+    public void removeZombie(Zombie zombie) {
         zombie.dispose();
         zombies.removeValue(zombie, true);
     }
@@ -235,7 +237,7 @@ public class DayWorld implements Screen {
     private void spawnWave() {
         int numberOfZombies = 5; // Number of zombies per wave
         for (int i = 0; i < numberOfZombies; i++) {
-            addZombie(new BasicZombie(this));
+            addZombie(new BucketheadZombie(this));
         }
     }
 
@@ -282,7 +284,7 @@ public class DayWorld implements Screen {
             sun.dispose();
         }
 
-        for(BasicZombie zombie : zombies) {
+        for(Zombie zombie : zombies) {
             zombie.dispose();
         }
         zombies.clear();
