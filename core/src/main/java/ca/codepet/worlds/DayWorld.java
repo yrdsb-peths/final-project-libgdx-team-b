@@ -18,6 +18,7 @@ import ca.codepet.Zombies.BucketheadZombie;
 import ca.codepet.Zombies.Zombie;
 import ca.codepet.ui.PlantBar;
 import ca.codepet.GameRoot;
+import ca.codepet.Lawnmower;
 import ca.codepet.characters.PlantCard;
 import ca.codepet.characters.Sun;
 import ca.codepet.ui.PlantPicker;
@@ -51,6 +52,7 @@ public class DayWorld implements Screen {
 
     // private Zombie zombie = new BasicZombie(this);
     private Array<Zombie> zombies = new Array<>();
+    private Array<Lawnmower> lawnmowers = new Array<>();
 
     private float waveTimer = 0f;
     private float timeBetweenWaves = 10f; // seconds
@@ -62,7 +64,10 @@ public class DayWorld implements Screen {
     @Override
     public void show() {
         addZombie(new BasicZombie(this));
-
+        
+        for(int i = 0; i < LAWN_HEIGHT; i++) {
+            lawnmowers.add(new Lawnmower(i));
+        }
         // Load the background texture
         backgroundTexture = new Texture("backgrounds/day.png");
         batch = new SpriteBatch();
@@ -185,13 +190,20 @@ public class DayWorld implements Screen {
             spawnWave();
         }
 
-        
+        renderLawnmower();
         renderZombie(delta);
 
         batch.end();
 
         // Draw the plant bar
         plantBar.render();
+    }
+
+    private void renderLawnmower() {
+        for(Lawnmower lawnmower : lawnmowers) {
+            batch.draw(lawnmower.getTextureRegion(), lawnmower.getX(), lawnmower.getY(), lawnmower.getWidth(), lawnmower.getHeight());
+        }
+        
     }
 
     private void renderZombie(float delta) {
