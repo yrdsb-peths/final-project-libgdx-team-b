@@ -105,7 +105,6 @@ public class DayWorld implements Screen {
         }
 
         batch.begin();
-        
         // Draw plants
         float mouseX = Gdx.input.getX();
         float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
@@ -197,12 +196,17 @@ public class DayWorld implements Screen {
             // System.out.println(zombie.getRow());
             batch.draw(zombie.getTexture(), zombie.getX(), (LAWN_HEIGHT - zombie.getRow()) * LAWN_TILEHEIGHT - 40);
 
+            
             Plant plant = plants[zombie.getRow()][zombie.getCol()];
 
+
+            zombie.update(delta);
+            
             if(plant != null) {
-                System.out.println("sdfd");
-                if(plant.reduceHealth(zombie.getAttack())) {  
-                    plants[zombie.getRow()][zombie.getCol()] = null;
+                if(zombie.canAttack()) {  // Only attack if cooldown is ready
+                    if(plant.reduceHealth(zombie.getAttack())) {  
+                        plants[zombie.getRow()][zombie.getCol()] = null;
+                    }
                 }
             } else {
                 zombie.move();

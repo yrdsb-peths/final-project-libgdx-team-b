@@ -25,6 +25,9 @@ public class BasicZombie extends Zombie {
     private int health = 100; 
     private int damage = 10;
 
+    private float ATTACK_DELAY = 1.0f; // 1 second between attacks
+    private float attackTimer = 0.0f;
+
     DayWorld world;
 
     public BasicZombie(DayWorld theWorld) {
@@ -52,7 +55,17 @@ public class BasicZombie extends Zombie {
         
     }
 
-    
+    public void update(float delta) {
+        attackTimer += delta;
+    }
+
+    public boolean canAttack() {
+        if (attackTimer >= ATTACK_DELAY) {
+            attackTimer = 0;
+            return true;
+        }
+        return false;
+    }
 
     public int getAttack() {
         return damage;
