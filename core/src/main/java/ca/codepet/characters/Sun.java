@@ -28,6 +28,18 @@ public class Sun {
         bounds = new Rectangle(x, y, width, height);
     }
 
+    public Sun(float startX, float startY) {
+        sunTexture = new Texture("characters/sun.png");
+        float aspectRatio = (float) sunTexture.getWidth() / sunTexture.getHeight();
+        height = 100;
+        width = height * aspectRatio;
+        x = startX;
+        y = startY;
+        bounds = new Rectangle(x, y, width, height);
+        velocity = 0; // Stationary sun
+        timeTillDespawn = 5f;
+    }
+
     public boolean isAlive() {
         return isAlive;
     }
