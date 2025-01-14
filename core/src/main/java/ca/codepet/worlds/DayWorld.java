@@ -204,9 +204,8 @@ public class DayWorld implements Screen {
             
             if(plant != null) {
                 if(zombie.canAttack()) {  // Only attack if cooldown is ready
-                    if(plant.reduceHealth(zombie.getAttack())) {  
-                        plants[zombie.getRow()][zombie.getCol()] = null;
-                    }
+                    zombie.attack(plant);
+                    if(plant.isDead()) plants[zombie.getRow()][zombie.getCol()] = null;
                 }
             } else {
                 zombie.move();

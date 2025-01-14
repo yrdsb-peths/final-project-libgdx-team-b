@@ -3,6 +3,7 @@ package ca.codepet.Zombies;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -16,6 +17,7 @@ public class BasicZombie extends Zombie {
 
     Random rand = new Random();
     private Texture zombieTexture;
+    private Sound[] chompSounds;
 
     private int x = Gdx.graphics.getWidth();
     private int y;
@@ -25,7 +27,7 @@ public class BasicZombie extends Zombie {
     private int health = 100; 
     private int damage = 10;
 
-    private float ATTACK_DELAY = 1.0f; // 1 second between attacks
+    private float ATTACK_DELAY = 2.0f; // 1 second between attacks
     private float attackTimer = 0.0f;
 
     DayWorld world;
@@ -33,6 +35,13 @@ public class BasicZombie extends Zombie {
     public BasicZombie(DayWorld theWorld) {
         super("images/zombie.png", "basic", 100, 1, 10, 1100);
         zombieTexture = new Texture("images/zombie.png");
+        
+        // Load multiple chomp sounds
+        chompSounds = new Sound[] {
+            Gdx.audio.newSound(Gdx.files.internal("sounds/chomp.ogg")),
+            Gdx.audio.newSound(Gdx.files.internal("sounds/chomp2.ogg")),
+            Gdx.audio.newSound(Gdx.files.internal("sounds/chomp3.ogg"))
+        };
 
         world = theWorld;
 
@@ -67,16 +76,21 @@ public class BasicZombie extends Zombie {
         return false;
     }
 
+    public void attack(Plant plant) {
+        if (plant != null) {
+            plant.damage(damage);
+            playChompSound();
+        }
+    }
+
     public int getAttack() {
         return damage;
     }
         
-
-    // @Override
-    // public void damage(Plant plant, int dmg) {
-    //     // zombie damages a plant
-    //     // plant.damage(dmg);
-    // }
+    public void playChompSound() {
+        // Play random chomp sound
+        chompSounds[rand.nextInt(chompSounds.length)].play(0.5f);
+    }
 
     public int getRow() {
         return row;
@@ -88,6 +102,9 @@ public class BasicZombie extends Zombie {
     
     public void dispose() {
         zombieTexture.dispose();
+        for(Sound sound : chompSounds) {
+            sound.dispose();
+        }
     }
     
 }
