@@ -66,8 +66,9 @@ public class DayWorld implements Screen {
         addZombie(new BasicZombie(this));
         
         for(int i = 0; i < LAWN_HEIGHT; i++) {
-            lawnmowers.add(new Lawnmower(i));
+            lawnmowers.add(new Lawnmower(this, i));
         }
+        
         // Load the background texture
         backgroundTexture = new Texture("backgrounds/day.png");
         batch = new SpriteBatch();
@@ -201,6 +202,9 @@ public class DayWorld implements Screen {
 
     private void renderLawnmower() {
         for(Lawnmower lawnmower : lawnmowers) {
+            if(lawnmower.getIsActivated()) {
+                lawnmower.move();
+            }
             batch.draw(lawnmower.getTextureRegion(), lawnmower.getX(), lawnmower.getY(), lawnmower.getWidth(), lawnmower.getHeight());
         }
         
@@ -210,8 +214,13 @@ public class DayWorld implements Screen {
         for(Zombie zombie : zombies) {
 
             if(zombie.getCol() < 0) {
-                removeZombie(zombie);
-                goEndscreen();
+                if(lawnmowers.get(LAWN_HEIGHT - zombie.getRow() - 1) == null) {
+                    removeZombie(zombie);
+                    goEndscreen();
+                } else {
+                    lawnmowers.get(LAWN_HEIGHT - zombie.getRow() - 1).activate();
+                }
+                
                 break;
                 // TODO end screen go there
             }

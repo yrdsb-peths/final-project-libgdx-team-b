@@ -3,6 +3,8 @@ package ca.codepet;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import ca.codepet.worlds.DayWorld;
+
 public class Lawnmower {
     private Texture texture;
     private TextureRegion textureRegion;
@@ -12,15 +14,31 @@ public class Lawnmower {
     int width = 50;
     int height = 80;
 
-    public Lawnmower(int row) {
+    int offSetY = 30;
+
+    boolean isActivated = false;
+
+    public Lawnmower(DayWorld world, int row) {
         texture = new Texture("images/lawnmower.png");
         this.row = row;
 
 
         textureRegion = new TextureRegion(texture);
 
-        int x = 0;
-        int y = 500;
+        x = 0;
+        y = row * world.getLawnTileHeight() + offSetY;
+    }
+
+    public void activate() {
+        isActivated = true;
+    }
+
+    public boolean getIsActivated() {
+        return isActivated;
+    }
+
+    public void move() {
+        x += 5;
     }
 
     public TextureRegion getTextureRegion() {
