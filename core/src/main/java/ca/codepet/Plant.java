@@ -16,6 +16,7 @@ public abstract class Plant {
     protected ObjectMap<String, Animation<AtlasRegion>> animations = new ObjectMap<>();
     protected String currentAnimation = null;
     protected float imageIndex = 0f;
+    protected float alpha = 1.0f;
 
     public Plant(float x, float y) {
         this.x = x;
@@ -60,11 +61,24 @@ public abstract class Plant {
         
     }
 
+    public void setAlpha(float alpha) {
+        this.alpha = alpha;
+    }
+
+    public void setPosition(float x, float y) {
+        this.x = x;
+        this.y = y;
+    }
+
     public void render(SpriteBatch batch) {
         AtlasRegion tex = getTexture();
         float pX = x + tex.offsetX - tex.originalWidth / 2;
         float pY = y + tex.offsetY - tex.originalHeight / 2;
+        
+        float oldAlpha = batch.getColor().a;
+        batch.setColor(batch.getColor().r, batch.getColor().g, batch.getColor().b, alpha);
         batch.draw(tex, pX, pY);
+        batch.setColor(batch.getColor().r, batch.getColor().g, batch.getColor().b, oldAlpha);
     }
 
     public abstract void update(float delta);
