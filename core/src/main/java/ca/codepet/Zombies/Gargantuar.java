@@ -4,7 +4,17 @@ import ca.codepet.Zombie;
 import ca.codepet.Plant;
 
 public class Gargantuar extends Zombie {
-    public Gargantuar(String spritePath) {
-        super("spritePath", "gargantuar", 200, 1, 10, 0);
+    public Gargantuar(int x, int y) {
+        super(x, y, "spritePath", 3000, 0.26f, 0);
+    }
+
+    public void smash(Plant plant, int dmg)
+    {
+        // takes a sec to swing  kill the plant instantly
+    }
+
+    public void throwImp()
+    {
+        // throws an imp when half hp
     }
 }
