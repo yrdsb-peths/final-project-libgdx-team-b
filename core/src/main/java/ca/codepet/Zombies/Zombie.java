@@ -75,7 +75,6 @@ public abstract class Zombie {
     }
 
     public TextureRegion getTextureRegion() {
-        stateTime += Gdx.graphics.getDeltaTime();
         Animation<AtlasRegion> currentAnim = animations.get(currentAnimation);
         if (currentAnim != null) {
             return currentAnim.getKeyFrame(stateTime, true);
@@ -104,6 +103,7 @@ public abstract class Zombie {
 
     public void update(float delta) {
         attackTimer += delta;
+        stateTime += delta;  // Update animation state time
     }
 
     public boolean canAttack() {
