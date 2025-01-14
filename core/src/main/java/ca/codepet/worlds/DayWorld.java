@@ -222,8 +222,8 @@ public class DayWorld implements Screen {
             // System.out.println(zombie.getRow());
             
             batch.draw(zombie.getTextureRegion(), 
-                      zombie.getX(), 
-                      (LAWN_HEIGHT - zombie.getRow()) * LAWN_TILEHEIGHT - (zombie.getHeight() - LAWN_TILEHEIGHT)/2,
+                      zombie.getX() + zombie.getXOffset(), 
+                      (LAWN_HEIGHT - zombie.getRow()) * LAWN_TILEHEIGHT - (zombie.getHeight() - LAWN_TILEHEIGHT)/2 + zombie.getYOffset(),
                       zombie.getWidth(),
                       zombie.getHeight());
 
