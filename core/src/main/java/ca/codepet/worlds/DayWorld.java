@@ -127,7 +127,7 @@ public class DayWorld implements Screen {
         batch.draw(backgroundTexture, -200, 0);
         batch.end();
 
-        // Draw the plant bar
+        // Draw the plant bar first (at the bottom layer)
         plantBar.render();
 
         if (!gameStarted) {
@@ -153,7 +153,7 @@ public class DayWorld implements Screen {
         }
 
         batch.begin();
-        // Draw plants
+        // Draw plants first
         float mouseX = Gdx.input.getX();
         float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
         int clickedTileX = MathUtils.floor((mouseX - LAWN_TILEX) / LAWN_TILEWIDTH);
@@ -209,6 +209,41 @@ public class DayWorld implements Screen {
             }
         }
 
+        // Draw zombies second (on top of plants)
+        for(Zombie zombie : zombies) {
+
+            if(zombie.getCol() < 0) {
+                removeZombie(zombie);
+                goEndscreen();
+                break;
+                // TODO end screen go there
+            }
+            
+            // System.out.println(zombie.getRow());
+            
+            batch.draw(zombie.getTextureRegion(), 
+                      zombie.getX(), 
+                      (LAWN_HEIGHT - zombie.getRow()) * LAWN_TILEHEIGHT - (zombie.getHeight() - LAWN_TILEHEIGHT)/2,
+                      zombie.getWidth(),
+                      zombie.getHeight());
+
+
+            Plant plant = plants[zombie.getRow()][zombie.getCol()];
+
+
+            zombie.update(delta);
+            
+            if(plant != null) {
+                if(zombie.canAttack()) {  // Only attack if cooldown is ready
+                    zombie.attack(plant);
+                    if(plant.isDead()) plants[zombie.getRow()][zombie.getCol()] = null;
+                }
+            } else {
+                zombie.move();
+            }
+        }
+
+        // Draw suns last (on top of zombies)
         // Update sun spawning
         sunSpawnTimer += delta;
         if (sunSpawnTimer >= SUN_SPAWN_RATE) {
@@ -240,49 +275,6 @@ public class DayWorld implements Screen {
             } else {
                 // Render the sun
                 sun.render(batch);
-            }
-        }
-
-        // testSpawn();
-
-        // Update wave timer
-        waveTimer += delta;
-        if (waveTimer >= timeBetweenWaves) {
-            waveTimer = 0f;
-            spawnWave();
-        }
-
-        
-        for(Zombie zombie : zombies) {
-
-            if(zombie.getCol() < 0) {
-                removeZombie(zombie);
-                goEndscreen();
-                break;
-                // TODO end screen go there
-            }
-            
-            // System.out.println(zombie.getRow());
-            
-            batch.draw(zombie.getTextureRegion(), 
-                      zombie.getX(), 
-                      (LAWN_HEIGHT - zombie.getRow()) * LAWN_TILEHEIGHT - (zombie.getHeight() - LAWN_TILEHEIGHT)/2,
-                      zombie.getWidth(),
-                      zombie.getHeight());
-
-
-            Plant plant = plants[zombie.getRow()][zombie.getCol()];
-
-
-            zombie.update(delta);
-            
-            if(plant != null) {
-                if(zombie.canAttack()) {  // Only attack if cooldown is ready
-                    zombie.attack(plant);
-                    if(plant.isDead()) plants[zombie.getRow()][zombie.getCol()] = null;
-                }
-            } else {
-                zombie.move();
             }
         }
 
