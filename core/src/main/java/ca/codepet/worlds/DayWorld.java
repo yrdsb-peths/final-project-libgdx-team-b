@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.Array;
 
 import ca.codepet.Plant;
 import ca.codepet.Plants.Peashooter;
+import ca.codepet.Plants.Sunflower;
 import ca.codepet.Zombies.BungeeZombie;
 import ca.codepet.Zombies.BasicZombie;
 import ca.codepet.Zombies.BucketheadZombie;
@@ -180,7 +181,12 @@ public class DayWorld implements Screen {
                         // Calculate grid-aligned position
                         float plantX = LAWN_TILEX + (tileX * LAWN_TILEWIDTH) + (LAWN_TILEWIDTH / 2);
                         float plantY = LAWN_TILEY - (tileY * LAWN_TILEHEIGHT) + (LAWN_TILEHEIGHT / 2);
-                        plants[tileY][tileX] = new Peashooter(plantX, plantY);
+                        
+                        if (draggedCard.getPlantType().equals("Peashooter")) {
+                            plants[tileY][tileX] = new Peashooter(plantX, plantY);
+                        } else if (draggedCard.getPlantType().equals("Sunflower")) {
+                            plants[tileY][tileX] = new Sunflower(plantX, plantY, this);
+                        }
                         draggedCard.startCooldown();
                     }
                 }
@@ -306,6 +312,10 @@ public class DayWorld implements Screen {
         for (int i = 0; i < numberOfZombies; i++) {
             addZombie(new BucketheadZombie(this));
         }
+    }
+
+    public void addSun(Sun sun) {
+        suns.add(sun);
     }
 
     @Override
