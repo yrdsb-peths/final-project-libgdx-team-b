@@ -4,7 +4,7 @@ import ca.codepet.Zombie;
 import ca.codepet.Plant;
 
 public class Imp extends Zombie {
-    public Imp(String spritePath) {
-        super("spritePath", "imp", 200, 1, 10, 0);
+    public Imp(int x, int y) {
+        super(x, y, "spritePath", 200, 0.26f, 0);
     }
 }
