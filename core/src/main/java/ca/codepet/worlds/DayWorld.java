@@ -184,11 +184,14 @@ public class DayWorld implements Screen {
                 if (tileX >= 0 && tileX < LAWN_WIDTH && 
                     tileY >= 0 && tileY < LAWN_HEIGHT &&
                     plants[tileY][tileX] == null) {
-                    // Calculate grid-aligned position
-                    float plantX = LAWN_TILEX + (tileX * LAWN_TILEWIDTH) + (LAWN_TILEWIDTH / 2);
-                    float plantY = LAWN_TILEY - (tileY * LAWN_TILEHEIGHT) + (LAWN_TILEHEIGHT / 2);
-                    plants[tileY][tileX] = new Peashooter(plantX, plantY);
-                    draggedCard.startCooldown(); // Only start cooldown if plant was placed
+                    // Check if we can afford the plant
+                    if (plantBar.deductSun(draggedCard.getCost())) {
+                        // Calculate grid-aligned position
+                        float plantX = LAWN_TILEX + (tileX * LAWN_TILEWIDTH) + (LAWN_TILEWIDTH / 2);
+                        float plantY = LAWN_TILEY - (tileY * LAWN_TILEHEIGHT) + (LAWN_TILEHEIGHT / 2);
+                        plants[tileY][tileX] = new Peashooter(plantX, plantY);
+                        draggedCard.startCooldown();
+                    }
                 }
                 
                 // Reset card position through plant bar

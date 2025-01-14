@@ -42,6 +42,10 @@ public class PlantBar {
 
     public void setSunDisplay(int sun) {
         sunDisplay = sun;
+        // Update affordability of all cards
+        for (PlantCard card : selectedCards) {
+            card.setAffordable(card.getCost() <= sun);
+        }
     }
 
     public boolean addCard(PlantCard card) {
@@ -92,6 +96,18 @@ public class PlantBar {
             card.setPosition(x, y);
             card.updateOriginalPosition(x, y);  // Update the original position
         }
+    }
+
+    public boolean deductSun(int amount) {
+        if (sunDisplay >= amount) {
+            sunDisplay -= amount;
+            // Update affordability of all cards after deduction
+            for (PlantCard card : selectedCards) {
+                card.setAffordable(card.getCost() <= sunDisplay);
+            }
+            return true;
+        }
+        return false;
     }
 
     public void render() {

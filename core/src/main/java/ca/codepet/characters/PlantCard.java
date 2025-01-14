@@ -25,6 +25,11 @@ public class PlantCard {
     private boolean isDragging = false;
     private float dragOffsetX, dragOffsetY;
     private float originalX, originalY;
+    private static final float COOLDOWN_DARKEN = 0.5f;  // Was 0.3f
+    private static final float UNAFFORDABLE_DARKEN = 0.7f;  // Was 0.5f
+    private static final float SELECTED_DARKEN = 0.7f;  // New constant
+    private static final float NORMAL_DARKEN = 1.0f;
+    private boolean isAffordable = true;
     
     public PlantCard(TextureRegion texture, int cost, float cooldown, String plantType, float x, float y) {
         if (cardBackground == null) {
@@ -142,6 +147,10 @@ public class PlantCard {
         }
     }
 
+    public void setAffordable(boolean affordable) {
+        this.isAffordable = affordable;
+    }
+
     public void render(SpriteBatch batch) {
         // Store original color
         float originalR = batch.getColor().r;
@@ -149,14 +158,24 @@ public class PlantCard {
         float originalB = batch.getColor().b;
         float originalA = batch.getColor().a;
 
-        if (isDarkened) {
-            batch.setColor(
-                originalR * darkenAmount,
-                originalG * darkenAmount,
-                originalB * darkenAmount,
-                originalA
-            );
+        // Determine darkening level
+        float darkenAmount;
+        if (isOnCooldown()) {
+            darkenAmount = COOLDOWN_DARKEN;
+        } else if (!isAffordable) {
+            darkenAmount = UNAFFORDABLE_DARKEN;
+        } else if (isSelected) {
+            darkenAmount = SELECTED_DARKEN;
+        } else {
+            darkenAmount = NORMAL_DARKEN;
         }
+
+        batch.setColor(
+            originalR * darkenAmount,
+            originalG * darkenAmount,
+            originalB * darkenAmount,
+            originalA
+        );
 
         // Draw card background
         batch.draw(cardBackground, bounds.x, bounds.y, bounds.width, bounds.height);
