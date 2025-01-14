@@ -5,6 +5,7 @@ import java.util.Random;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -25,6 +26,7 @@ public abstract class Zombie {
 
     Random rand = new Random();
     private Texture zombieTexture;
+    private TextureRegion textureRegion;
     private Sound[] chompSounds;
 
     private int row, col;
@@ -34,6 +36,8 @@ public abstract class Zombie {
     private float atkDelay; // 1 second between attacks
     private float attackTimer = 0.0f;
 
+    private int width = 64;
+    private int height = 120;
     
     DayWorld world;
 
@@ -46,6 +50,8 @@ public abstract class Zombie {
 
         this.zombieTexture = zombieTexture;
         
+        textureRegion = new TextureRegion(zombieTexture);
+
         // Load multiple chomp sounds
         chompSounds = new Sound[] {
             Gdx.audio.newSound(Gdx.files.internal("sounds/chomp.ogg")),
@@ -61,6 +67,18 @@ public abstract class Zombie {
 
       public Texture getTexture() {
         return zombieTexture;
+    }
+
+    public TextureRegion getTextureRegion() {
+        return textureRegion;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     public int getX() {
