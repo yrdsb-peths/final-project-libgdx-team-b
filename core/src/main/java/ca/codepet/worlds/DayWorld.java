@@ -15,7 +15,6 @@ import com.badlogic.gdx.utils.Array;
 import ca.codepet.Plant;
 import ca.codepet.Plants.Peashooter;
 import ca.codepet.Plants.Sunflower;
-import ca.codepet.Zombies.BungeeZombie;
 import ca.codepet.Zombies.BasicZombie;
 import ca.codepet.Zombies.BucketheadZombie;
 import ca.codepet.Zombies.Zombie;
@@ -61,6 +60,9 @@ public class DayWorld implements Screen {
     private float timeBetweenWaves = 10f; // seconds
 
     private PlantCard draggedCard = null;
+    private Plant draggedPlant = null;
+    private Plant ghostPlant = null;
+    private boolean isValidPlacement = false;
 
     private Array<Zombie> randomZombies = new Array<>();
 
@@ -128,7 +130,7 @@ public class DayWorld implements Screen {
         batch.draw(backgroundTexture, -200, 0);
         batch.end();
 
-        // Draw the plant bar
+        // Draw the plant bar first (at the bottom layer)
         plantBar.render();
 
         if (!gameStarted) {
@@ -138,6 +140,7 @@ public class DayWorld implements Screen {
                 gameStarted = true;
                 // Start cooldowns for all plant cards when game starts
                 plantBar.startAllCardCooldowns();
+                plantBar.startGame();  // Add this line to enable affordability checks
             }
 
             if (Gdx.input.justTouched()) {
@@ -154,7 +157,7 @@ public class DayWorld implements Screen {
         }
 
         batch.begin();
-        // Draw plants
+        // Draw plants first
         float mouseX = Gdx.input.getX();
         float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
         int clickedTileX = MathUtils.floor((mouseX - LAWN_TILEX) / LAWN_TILEWIDTH);
@@ -163,38 +166,68 @@ public class DayWorld implements Screen {
         // Handle dragging
         if (Gdx.input.justTouched()) {
             draggedCard = plantBar.checkCardDragStart(mouseX, mouseY);
+            if (draggedCard != null && plantBar.canAffordCard(draggedCard)) {
+                // Create actual plant and ghost plant
+                if (draggedCard.getPlantType().equals("Peashooter")) {
+                    draggedPlant = new Peashooter(mouseX, mouseY);
+                    ghostPlant = new Peashooter(0, 0);
+                } else if (draggedCard.getPlantType().equals("Sunflower")) {
+                    draggedPlant = new Sunflower(mouseX, mouseY, this);
+                    ghostPlant = new Sunflower(0, 0, this);
+                }
+            } else {
+                draggedCard = null;
+            }
         } else if (draggedCard != null) {
-            draggedCard.updateDragPosition(mouseX, mouseY);
+            // Update dragged plant position
+            if (draggedPlant != null) {
+                draggedPlant.setPosition(mouseX, mouseY);
+            }
+            
+            // Update ghost plant position and validity
+            isValidPlacement = false;
+            if (clickedTileX >= 0 && clickedTileX < LAWN_WIDTH && 
+                clickedTileY >= 0 && clickedTileY < LAWN_HEIGHT) {
+                if (ghostPlant != null) {
+                    float plantX = LAWN_TILEX + (clickedTileX * LAWN_TILEWIDTH) + (LAWN_TILEWIDTH / 2);
+                    float plantY = LAWN_TILEY - (clickedTileY * LAWN_TILEHEIGHT) + (LAWN_TILEHEIGHT / 2);
+                    ghostPlant.setPosition(plantX, plantY);
+                }
+                isValidPlacement = plants[clickedTileY][clickedTileX] == null;
+            }
             
             if (!Gdx.input.isTouched()) {
-                float centerX = draggedCard.getBounds().x + draggedCard.getBounds().width/2;
-                float centerY = draggedCard.getBounds().y + draggedCard.getBounds().height/2;
-                
-                int tileX = MathUtils.floor((centerX - LAWN_TILEX) / LAWN_TILEWIDTH);
-                int tileY = -MathUtils.floor((centerY - LAWN_TILEY) / LAWN_TILEHEIGHT);
-                
-                if (tileX >= 0 && tileX < LAWN_WIDTH && 
-                    tileY >= 0 && tileY < LAWN_HEIGHT &&
-                    plants[tileY][tileX] == null) {
-                    // Check if we can afford the plant
+                // Only try to place plant if we're in valid bounds and placement is valid
+                if (isValidPlacement && clickedTileX >= 0 && clickedTileX < LAWN_WIDTH && 
+                    clickedTileY >= 0 && clickedTileY < LAWN_HEIGHT) {
+                    
                     if (plantBar.deductSun(draggedCard.getCost())) {
-                        // Calculate grid-aligned position
-                        float plantX = LAWN_TILEX + (tileX * LAWN_TILEWIDTH) + (LAWN_TILEWIDTH / 2);
-                        float plantY = LAWN_TILEY - (tileY * LAWN_TILEHEIGHT) + (LAWN_TILEHEIGHT / 2);
-                        
-                        if (draggedCard.getPlantType().equals("Peashooter")) {
-                            plants[tileY][tileX] = new Peashooter(plantX, plantY);
-                        } else if (draggedCard.getPlantType().equals("Sunflower")) {
-                            plants[tileY][tileX] = new Sunflower(plantX, plantY, this);
-                        }
+                        float plantX = LAWN_TILEX + (clickedTileX * LAWN_TILEWIDTH) + (LAWN_TILEWIDTH / 2);
+                        float plantY = LAWN_TILEY - (clickedTileY * LAWN_TILEHEIGHT) + (LAWN_TILEHEIGHT / 2);
+                        draggedPlant.setPosition(plantX, plantY);
+                        plants[clickedTileY][clickedTileX] = draggedPlant;
                         draggedCard.startCooldown();
                     }
                 }
                 
-                // Reset card position through plant bar
+                // Clean up
+                if (draggedPlant != null) {
+                    if (clickedTileX < 0 || clickedTileX >= LAWN_WIDTH || 
+                        clickedTileY < 0 || clickedTileY >= LAWN_HEIGHT ||
+                        !isValidPlacement ||
+                        plants[clickedTileY][clickedTileX] != draggedPlant) {
+                        draggedPlant.dispose();
+                    }
+                }
+                if (ghostPlant != null) {
+                    ghostPlant.dispose();
+                }
+                draggedPlant = null;
+                ghostPlant = null;
                 plantBar.resetCardPosition(draggedCard);
                 draggedCard.stopDragging();
                 draggedCard = null;
+                isValidPlacement = false;
             }
         }
 
@@ -210,6 +243,53 @@ public class DayWorld implements Screen {
             }
         }
 
+        // Render dragged plant
+        if (draggedPlant != null) {
+            draggedPlant.render(batch);
+        }
+
+        // Render ghost plant
+        if (ghostPlant != null && isValidPlacement) {
+            ghostPlant.setAlpha(0.5f);  // Make translucent
+            ghostPlant.render(batch);
+            ghostPlant.setAlpha(1.0f);  // Reset alpha
+        }
+
+        // Draw zombies second (on top of plants)
+        for(Zombie zombie : zombies) {
+
+            if(zombie.getCol() < 0) {
+                removeZombie(zombie);
+                goEndscreen();
+                break;
+                // TODO end screen go there
+            }
+            
+            // System.out.println(zombie.getRow());
+            
+            batch.draw(zombie.getTextureRegion(), 
+                      zombie.getX() + zombie.getXOffset(), 
+                      (LAWN_HEIGHT - zombie.getRow()) * LAWN_TILEHEIGHT - (zombie.getHeight() - LAWN_TILEHEIGHT)/2 + zombie.getYOffset(),
+                      zombie.getWidth(),
+                      zombie.getHeight());
+
+
+            Plant plant = plants[zombie.getRow()][zombie.getCol()];
+
+
+            zombie.update(delta);
+            
+            if(plant != null) {
+                if(zombie.canAttack()) {  // Only attack if cooldown is ready
+                    zombie.attack(plant);
+                    if(plant.isDead()) plants[zombie.getRow()][zombie.getCol()] = null;
+                }
+            } else {
+                zombie.move();
+            }
+        }
+
+        // Draw suns last (on top of zombies)
         // Update sun spawning
         sunSpawnTimer += delta;
         if (sunSpawnTimer >= SUN_SPAWN_RATE) {
@@ -241,49 +321,6 @@ public class DayWorld implements Screen {
             } else {
                 // Render the sun
                 sun.render(batch);
-            }
-        }
-
-        // testSpawn();
-
-        // Update wave timer
-        waveTimer += delta;
-        if (waveTimer >= timeBetweenWaves) {
-            waveTimer = 0f;
-            spawnWave();
-        }
-
-        
-        for(Zombie zombie : zombies) {
-
-            if(zombie.getCol() < 0) {
-                removeZombie(zombie);
-                goEndscreen();
-                break;
-                // TODO end screen go there
-            }
-            
-            // System.out.println(zombie.getRow());
-            
-            batch.draw(zombie.getTextureRegion(), 
-                      zombie.getX(), 
-                      (LAWN_HEIGHT - zombie.getRow()) * LAWN_TILEHEIGHT - (zombie.getHeight() - LAWN_TILEHEIGHT)/2,
-                      zombie.getWidth(),
-                      zombie.getHeight());
-
-
-            Plant plant = plants[zombie.getRow()][zombie.getCol()];
-
-
-            zombie.update(delta);
-            
-            if(plant != null) {
-                if(zombie.canAttack()) {  // Only attack if cooldown is ready
-                    zombie.attack(plant);
-                    if(plant.isDead()) plants[zombie.getRow()][zombie.getCol()] = null;
-                }
-            } else {
-                zombie.move();
             }
         }
 
