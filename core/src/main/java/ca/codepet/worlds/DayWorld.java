@@ -17,6 +17,7 @@ import ca.codepet.Plant;
 import ca.codepet.WaveManager;
 import ca.codepet.Plants.Peashooter;
 import ca.codepet.Plants.PotatoMine;
+import ca.codepet.Plants.Repeater;
 import ca.codepet.Plants.Sunflower;
 import ca.codepet.Plants.TallNut;
 import ca.codepet.Plants.Walnut;
@@ -218,6 +219,9 @@ public class DayWorld implements Screen {
                 } else if (draggedCard.getPlantType().equals("TallNut")) {
                     draggedPlant = new TallNut(mouseX, mouseY);
                     ghostPlant = new TallNut(0, 0);
+                } else if (draggedCard.getPlantType().equals("Repeater")) {
+                    draggedPlant = new Repeater(mouseX, mouseY);
+                    ghostPlant = new Repeater(0, 0);
                 }
             } else {
                 draggedCard = null;

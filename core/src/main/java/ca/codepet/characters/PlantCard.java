@@ -30,8 +30,13 @@ public class PlantCard {
     private static final float SELECTED_DARKEN = 0.7f;  // New constant
     private static final float NORMAL_DARKEN = 1.0f;
     private boolean isAffordable = true;
+    private float iconScale = 1.0f;  // Add this field
     
     public PlantCard(TextureRegion texture, int cost, float cooldown, String plantType, float x, float y) {
+        this(texture, cost, cooldown, plantType, x, y, 1.0f);
+    }
+
+    public PlantCard(TextureRegion texture, int cost, float cooldown, String plantType, float x, float y, float iconScale) {
         if (cardBackground == null) {
             cardBackground = new Texture(Gdx.files.internal("characters/card.png"));
         }
@@ -60,6 +65,17 @@ public class PlantCard {
         this.isDarkened = false;
         this.originalX = x;
         this.originalY = y;
+        this.iconScale = iconScale;
+    }
+
+    // Add this new constructor
+    public PlantCard(PlantCard other, float x, float y) {
+        this(other.cardTexture, other.cost, other.cooldown, other.plantType, x, y, other.iconScale);
+    }
+
+    // Add getter for iconScale
+    public float getIconScale() {
+        return iconScale;
     }
 
     public boolean contains(float x, float y) {
@@ -179,9 +195,9 @@ public class PlantCard {
         // Draw card background
         batch.draw(cardBackground, bounds.x, bounds.y, bounds.width, bounds.height);
         
-        // Center plant sprite on card
-        float plantWidth = Math.min(bounds.width * 0.6f, cardTexture.getRegionWidth());
-        float plantHeight = Math.min(bounds.height * 0.6f, cardTexture.getRegionHeight());
+        // Center plant sprite on card with scaling
+        float plantWidth = Math.min(bounds.width * 0.6f, cardTexture.getRegionWidth()) * iconScale;
+        float plantHeight = Math.min(bounds.height * 0.6f, cardTexture.getRegionHeight()) * iconScale;
         float plantX = bounds.x + (bounds.width - plantWidth) / 2;
         float plantY = bounds.y + (bounds.height - plantHeight) / 2;
         

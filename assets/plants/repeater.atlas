@@ -1,0 +1,40 @@
+repeater.png
+size: 29, 156
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tile000
+  rotate: false
+  xy: 1, 1
+  size: 27, 30
+  orig: 27, 30
+  offset: 0, 0
+  index: -1
+tile001
+  rotate: false
+  xy: 1, 33
+  size: 27, 30
+  orig: 27, 30
+  offset: 0, 0
+  index: -1
+tile002
+  rotate: false
+  xy: 1, 65
+  size: 27, 29
+  orig: 27, 29
+  offset: 0, 0
+  index: -1
+tile003
+  rotate: false
+  xy: 1, 96
+  size: 27, 29
+  orig: 27, 29
+  offset: 0, 0
+  index: -1
+tile004
+  rotate: false
+  xy: 1, 127
+  size: 27, 28
+  orig: 27, 28
+  offset: 0, 0
+  index: -1
