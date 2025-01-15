@@ -23,6 +23,7 @@ import ca.codepet.ui.PlantBar;
 import ca.codepet.Collidable;
 import ca.codepet.GameRoot;
 import ca.codepet.Lawnmower;
+import ca.codepet.Menu;
 import ca.codepet.characters.PlantCard;
 import ca.codepet.characters.Sun;
 import ca.codepet.ui.PlantPicker;
@@ -49,7 +50,13 @@ public class DayWorld implements Screen {
     final private int LAWN_TILEY = 416;
 
     private static final float SUN_SPAWN_RATE = 7f; // seconds
+    private static final float END_GAME_TIMER = 5f; // seconds
+
+    private boolean isGameOver = false;
+
     private float sunSpawnTimer = 0f;
+    private float endGameTimer = 0f;
+
     // Add array to track suns
     private Array<Sun> suns = new Array<>();
 
@@ -105,6 +112,15 @@ public class DayWorld implements Screen {
 
     @Override
     public void render(float delta) {
+        if(isGameOver) {
+            gameOver(delta);
+        } else {
+            renderGame(delta);
+        }
+    }
+
+    public void renderGame(float delta) {
+        
         // Draw the background texture
         batch.begin();
         batch.draw(backgroundTexture, -200, 0);
@@ -267,10 +283,13 @@ public class DayWorld implements Screen {
             ghostPlant.setAlpha(1.0f);  // Reset alpha
         }
 
+        // Render the shovel last (on top of everything)
+        shovel.render();
+
+
         renderLawnmower();
+        renderSun(delta);
         renderZombie(delta);
-
-
     }
 
     private void renderLawnmower() {
@@ -326,7 +345,8 @@ public class DayWorld implements Screen {
                 }
                 
                 if(lawnmower == null) {
-                    // handle game over
+                    isGameOver = true;
+                    System.out.println("Game Over");
                 } else {
                     lawnmower.activate();
                 }
@@ -363,16 +383,12 @@ public class DayWorld implements Screen {
         for(Zombie zombie : zombiesToRemove) {
             removeZombie(zombie);
         }
-      
-        // Draw suns last (on top of zombies)
-        // Update sun spawning
-        sunSpawnTimer += delta;
-        if (sunSpawnTimer >= SUN_SPAWN_RATE) {
-            sunSpawnTimer = 0f;
-            // Create new sun and add to array
-            suns.add(new Sun());
-        }
+        
+        batch.end();
 
+    }
+
+    public void renderSun(float delta) {
         // Render all suns and check for collection
         // Loop through suns
         for (int i = 0; i < suns.size; i++) {
@@ -399,13 +415,14 @@ public class DayWorld implements Screen {
             }
         }
 
-        // Render the shovel last (on top of everything)
-        shovel.render();
-
-        batch.end();
-
-        // Draw the plant bar
-        plantBar.render();
+        // Draw suns last (on top of zombies)
+        // Update sun spawning
+        sunSpawnTimer += delta;
+        if (sunSpawnTimer >= SUN_SPAWN_RATE) {
+            sunSpawnTimer = 0f;
+            // Create new sun and add to array
+            suns.add(new Sun());
+        }
     }
 
     public void addZombie(Zombie zombie) {
@@ -417,8 +434,16 @@ public class DayWorld implements Screen {
         zombies.removeValue(zombie, true);
     }
 
-    public void goEndscreen() {
-        // game.setScreen(new EndScreen(game));
+    public void gameOver(float delta) {
+        endGameTimer += delta;
+        if (endGameTimer >= END_GAME_TIMER) {
+            endGameTimer = 0f;
+            game.setScreen(new Menu(game));
+        }
+
+        batch.begin();
+        batch.draw(new Texture("images/gameOver.png"), 0, 0);
+        batch.end();
     }
 
     private boolean checkCollision(Collidable left, Collidable right) {
