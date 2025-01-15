@@ -48,7 +48,7 @@ public class DayWorld implements Screen {
     final private int LAWN_TILEX = 56;
     final private int LAWN_TILEY = 416;
 
-    private static final float SUN_SPAWN_RATE = 1f; // seconds
+    private static final float SUN_SPAWN_RATE = 7f; // seconds
     private float sunSpawnTimer = 0f;
     // Add array to track suns
     private Array<Sun> suns = new Array<>();
