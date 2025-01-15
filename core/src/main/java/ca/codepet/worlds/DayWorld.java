@@ -401,6 +401,16 @@ public class DayWorld implements Screen {
                 if(row >= 0 && row < LAWN_HEIGHT && col >= 0 && col < LAWN_WIDTH) {
                     Plant plant = plants[row][col];
                     if(plant != null) {
+                        // Check if it's a potato mine and handle explosion
+                        if(plant instanceof PotatoMine) {
+                            PotatoMine mine = (PotatoMine)plant;
+                            if(mine.isArmed() && !mine.hasExploded()) {
+                                mine.explode();
+                                zombie.damage(mine.getExplosionDamage());
+                                continue;
+                            }
+                        }
+                        
                         if(zombie.canAttack()) {
                             zombie.attack(plant);
                             if(plant.isDead()) {
