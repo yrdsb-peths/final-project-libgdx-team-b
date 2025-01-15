@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 
 import ca.codepet.Plant;
+import ca.codepet.WaveManager;
 import ca.codepet.Plants.Peashooter;
 import ca.codepet.Plants.Sunflower;
 import ca.codepet.Zombies.BasicZombie;
@@ -73,14 +74,14 @@ public class DayWorld implements Screen {
     private Shovel shovel;
     private boolean isShovelDragging = false;
 
+    private WaveManager waveManager;
+
     public DayWorld(GameRoot game) {
         this.game = game;
 
     }
     @Override
     public void show() {
-        addZombie(new BasicZombie(this));
-        
         for(int i = LAWN_HEIGHT - 1; i >= 0; i--) {
             lawnmowers.add(new Lawnmower(this, i));
         }
@@ -98,43 +99,9 @@ public class DayWorld implements Screen {
         plantPicker = new PlantPicker(plantBar);
 
         shovel = new Shovel(650, Gdx.graphics.getHeight() - 64);
+
+        waveManager = new WaveManager(this);
     }
-
-
-    // public void spawnRandomZombie() {
-    //     Random random = new Random();
-    //     int randomRow = random.nextInt(LAWN_HEIGHT);
-    //     int x = Gdx.graphics.getWidth(); // zombies spawn off the screen
-    //     int y = LAWN_TILEY - randomRow * LAWN_TILEHEIGHT;
-    //     int randomZombie = random.nextInt(3);
-    //     if(randomZombie == 0)
-    //     {
-    //         BasicZombie basicZombie = new BasicZombie(x, y);
-    //         randomZombies.add(basicZombie);
-    //     }
-    //     else if(randomZombie == 1)
-    //     {
-    //         ConeheadZombie coneheadZombie = new ConeheadZombie(x, y);
-    //         randomZombies.add(coneheadZombie);
-    //     }
-    //     else
-    //     {
-    //         BucketheadZombie bucketheadZombie = new BucketheadZombie(x, y);
-    //         randomZombies.add(bucketheadZombie);
-    //     }
-    // }
-
-    // public void testSpawn() {
-    //     // Check for 'E' key press to spawn BungeeZombie
-    //     if (Gdx.input.isKeyJustPressed(Keys.E) && plants[0][0] != null) {
-    //         spawnBungeeZombie();
-    //     }
-
-    //     // Check for 'R' key press to spawn BasicZombie
-    //     if (Gdx.input.isKeyJustPressed(Keys.R)) {
-    //         spawnRandomZombie();
-    //     }
-    // }
 
     @Override
     public void render(float delta) {
@@ -195,6 +162,10 @@ public class DayWorld implements Screen {
             
             // Don't continue the game until picked
             return;
+        }
+
+        if (gameStarted) {
+            waveManager.update(delta);
         }
 
         batch.begin();
@@ -448,13 +419,6 @@ public class DayWorld implements Screen {
 
     public void goEndscreen() {
         // game.setScreen(new EndScreen(game));
-    }
-
-    private void spawnWave() {
-        int numberOfZombies = 5; // Number of zombies per wave
-        for (int i = 0; i < numberOfZombies; i++) {
-            addZombie(new BucketheadZombie(this));
-        }
     }
 
     private boolean checkCollision(Collidable left, Collidable right) {
