@@ -52,16 +52,17 @@ public class PlantPicker {
         int col = 0;
         
         // Peashooter card
-        TextureAtlas peashooterAtlas = new TextureAtlas(Gdx.files.internal("plants/Peashooter.atlas"));
+        TextureAtlas peashooterAtlas = new TextureAtlas(Gdx.files.internal("plants/peashooter-idle.atlas"));
         float x = CARD_START_X + (col * (50 + CARD_SPACING));
         float y = CARD_START_Y - (row * (70 + CARD_SPACING));
         PlantCard peashooterCard = new PlantCard(
-            peashooterAtlas.findRegion("peashooter_idle1"),
+            peashooterAtlas.findRegion("tile000"),
             100,
             7.5f,
             "Peashooter",
             x,
-            y
+            y,
+            1.4f
         );
         plantCards.add(peashooterCard);
 
@@ -127,7 +128,7 @@ public class PlantPicker {
 
         // Add Repeater card
         col++;
-        TextureAtlas repeaterAtlas = new TextureAtlas(Gdx.files.internal("plants/repeater.atlas"));
+        TextureAtlas repeaterAtlas = new TextureAtlas(Gdx.files.internal("plants/repeater-idle.atlas"));
         x = CARD_START_X + (col * (50 + CARD_SPACING));
         PlantCard repeaterCard = new PlantCard(
             repeaterAtlas.findRegion("tile000"),

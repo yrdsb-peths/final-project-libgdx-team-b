@@ -6,7 +6,7 @@ import ca.codepet.worlds.DayWorld;
 
 public class WaveManager {
     private DayWorld world;
-    private float timeBetweenWaves = 20f; // seconds
+    private float timeBetweenWaves = 2f; // seconds
     private float waveTimer = 0f;
     private int currentWave = 0;
     private boolean waveInProgress = false;
