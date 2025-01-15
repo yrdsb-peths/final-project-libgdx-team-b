@@ -21,7 +21,7 @@ public class PlantPicker {
     private Array<PlantCard> plantCards;
 
     // Constants for card layout
-    private static final int CARD_SPACING = 10;
+    private static final int CARD_SPACING = 20;
     private static final int CARDS_PER_ROW = 4;
     private static final float CARD_START_X = 15;
     private static final float CARD_START_Y = 375;

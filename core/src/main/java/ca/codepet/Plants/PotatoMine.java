@@ -27,7 +27,7 @@ public class PotatoMine extends Plant {
     public PotatoMine(float x, float y) {
         super(x, y);
         health = DEFAULT_HEALTH;
-        setScale(2.3f);  // Add this line to scale the potato mine
+        setScale(2.7f);  // Add this line to scale the potato mine
         
         // Load popup animation
         TextureAtlas popupAtlas = new TextureAtlas(Gdx.files.internal("plants/potato-popup.atlas"));
