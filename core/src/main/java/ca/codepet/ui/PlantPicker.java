@@ -75,7 +75,8 @@ public class PlantPicker {
             7.5f,
             "Sunflower",
             x,
-            y
+            y,
+            1.1f
         );
         plantCards.add(sunflowerCard);
 
@@ -89,7 +90,8 @@ public class PlantPicker {
             10f,
             "PotatoMine",
             x,
-            y
+            y,
+            1.4f
         );
         plantCards.add(potatoCard);
 
@@ -103,9 +105,40 @@ public class PlantPicker {
             10f,
             "Walnut",
             x,
-            y
+            y,
+            1.3f
         );
         plantCards.add(walnutCard);
+
+        // Add TallNut card
+        col++;
+        TextureAtlas tallnutAtlas = new TextureAtlas(Gdx.files.internal("plants/tall-nut-1.atlas"));
+        x = CARD_START_X + (col * (50 + CARD_SPACING));
+        PlantCard tallnutCard = new PlantCard(
+            tallnutAtlas.findRegion("120244-0"),
+            125,
+            15f,
+            "TallNut",
+            x,
+            y,
+            1f
+        );
+        plantCards.add(tallnutCard);
+
+        // Add Repeater card
+        col++;
+        TextureAtlas repeaterAtlas = new TextureAtlas(Gdx.files.internal("plants/repeater.atlas"));
+        x = CARD_START_X + (col * (50 + CARD_SPACING));
+        PlantCard repeaterCard = new PlantCard(
+            repeaterAtlas.findRegion("tile000"),
+            200,
+            7.5f,
+            "Repeater",
+            x,
+            y,
+            1.4f  // Added scale parameter to make the icon larger
+        );
+        plantCards.add(repeaterCard);
     }
 
     public void render() {
@@ -157,21 +190,12 @@ public class PlantPicker {
         if (!card.isSelected()) {
             card.setSelected(true);
             
-            // Create a new card instance for the plant bar
-            PlantCard barCard = new PlantCard(
-                card.getCardTexture(),
-                card.getCost(),
-                card.getCooldown(),
-                card.getPlantType(),
-                card.getBounds().x,
-                card.getBounds().y
-            );
+            // Create new card instance using copy constructor
+            PlantCard barCard = new PlantCard(card, card.getBounds().x, card.getBounds().y);
             
             if (plantBar.addCard(barCard)) {
-                // Darken the original card in picker
                 card.setDarkened(true);
             } else {
-                // If card couldn't be added to bar, unselect it
                 card.setSelected(false);
             }
         }
