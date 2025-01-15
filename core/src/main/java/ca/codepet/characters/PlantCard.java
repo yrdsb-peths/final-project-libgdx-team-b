@@ -152,13 +152,12 @@ public class PlantCard {
     }
 
     public void render(SpriteBatch batch) {
-        // Store original color
         float originalR = batch.getColor().r;
         float originalG = batch.getColor().g; 
         float originalB = batch.getColor().b;
         float originalA = batch.getColor().a;
 
-        // Determine darkening level
+        // Determine darkening level - prioritize cooldown over affordability
         float darkenAmount;
         if (isOnCooldown()) {
             darkenAmount = COOLDOWN_DARKEN;

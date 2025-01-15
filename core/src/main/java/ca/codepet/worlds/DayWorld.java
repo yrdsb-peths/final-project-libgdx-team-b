@@ -140,6 +140,7 @@ public class DayWorld implements Screen {
                 gameStarted = true;
                 // Start cooldowns for all plant cards when game starts
                 plantBar.startAllCardCooldowns();
+                plantBar.startGame();  // Add this line to enable affordability checks
             }
 
             if (Gdx.input.justTouched()) {
@@ -165,7 +166,7 @@ public class DayWorld implements Screen {
         // Handle dragging
         if (Gdx.input.justTouched()) {
             draggedCard = plantBar.checkCardDragStart(mouseX, mouseY);
-            if (draggedCard != null) {
+            if (draggedCard != null && plantBar.canAffordCard(draggedCard)) {
                 // Create actual plant and ghost plant
                 if (draggedCard.getPlantType().equals("Peashooter")) {
                     draggedPlant = new Peashooter(mouseX, mouseY);
@@ -174,6 +175,8 @@ public class DayWorld implements Screen {
                     draggedPlant = new Sunflower(mouseX, mouseY, this);
                     ghostPlant = new Sunflower(0, 0, this);
                 }
+            } else {
+                draggedCard = null;
             }
         } else if (draggedCard != null) {
             // Update dragged plant position
