@@ -106,6 +106,20 @@ public class PlantPicker {
             y
         );
         plantCards.add(walnutCard);
+
+        // Add TallNut card
+        col++;
+        TextureAtlas tallnutAtlas = new TextureAtlas(Gdx.files.internal("plants/tall-nut-1.atlas"));
+        x = CARD_START_X + (col * (50 + CARD_SPACING));
+        PlantCard tallnutCard = new PlantCard(
+            tallnutAtlas.findRegion("120244-0"),
+            125,
+            15f,
+            "TallNut",
+            x,
+            y
+        );
+        plantCards.add(tallnutCard);
     }
 
     public void render() {

@@ -1,0 +1,33 @@
+tall-nut-2.png
+size: 102, 46
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+120244-18
+  rotate: false
+  xy: 1, 1
+  size: 32, 44
+  orig: 32, 44
+  offset: 0, 0
+  index: -1
+120244-19
+  rotate: false
+  xy: 35, 1
+  size: 32, 43
+  orig: 32, 43
+  offset: 0, 0
+  index: -1
+120244-20
+  rotate: false
+  xy: 69, 1
+  size: 32, 41
+  orig: 32, 41
+  offset: 0, 0
+  index: -1
+120244-21
+  rotate: false
+  xy: 35, 1
+  size: 32, 43
+  orig: 32, 43
+  offset: 0, 0
+  index: -1
