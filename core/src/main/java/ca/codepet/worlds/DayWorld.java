@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.Array;
 
 import ca.codepet.Plant;
 import ca.codepet.Plants.Peashooter;
+import ca.codepet.Plants.PotatoMine;
 import ca.codepet.Plants.Sunflower;
 import ca.codepet.Zombies.BasicZombie;
 import ca.codepet.Zombies.BucketheadZombie;
@@ -208,6 +209,9 @@ public class DayWorld implements Screen {
                 } else if (draggedCard.getPlantType().equals("Sunflower")) {
                     draggedPlant = new Sunflower(mouseX, mouseY, this);
                     ghostPlant = new Sunflower(0, 0, this);
+                } else if (draggedCard.getPlantType().equals("PotatoMine")) {
+                    draggedPlant = new PotatoMine(mouseX, mouseY);
+                    ghostPlant = new PotatoMine(0, 0);
                 }
             } else {
                 draggedCard = null;
@@ -314,8 +318,18 @@ public class DayWorld implements Screen {
             zombie.update(delta);
             
             if(plant != null) {
-                if(zombie.canAttack()) {  // Only attack if cooldown is ready
-                    zombie.attack(plant);
+                if(zombie.canAttack()) {
+                    if (plant instanceof PotatoMine) {
+                        PotatoMine potatoMine = (PotatoMine)plant;
+                        if (potatoMine.isArmed() && !potatoMine.hasExploded()) {
+                            potatoMine.explode();
+                            zombie.damage((int)potatoMine.getExplosionDamage());
+                        } else {
+                            zombie.attack(plant);
+                        }
+                    } else {
+                        zombie.attack(plant);
+                    }
                     if(plant.isDead()) plants[zombie.getRow()][zombie.getCol()] = null;
                 }
             } else {

@@ -129,6 +129,13 @@ public abstract class Zombie {
         chompSounds[rand.nextInt(chompSounds.length)].play(0.5f);
     }
 
+    public void damage(int dmg) {
+        hp -= dmg;
+        if (hp <= 0) {
+            world.removeZombie(this);
+        }
+    }
+
     public int getRow() {
         return row;
     }

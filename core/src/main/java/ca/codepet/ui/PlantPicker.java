@@ -78,6 +78,20 @@ public class PlantPicker {
             y
         );
         plantCards.add(sunflowerCard);
+
+        // PotatoMine card
+        col++;
+        TextureAtlas potatoAtlas = new TextureAtlas(Gdx.files.internal("plants/potato-idle.atlas"));
+        x = CARD_START_X + (col * (50 + CARD_SPACING));
+        PlantCard potatoCard = new PlantCard(
+            potatoAtlas.findRegion("tile000"),
+            25,
+            10f,
+            "PotatoMine",
+            x,
+            y
+        );
+        plantCards.add(potatoCard);
     }
 
     public void render() {

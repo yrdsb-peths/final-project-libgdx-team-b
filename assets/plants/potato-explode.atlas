@@ -1,0 +1,61 @@
+potato-explode.png
+size: 522, 60
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+10
+  rotate: false
+  xy: 0, 0
+  size: 53, 60
+  orig: 53, 60
+  offset: 0, 0
+  index: -1
+11
+  rotate: false
+  xy: 53, 0
+  size: 53, 60
+  orig: 53, 60
+  offset: 0, 0
+  index: -1
+12
+  rotate: false
+  xy: 106, 0
+  size: 58, 60
+  orig: 58, 60
+  offset: 0, 0
+  index: -1
+13
+  rotate: false
+  xy: 164, 0
+  size: 65, 60
+  orig: 65, 60
+  offset: 0, 0
+  index: -1
+14
+  rotate: false
+  xy: 229, 0
+  size: 69, 60
+  orig: 69, 60
+  offset: 0, 0
+  index: -1
+15
+  rotate: false
+  xy: 298, 0
+  size: 71, 60
+  orig: 71, 60
+  offset: 0, 0
+  index: -1
+16
+  rotate: false
+  xy: 369, 0
+  size: 76, 60
+  orig: 76, 60
+  offset: 0, 0
+  index: -1
+17'
+  rotate: false
+  xy: 445, 0
+  size: 77, 60
+  orig: 77, 60
+  offset: 0, 0
+  index: -1
