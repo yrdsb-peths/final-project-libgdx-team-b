@@ -306,15 +306,14 @@ public class DayWorld implements Screen {
 
     private void renderLawnmower() {
         Array<Lawnmower> lawnmowersToRemove = new Array<>();
-        Array<Zombie> zombiesToRemove = new Array<>();
 
         for(Lawnmower lawnmower : lawnmowers) {
             if(lawnmower.getIsActivated()) {
                 lawnmower.move();
 
                 for(Zombie zombie : zombies) {
-                    if(checkCollision(lawnmower, zombie)) {
-                        zombiesToRemove.add(zombie);
+                    if(checkCollision(lawnmower, zombie) && !zombie.isSquashed()) {
+                        zombie.squash(); // Only squash if not already squashed
                     }
                 }
             }
@@ -327,6 +326,14 @@ public class DayWorld implements Screen {
 
             if(lawnmower.getX() > Gdx.graphics.getWidth()) {
                 lawnmowersToRemove.add(lawnmower);
+            }
+        }
+
+        // Check for zombies that have completed their squash animation
+        Array<Zombie> zombiesToRemove = new Array<>();
+        for(Zombie zombie : zombies) {
+            if(zombie.isSquashed() && zombie.getSquashTimer() >= zombie.SQUASH_DURATION) {
+                zombiesToRemove.add(zombie);
             }
         }
 
@@ -344,10 +351,9 @@ public class DayWorld implements Screen {
     private void renderZombie(float delta) {
         Array<Zombie> zombiesToRemove = new Array<>();
       
-        // Draw zombies second (on top of plants)
         for(Zombie zombie : zombies) {
             // Check if zombie reached the house
-            if(zombie.getCol() < 0) {
+            if(zombie.hasReachedHouse() && !zombie.isSquashed()) {
                 Lawnmower lawnmower = null;
                 for(Lawnmower lm : lawnmowers) {
                     if(lm.getRow() == zombie.getRow()) {
@@ -362,46 +368,47 @@ public class DayWorld implements Screen {
                 } else {
                     lawnmower.activate();
                 }
-                
+            }
+
+            zombie.update(delta);
+            
+            if(zombie.isSquashed() && zombie.getSquashTimer() >= Zombie.SQUASH_DURATION) {
                 zombiesToRemove.add(zombie);
                 continue;
             }
 
-            // Update zombie first
-            zombie.update(delta);
-            
-            // Then render
+            // Render zombie
             batch.draw(zombie.getTextureRegion(), 
                       zombie.getX() + zombie.getXOffset(), 
                       (LAWN_HEIGHT - zombie.getRow()) * LAWN_TILEHEIGHT - (zombie.getHeight() - LAWN_TILEHEIGHT)/2 + zombie.getYOffset(),
+                      zombie.getWidth()/2,
+                      zombie.getHeight()/2,
                       zombie.getWidth(),
-                      zombie.getHeight());
+                      zombie.getHeight(),
+                      1,
+                      zombie.getScaleY(),
+                      zombie.getRotation());
 
-            // Handle plant interactions
-            Plant plant = plants[zombie.getRow()][zombie.getCol()];
-            if(plant != null) {
-                if(zombie.canAttack()) {
-                    if (plant instanceof PotatoMine) {
-                        PotatoMine potatoMine = (PotatoMine)plant;
-                        if (potatoMine.isArmed() && !potatoMine.hasExploded()) {
-                            potatoMine.explode();
-                            zombie.damage((int)potatoMine.getExplosionDamage());
-                        } else {
+            // Only move or attack if not squashed
+            if(!zombie.isSquashed()) {
+                // Add bounds checking before accessing plants array
+                int row = zombie.getRow();
+                int col = zombie.getCol();
+                if(row >= 0 && row < LAWN_HEIGHT && col >= 0 && col < LAWN_WIDTH) {
+                    Plant plant = plants[row][col];
+                    if(plant != null) {
+                        if(zombie.canAttack()) {
                             zombie.attack(plant);
+                            if(plant.isDead()) {
+                                plants[row][col] = null;
+                            }
                         }
                     } else {
-                        zombie.attack(plant);
+                        zombie.move();
                     }
-                    if(plant.isDead()) plants[zombie.getRow()][zombie.getCol()] = null;
-
-                    zombie.attack(plant);
-                  
-                    if(plant.isDead()) {
-                        plants[zombie.getRow()][zombie.getCol()] = null;
-                    }
+                } else {
+                    zombie.move();
                 }
-            } else {
-                zombie.move();
             }
         }
 

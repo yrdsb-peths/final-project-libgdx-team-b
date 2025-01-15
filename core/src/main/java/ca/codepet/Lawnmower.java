@@ -11,10 +11,10 @@ public class Lawnmower implements Collidable {
     private int row;
     private int x, y;
 
-    int width = 50;
-    int height = 80;
+    int width = 60;
+    int height = 60;
 
-    int offSetY = 30;
+    int offSetY = 70;
 
     boolean isActivated = false;
 

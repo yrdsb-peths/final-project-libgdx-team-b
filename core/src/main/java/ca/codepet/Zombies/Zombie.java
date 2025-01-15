@@ -53,6 +53,12 @@ public abstract class Zombie implements Collidable {
     private int xOffset = -40; // Adjust this value as needed
     private int yOffset = -40;  // Adjust this value as needed
 
+    private float rotation = 0;
+    private float scaleY = 1;
+    private boolean isSquashed = false;
+    public static final float SQUASH_DURATION = 0.5f;
+    private float squashTimer = 0;
+
     public Zombie(DayWorld theWorld, Texture zombieTexture, int hp, int damage, float atkDelay)
     {
         this.hp = hp;
@@ -114,14 +120,24 @@ public abstract class Zombie implements Collidable {
 
     public void move() {
         x -= 1;
-        col = (int) (x/world.getLawnTileWidth()) - 1 ;
-        if(col > 9) col = 8;
-        
+        // Add bounds checking for column calculation
+        int newCol = (int) (x/world.getLawnTileWidth()) - 1;
+        col = Math.min(Math.max(newCol, 0), 8); // Clamp between 0 and 8
+    }
+
+    public boolean hasReachedHouse() {
+        return x <= world.getLawnTileWidth(); // Add this method
     }
 
     public void update(float delta) {
         attackTimer += delta;
         stateTime += delta;  // Update animation state time
+
+        if (isSquashed) {
+            squashTimer += delta;
+            rotation = Math.min(90, squashTimer * (90/SQUASH_DURATION));
+            scaleY = Math.max(0.3f, 1 - (squashTimer/SQUASH_DURATION));
+          
         groanTimer += delta;
         if (groanTimer >= GROAN_INTERVAL) {
             playGroanSound();
@@ -184,5 +200,26 @@ public abstract class Zombie implements Collidable {
         for(Sound sound : groanSounds) {
             sound.dispose();
         }
+    }
+
+    public void squash() {
+        isSquashed = true;
+        squashTimer = 0;
+    }
+
+    public float getRotation() {
+        return rotation;
+    }
+
+    public float getScaleY() {
+        return scaleY;
+    }
+
+    public boolean isSquashed() {
+        return isSquashed;
+    }
+
+    public float getSquashTimer() {
+        return squashTimer;
     }
 }
