@@ -15,10 +15,10 @@ public class Lawnmower implements Collidable {
 
     private final Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/lawnmower.ogg"));
 
-    int width = 60;
-    int height = 60;
+    int width = 80;
+    int height = 80;
 
-    int offSetY = 70;
+    int offSetY = 60;
 
     boolean isActivated = false;
 
@@ -33,7 +33,7 @@ public class Lawnmower implements Collidable {
     }
 
     public void activate() {
-        sound.play(0.7f);
+        sound.play(0.2f);
         isActivated = true;
     }
 

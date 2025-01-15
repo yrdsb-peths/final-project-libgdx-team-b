@@ -35,8 +35,8 @@ public abstract class Zombie implements Collidable {
     private static final float GROAN_INTERVAL = 5f; // Groan every 5 seconds
 
     private int row, col;
-
-    private int damage = 10;
+    
+    private int damage = 30;
 
     private float atkDelay; // 1 second between attacks
     private float attackTimer = 0.0f;

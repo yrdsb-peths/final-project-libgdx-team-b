@@ -95,11 +95,15 @@ public class DayWorld implements Screen {
     private final Sound loseSound = Gdx.audio.newSound(Gdx.files.internal("sounds/loseMusic.ogg"));
     private final Sound shovelSound = Gdx.audio.newSound(Gdx.files.internal("sounds/shovel.ogg"));
     private Sound sunPickupSound = Gdx.audio.newSound(Gdx.files.internal("sounds/sunPickup.mp3"));
+    private final Sound buttonClickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/buttonClick.ogg"));
 
     protected Sound[] plantSpawnSound;
 
     private final Sound backgroundMusic = Gdx.audio.newSound(Gdx.files.internal("sounds/dayMusic.mp3"));
     private long backgroundMusicId;
+
+    private float gameOverScale = 0f;
+    private Texture gameOverTexture;
 
     public DayWorld(GameRoot game) {
         this.game = game;
@@ -135,7 +139,9 @@ public class DayWorld implements Screen {
         waveManager = new WaveManager(this);
 
         // Start playing background music on loop
-        backgroundMusicId = backgroundMusic.loop(0.3f); // 0.3f is the volume, adjust as needed
+        backgroundMusicId = backgroundMusic.loop(0.2f); 
+
+        gameOverTexture = new Texture("images/gameOver.png");
     }
 
     @Override
@@ -524,14 +530,28 @@ public class DayWorld implements Screen {
             loseSoundPlayed = true;
         }
         
+        // Update scale
+        gameOverScale = Math.min(1.0f, gameOverScale + delta * 2); // Adjust the multiplication factor to control animation speed
+        
         endGameTimer += delta;
         if (endGameTimer >= END_GAME_TIMER) {
             endGameTimer = 0f;
+            gameOverTexture.dispose();
             game.setScreen(new Menu(game));
+            return;
         }
 
         batch.begin();
-        batch.draw(new Texture("images/gameOver.png"), 0, 0);
+        // Draw with scaling from center
+        float width = gameOverTexture.getWidth() * gameOverScale;
+        float height = gameOverTexture.getHeight() * gameOverScale;
+        float x = (Gdx.graphics.getWidth() - width) / 2;
+        float y = (Gdx.graphics.getHeight() - height) / 2;
+        
+        batch.draw(gameOverTexture, 
+                  x, y,             // Position
+                  width, height     // Size
+        );
         batch.end();
     }
 
@@ -608,5 +628,10 @@ public class DayWorld implements Screen {
         sunPickupSound.dispose();
         backgroundMusic.stop();
         backgroundMusic.dispose();
+        buttonClickSound.dispose();
+
+        if (gameOverTexture != null) {
+            gameOverTexture.dispose();
+        }
     }
 }

@@ -31,6 +31,13 @@ public class Menu implements Screen {
 
     Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/menuMusic.mp3"));
 
+    Sound buttonClick = Gdx.audio.newSound(Gdx.files.internal("sounds/buttonClick.ogg"));
+
+    private long buttonClickId;
+    private boolean buttonClicked = false;
+    private float buttonClickTimer = 0f;
+    private static final float CLICK_SOUND_DURATION = 0.5f; // Adjust this value based on your sound length
+
     public Menu(GameRoot game) {
         
     System.out.println(buttonX);
@@ -46,8 +53,8 @@ public class Menu implements Screen {
         button.setButtonListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                dispose();
-                game.setScreen(new DayWorld(game));
+                buttonClickId = buttonClick.play(0.3f);
+                buttonClicked = true;
                 return true;
             }
         });
@@ -66,6 +73,15 @@ public class Menu implements Screen {
 
     @Override
     public void render(float delta) {
+        if (buttonClicked) {
+            buttonClickTimer += delta;
+            if (buttonClickTimer >= CLICK_SOUND_DURATION) {
+                dispose();
+                game.setScreen(new DayWorld(game));
+                return;
+            }
+        }
+
         game.batch.begin();
         game.batch.draw(menuTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         game.batch.end();
@@ -97,7 +113,11 @@ public class Menu implements Screen {
     @Override
     public void dispose() {
         // Destroy screen's assets here.
+        buttonClick.dispose();
         sound.dispose();
         button.dispose();
+        if (!buttonClicked) {
+            buttonClick.dispose(); // Only dispose if button wasn't clicked
+        }
     }
 }
