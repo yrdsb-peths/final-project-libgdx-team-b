@@ -34,7 +34,8 @@ public abstract class Zombie implements Collidable {
     private float groanTimer = 0f;
     private static final float GROAN_INTERVAL = 5f; // Groan every 5 seconds
 
-    private int row, col;
+    private int row;
+    private int col = 8;
     
     private int damage = 30;
 
@@ -122,6 +123,7 @@ public abstract class Zombie implements Collidable {
         // Add bounds checking for column calculation
         int newCol = (int) (x / world.getLawnTileWidth()) - 1;
         col = Math.min(Math.max(newCol, 0), 8); // Clamp between 0 and 8
+
     }
 
     public boolean hasReachedHouse() {

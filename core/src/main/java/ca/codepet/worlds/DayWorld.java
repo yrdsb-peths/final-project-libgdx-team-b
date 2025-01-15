@@ -406,6 +406,7 @@ public class DayWorld implements Screen {
                 int col = zombie.getCol();
                 if(row >= 0 && row < LAWN_HEIGHT && col >= 0 && col < LAWN_WIDTH) {
                     Plant plant = plants[row][col];
+                    System.out.println(col);
                     if(plant != null) {
                         // Check if it's a potato mine and handle explosion
                         if(plant instanceof PotatoMine) {
