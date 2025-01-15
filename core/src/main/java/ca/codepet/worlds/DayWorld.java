@@ -181,19 +181,22 @@ public class DayWorld implements Screen {
                 draggedPlant.setPosition(mouseX, mouseY);
             }
             
-            // Update ghost plant position
-            if (ghostPlant != null && clickedTileX >= 0 && clickedTileX < LAWN_WIDTH && 
+            // Update ghost plant position and validity
+            isValidPlacement = false;
+            if (clickedTileX >= 0 && clickedTileX < LAWN_WIDTH && 
                 clickedTileY >= 0 && clickedTileY < LAWN_HEIGHT) {
-                float plantX = LAWN_TILEX + (clickedTileX * LAWN_TILEWIDTH) + (LAWN_TILEWIDTH / 2);
-                float plantY = LAWN_TILEY - (clickedTileY * LAWN_TILEHEIGHT) + (LAWN_TILEHEIGHT / 2);
-                ghostPlant.setPosition(plantX, plantY);
+                if (ghostPlant != null) {
+                    float plantX = LAWN_TILEX + (clickedTileX * LAWN_TILEWIDTH) + (LAWN_TILEWIDTH / 2);
+                    float plantY = LAWN_TILEY - (clickedTileY * LAWN_TILEHEIGHT) + (LAWN_TILEHEIGHT / 2);
+                    ghostPlant.setPosition(plantX, plantY);
+                }
                 isValidPlacement = plants[clickedTileY][clickedTileX] == null;
             }
             
             if (!Gdx.input.isTouched()) {
+                // Only try to place plant if we're in valid bounds and placement is valid
                 if (isValidPlacement && clickedTileX >= 0 && clickedTileX < LAWN_WIDTH && 
-                    clickedTileY >= 0 && clickedTileY < LAWN_HEIGHT &&
-                    plants[clickedTileY][clickedTileX] == null) {
+                    clickedTileY >= 0 && clickedTileY < LAWN_HEIGHT) {
                     
                     if (plantBar.deductSun(draggedCard.getCost())) {
                         float plantX = LAWN_TILEX + (clickedTileX * LAWN_TILEWIDTH) + (LAWN_TILEWIDTH / 2);
@@ -205,8 +208,13 @@ public class DayWorld implements Screen {
                 }
                 
                 // Clean up
-                if (draggedPlant != null && plants[clickedTileY][clickedTileX] != draggedPlant) {
-                    draggedPlant.dispose();
+                if (draggedPlant != null) {
+                    if (clickedTileX < 0 || clickedTileX >= LAWN_WIDTH || 
+                        clickedTileY < 0 || clickedTileY >= LAWN_HEIGHT ||
+                        !isValidPlacement ||
+                        plants[clickedTileY][clickedTileX] != draggedPlant) {
+                        draggedPlant.dispose();
+                    }
                 }
                 if (ghostPlant != null) {
                     ghostPlant.dispose();

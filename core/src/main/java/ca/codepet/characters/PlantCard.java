@@ -158,11 +158,11 @@ public class PlantCard {
         float originalB = batch.getColor().b;
         float originalA = batch.getColor().a;
 
-        // Determine darkening level - Check cooldown first, then affordability
+        // Determine darkening level
         float darkenAmount;
         if (isOnCooldown()) {
             darkenAmount = COOLDOWN_DARKEN;
-        } else if (!isAffordable && !isOnCooldown()) {  // Only check affordability if not on cooldown
+        } else if (!isAffordable) {
             darkenAmount = UNAFFORDABLE_DARKEN;
         } else if (isSelected) {
             darkenAmount = SELECTED_DARKEN;
