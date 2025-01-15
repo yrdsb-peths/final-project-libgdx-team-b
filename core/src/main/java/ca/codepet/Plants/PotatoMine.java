@@ -14,7 +14,7 @@ public class PotatoMine extends Plant {
     private static final int EXPLODE_FRAMES = 8;
     private static final int DEFAULT_HEALTH = 300;
     
-    private static final float ARMING_TIME = 1f;
+    private static final float ARMING_TIME = 10f;
     private float armingTimer = 0f;
     private boolean isArmed = false;
     private boolean hasExploded = false;
