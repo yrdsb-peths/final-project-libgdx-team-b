@@ -1,5 +1,7 @@
 package ca.codepet;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
@@ -10,6 +12,8 @@ public class Lawnmower implements Collidable {
     private TextureRegion textureRegion;
     private int row;
     private int x, y;
+
+    private final Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/lawnmower.ogg"));
 
     int width = 60;
     int height = 60;
@@ -29,6 +33,7 @@ public class Lawnmower implements Collidable {
     }
 
     public void activate() {
+        sound.play(0.7f);
         isActivated = true;
     }
 

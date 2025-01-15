@@ -1,6 +1,7 @@
 package ca.codepet.Plants;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
@@ -13,12 +14,14 @@ public class PotatoMine extends Plant {
     private static final int EXPLODE_FRAMES = 8;
     private static final int DEFAULT_HEALTH = 300;
     
-    private static final float ARMING_TIME = 1f;
+    private static final float ARMING_TIME = 10f;
     private float armingTimer = 0f;
     private boolean isArmed = false;
     private boolean hasExploded = false;
     private boolean hasPopped = false;
     private float explosionDamage = 1800f;
+
+    private final Sound explodeSound = Gdx.audio.newSound(Gdx.files.internal("sounds/potato_mine.ogg"));
     
     public PotatoMine(float x, float y) {
         super(x, y);
@@ -99,6 +102,8 @@ public class PotatoMine extends Plant {
     }
     
     public void explode() {
+        explodeSound.play(0.8f);
+
         if (!hasExploded && isArmed) {
             hasExploded = true;
             setAnimation("explode");
@@ -112,5 +117,10 @@ public class PotatoMine extends Plant {
     
     public boolean hasExploded() {
         return hasExploded;
+    }
+
+    public void dispose() {
+        super.dispose();
+        explodeSound.dispose();
     }
 }

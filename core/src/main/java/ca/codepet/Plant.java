@@ -8,6 +8,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.Gdx;
+import java.util.Random;
 
 public abstract class Plant {
     protected float x, y;
@@ -18,10 +21,28 @@ public abstract class Plant {
     protected float imageIndex = 0f;
     protected float alpha = 1.0f;
     protected float scale = 1f; // Add this line
+    protected Sound[] hitSounds;
+    protected Sound[] deathSounds;
+    protected Random rand = new Random();
 
     public Plant(float x, float y) {
         this.x = x;
         this.y = y;
+        
+
+        
+
+        // // Load hit sounds
+        // hitSounds = new Sound[] {
+        //     Gdx.audio.newSound(Gdx.files.internal("sounds/plant_hit1.ogg")),
+        //     Gdx.audio.newSound(Gdx.files.internal("sounds/plant_hit2.ogg"))
+        // };
+        
+        // // Load death sounds
+        // deathSounds = new Sound[] {
+        //     Gdx.audio.newSound(Gdx.files.internal("sounds/plant_death1.ogg")),
+        //     Gdx.audio.newSound(Gdx.files.internal("sounds/plant_death2.ogg"))
+        // };
     }
 
     protected void setAnimation(String spr) {
@@ -44,12 +65,22 @@ public abstract class Plant {
 
     public boolean damage(int dmg) {
         health -= dmg;
-        if(health <= 0){
+        if(health <= 0) {
+            // playDeathSound();
             dispose();
             return true;
         }
+        // playHitSound();
         return false;
     }
+
+    // protected void playHitSound() {
+    //     hitSounds[rand.nextInt(hitSounds.length)].play(0.4f);
+    // }
+
+    // protected void playDeathSound() {
+    //     deathSounds[rand.nextInt(deathSounds.length)].play(0.5f);
+    // }
 
     public boolean isDead() {
         return health <= 0;
@@ -59,7 +90,13 @@ public abstract class Plant {
         for (Entry<String, Animation<AtlasRegion>> entry : animations.entries()) {
             entry.value.getKeyFrames()[0].getTexture().dispose();
         }
-        
+        // for(Sound sound : hitSounds) {
+        //     sound.dispose();
+        // }
+        // for(Sound sound : deathSounds) {
+        //     sound.dispose();
+        // }
+
     }
 
     public void setAlpha(float alpha) {

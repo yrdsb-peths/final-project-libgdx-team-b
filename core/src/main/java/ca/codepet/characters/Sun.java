@@ -1,6 +1,7 @@
 package ca.codepet.characters;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -16,6 +17,8 @@ public class Sun {
     private float timeTillDespawn = 5f; // seconds
 
     public Sun() {
+        
+
         sunTexture = new Texture("characters/sun.png");
         // Calculate size
         float aspectRatio = (float) sunTexture.getWidth() / sunTexture.getHeight();
