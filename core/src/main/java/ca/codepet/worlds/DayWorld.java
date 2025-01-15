@@ -202,32 +202,47 @@ public class DayWorld implements Screen {
     }
 
     private void renderLawnmower() {
+        Array<Lawnmower> lawnmowersToRemove = new Array<>();
+        Array<Zombie> zombiesToRemove = new Array<>();
+
         for(Lawnmower lawnmower : lawnmowers) {
             if(lawnmower.getIsActivated()) {
                 lawnmower.move();
 
                 for(Zombie zombie : zombies) {
                     if(checkCollision(lawnmower, zombie)) {
-                        removeZombie(zombie);
+                        zombiesToRemove.add(zombie);
                     }
                 }
             }
 
-            batch.draw(lawnmower.getTextureRegion(), lawnmower.getX(), lawnmower.getY(), lawnmower.getWidth(), lawnmower.getHeight());
+            batch.draw(lawnmower.getTextureRegion(), 
+                      lawnmower.getX(), 
+                      lawnmower.getY(), 
+                      lawnmower.getWidth(), 
+                      lawnmower.getHeight());
 
-            if(lawnmower.getX()> Gdx.graphics.getWidth()) {
-                lawnmower.dispose();
-                lawnmowers.removeValue(lawnmower, true);
-                break;
+            if(lawnmower.getX() > Gdx.graphics.getWidth()) {
+                lawnmowersToRemove.add(lawnmower);
             }
+        }
 
-            
+        // Clean up zombies and lawnmowers after iteration
+        for(Zombie zombie : zombiesToRemove) {
+            removeZombie(zombie);
         }
         
+        for(Lawnmower lawnmower : lawnmowersToRemove) {
+            lawnmower.dispose();
+            lawnmowers.removeValue(lawnmower, true);
+        }
     }
 
     private void renderZombie(float delta) {
+        Array<Zombie> zombiesToRemove = new Array<>();
+
         for(Zombie zombie : zombies) {
+            // Check if zombie reached the house
             if(zombie.getCol() < 0) {
                 Lawnmower lawnmower = null;
                 for(Lawnmower lm : lawnmowers) {
@@ -243,30 +258,37 @@ public class DayWorld implements Screen {
                     lawnmower.activate();
                 }
                 
-                break;
+                zombiesToRemove.add(zombie);
+                continue;
             }
+
+            // Update zombie first
+            zombie.update(delta);
             
-            
+            // Then render
             batch.draw(zombie.getTextureRegion(), 
                       zombie.getX(), 
                       (LAWN_HEIGHT - zombie.getRow()) * LAWN_TILEHEIGHT - (zombie.getHeight() - LAWN_TILEHEIGHT)/2,
                       zombie.getWidth(),
                       zombie.getHeight());
 
-
+            // Handle plant interactions
             Plant plant = plants[zombie.getRow()][zombie.getCol()];
-
-
-            zombie.update(delta);
-            
             if(plant != null) {
-                if(zombie.canAttack()) {  // Only attack if cooldown is ready
+                if(zombie.canAttack()) {
                     zombie.attack(plant);
-                    if(plant.isDead()) plants[zombie.getRow()][zombie.getCol()] = null;
+                    if(plant.isDead()) {
+                        plants[zombie.getRow()][zombie.getCol()] = null;
+                    }
                 }
             } else {
                 zombie.move();
             }
+        }
+
+        // Remove zombies after the iteration
+        for(Zombie zombie : zombiesToRemove) {
+            removeZombie(zombie);
         }
     }
 
