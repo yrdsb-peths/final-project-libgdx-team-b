@@ -17,6 +17,7 @@ public abstract class Plant {
     protected String currentAnimation = null;
     protected float imageIndex = 0f;
     protected float alpha = 1.0f;
+    protected float scale = 1f; // Add this line
 
     public Plant(float x, float y) {
         this.x = x;
@@ -70,14 +71,20 @@ public abstract class Plant {
         this.y = y;
     }
 
+    public void setScale(float scale) {
+        this.scale = scale;
+    }
+
     public void render(SpriteBatch batch) {
         AtlasRegion tex = getTexture();
-        float pX = x + tex.offsetX - tex.originalWidth / 2;
-        float pY = y + tex.offsetY - tex.originalHeight / 2;
+        if (tex == null || health <= 0) return; // Add this check
+        
+        float pX = x + tex.offsetX - (tex.originalWidth * scale) / 2;
+        float pY = y + tex.offsetY - (tex.originalHeight * scale) / 2;
         
         float oldAlpha = batch.getColor().a;
         batch.setColor(batch.getColor().r, batch.getColor().g, batch.getColor().b, alpha);
-        batch.draw(tex, pX, pY);
+        batch.draw(tex, pX, pY, tex.originalWidth * scale, tex.originalHeight * scale); // Modified to use scale
         batch.setColor(batch.getColor().r, batch.getColor().g, batch.getColor().b, oldAlpha);
     }
 

@@ -1,0 +1,40 @@
+potato-idle.png
+size: 28, 125
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tile000
+  rotate: false
+  xy: 0, 0
+  size: 28, 25
+  orig: 28, 25
+  offset: 0, 0
+  index: -1
+tile001
+  rotate: false
+  xy: 0, 25
+  size: 28, 25
+  orig: 28, 25
+  offset: 0, 0
+  index: -1
+tile002
+  rotate: false
+  xy: 0, 50
+  size: 28, 25
+  orig: 28, 25
+  offset: 0, 0
+  index: -1
+tile003
+  rotate: false
+  xy: 0, 75
+  size: 28, 25
+  orig: 28, 25
+  offset: 0, 0
+  index: -1
+tile004
+  rotate: false
+  xy: 0, 100
+  size: 28, 25
+  orig: 28, 25
+  offset: 0, 0
+  index: -1
