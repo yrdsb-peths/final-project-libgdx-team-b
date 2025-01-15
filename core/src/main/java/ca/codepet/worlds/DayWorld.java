@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.MathUtils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -82,6 +83,9 @@ public class DayWorld implements Screen {
     private boolean isShovelDragging = false;
 
     private WaveManager waveManager;
+
+    private final Sound loseSound = Gdx.audio.newSound(Gdx.files.internal("sounds/loseMusic.ogg"));
+    private boolean loseSoundPlayed = false;
 
     public DayWorld(GameRoot game) {
         this.game = game;
@@ -435,6 +439,11 @@ public class DayWorld implements Screen {
     }
 
     public void gameOver(float delta) {
+        if (!loseSoundPlayed) {
+            loseSound.play();
+            loseSoundPlayed = true;
+        }
+        
         endGameTimer += delta;
         if (endGameTimer >= END_GAME_TIMER) {
             endGameTimer = 0f;
@@ -504,5 +513,7 @@ public class DayWorld implements Screen {
 
         // Add to existing dispose method
         shovel.dispose();
+
+        loseSound.dispose();
     }
 }
