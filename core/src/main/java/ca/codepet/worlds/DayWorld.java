@@ -14,6 +14,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 
 import ca.codepet.Plant;
+import ca.codepet.Projectile;
+import ca.codepet.ShooterPlant;
 import ca.codepet.WaveManager;
 import ca.codepet.Plants.Peashooter;
 import ca.codepet.Plants.PotatoMine;
@@ -56,7 +58,7 @@ public class DayWorld implements Screen {
     final private int LAWN_TILEX = 56;
     final private int LAWN_TILEY = 416;
 
-    private static final float SUN_SPAWN_RATE = 7f; // seconds
+    private static final float SUN_SPAWN_RATE = 1f; // seconds
     private static final float END_GAME_TIMER = 5f; // seconds
 
     private boolean isGameOver = false;
@@ -281,11 +283,12 @@ public class DayWorld implements Screen {
             }
         }
 
+        updatePlants(delta);
+
         for (int y = 0; y < LAWN_HEIGHT; y++) {
             for (int x = 0; x < LAWN_WIDTH; x++) {
                 Plant p = plants[y][x];
                 if (p != null) {
-                    p.update(delta);
                     p.render(batch);
                 } else if (x == clickedTileX && y == clickedTileY) {
                     // Draw "ghost" of plant here
@@ -632,6 +635,44 @@ public class DayWorld implements Screen {
 
         if (gameOverTexture != null) {
             gameOverTexture.dispose();
+        }
+    }
+
+    private void updatePlants(float delta) {
+        for (int y = 0; y < LAWN_HEIGHT; y++) {
+            for (int x = 0; x < LAWN_WIDTH; x++) {
+                Plant p = plants[y][x];
+                if (p != null) {
+                    p.update(delta);
+                    
+                    // Handle shooter plant attacks
+                    if (p instanceof ShooterPlant) {
+                        ShooterPlant shooter = (ShooterPlant) p;
+                        shooter.tryAttack(zombies, y);
+                        
+                        // Check projectile collisions
+                        Array<Projectile> projectiles = shooter.getProjectiles();
+                        for (int i = projectiles.size - 1; i >= 0; i--) {
+                            Projectile proj = projectiles.get(i);
+                            
+                            // Use Collidable interface for collision detection
+                            for (Zombie zombie : zombies) {
+                                if (!zombie.isSquashed() && !proj.isHit() && checkCollision(proj, zombie)) {
+                                    zombie.damage(proj.getDamage());
+                                    proj.hit();
+                                    break;
+                                }
+                            }
+                            
+                            // Remove projectiles that are off screen
+                            if (proj.getX() > Gdx.graphics.getWidth()) {
+                                proj.dispose();
+                                projectiles.removeIndex(i);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

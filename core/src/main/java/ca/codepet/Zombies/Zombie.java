@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.utils.ObjectMap;
@@ -118,7 +119,7 @@ public abstract class Zombie implements Collidable {
     }
 
     public void move() {
-        x -= 1;
+        x -= 0.5; // Slower movement speed
         // Add bounds checking for column calculation
         int newCol = (int) (x / world.getLawnTileWidth()) - 1;
         col = Math.min(Math.max(newCol, 0), 8); // Clamp between 0 and 8
@@ -221,5 +222,9 @@ public abstract class Zombie implements Collidable {
 
     public float getSquashTimer() {
         return squashTimer;
+    }
+
+    public Rectangle getBounds() {
+        return new Rectangle(x + xOffset, y, width/2, height); // Adjust collision box
     }
 }

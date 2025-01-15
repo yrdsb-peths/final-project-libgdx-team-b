@@ -24,6 +24,9 @@ public abstract class Plant {
     protected Sound[] hitSounds;
     protected Sound[] deathSounds;
     protected Random rand = new Random();
+    protected float attackCooldown = 0;
+    protected float attackTimer = 0;
+    protected boolean isAttacking = false;
 
     public Plant(float x, float y) {
         this.x = x;
@@ -127,4 +130,25 @@ public abstract class Plant {
 
     public abstract void update(float delta);
 
+    public void startAttack() {
+        isAttacking = true;
+        setAnimationUnique("attack");
+    }
+
+    public void stopAttack() {
+        isAttacking = false;
+        setAnimationUnique("idle");
+    }
+
+    public boolean isAttacking() {
+        return isAttacking;
+    }
+
+    public boolean canAttack() {
+        return attackTimer >= attackCooldown;
+    }
+
+    public void resetAttackTimer() {
+        attackTimer = 0;
+    }
 }

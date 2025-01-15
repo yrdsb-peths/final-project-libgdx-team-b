@@ -1,0 +1,19 @@
+repeater-attack.png
+size: 56, 32
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tile000
+  rotate: false
+  xy: 30, 1
+  size: 25, 30
+  orig: 25, 30
+  offset: 0, 0
+  index: -1
+tile001
+  rotate: false
+  xy: 1, 1
+  size: 27, 30
+  orig: 27, 30
+  offset: 0, 0
+  index: -1

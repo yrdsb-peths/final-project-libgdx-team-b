@@ -1,12 +1,15 @@
 package ca.codepet;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Array;
+import ca.codepet.Zombies.Zombie;
+
 public abstract class ShooterPlant extends Plant {
-    enum State {
-        IDLE,
-        ATTACKING
-    }
-    State state = State.IDLE;
-    int range = 5;
+    protected Array<Projectile> projectiles = new Array<>();
+    protected int range = 800; // Shooting range in pixels
+    protected float attackTimer = 0;
+    protected float attackCooldown = 1.5f;
+    protected int currentRow;
 
     public ShooterPlant(float x, float y) {
         super(x, y);
@@ -15,13 +18,76 @@ public abstract class ShooterPlant extends Plant {
     @Override
     public void update(float delta) {
         imageIndex += delta;
-        switch(state) {
-            case IDLE:
-                setAnimationUnique("idle");
-            break;
-            case ATTACKING:
-                setAnimationUnique("attack");
-            break;
+        attackTimer += delta;
+        
+        // Update existing projectiles
+        for (int i = projectiles.size - 1; i >= 0; i--) {
+            Projectile proj = projectiles.get(i);
+            proj.update(delta);
+            
+            // Remove finished projectiles
+            if (proj.isFinished()) {
+                proj.dispose();
+                projectiles.removeIndex(i);
+            }
         }
+
+        // If attack animation is done, return to idle
+        if (isAttacking && animations.get("attack").isAnimationFinished(imageIndex)) {
+            stopAttack();
+        }
+    }
+
+    @Override
+    public void render(SpriteBatch batch) {
+        super.render(batch);
+        
+        // Render projectiles
+        for (Projectile proj : projectiles) {
+            proj.render(batch);
+        }
+    }
+
+    public void tryAttack(Array<Zombie> zombies, int row) {
+        this.currentRow = row;  // Store current row
+        if (attackTimer >= attackCooldown) {
+            // Look for zombies in range and same row
+            boolean foundTarget = false;
+            for (Zombie zombie : zombies) {
+                if (zombie.getRow() == row && !zombie.isSquashed()) {
+                    float distance = zombie.getX() - this.x;
+                    if (distance > 0 && distance <= range) {
+                        foundTarget = true;
+                        break;
+                    }
+                }
+            }
+            
+            if (foundTarget && !isAttacking) {
+                startAttack();
+                attackTimer = 0;
+                Projectile proj = createProjectile();
+                if (proj != null) {
+                    projectiles.add(proj);
+                }
+            } else if (!foundTarget && isAttacking) {
+                stopAttack();
+            }
+        }
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        for (Projectile proj : projectiles) {
+            proj.dispose();
+        }
+        projectiles.clear();
+    }
+
+    protected abstract Projectile createProjectile();
+
+    public Array<Projectile> getProjectiles() {
+        return projectiles;
     }
 }

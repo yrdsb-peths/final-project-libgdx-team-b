@@ -1,0 +1,40 @@
+peashooter-idle.png
+size: 26, 149
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tile000
+  rotate: false
+  xy: 0, 0
+  size: 26, 30
+  orig: 26, 30
+  offset: 0, 0
+  index: -1
+tile001
+  rotate: false
+  xy: 0, 30
+  size: 26, 30
+  orig: 26, 30
+  offset: 0, 0
+  index: -1
+tile002
+  rotate: false
+  xy: 0, 120
+  size: 26, 29
+  orig: 26, 29
+  offset: 0, 0
+  index: -1
+tile003
+  rotate: false
+  xy: 0, 60
+  size: 26, 30
+  orig: 26, 30
+  offset: 0, 0
+  index: -1
+tile004
+  rotate: false
+  xy: 0, 90
+  size: 26, 30
+  orig: 26, 30
+  offset: 0, 0
+  index: -1
