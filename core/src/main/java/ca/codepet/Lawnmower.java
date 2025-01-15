@@ -20,13 +20,12 @@ public class Lawnmower implements Collidable {
 
     public Lawnmower(DayWorld world, int row) {
         texture = new Texture("images/lawnmower.png");
-        this.row = row;
-
+        this.row = row; // Store the actual row number directly
 
         textureRegion = new TextureRegion(texture);
 
         x = 0;
-        y = row * world.getLawnTileHeight() + offSetY;
+        y = (world.getLawnHeight() - row - 1) * world.getLawnTileHeight() + offSetY;
     }
 
     public void activate() {

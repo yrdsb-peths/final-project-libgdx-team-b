@@ -66,7 +66,7 @@ public class DayWorld implements Screen {
     public void show() {
         addZombie(new BasicZombie(this));
         
-        for(int i = 0; i < LAWN_HEIGHT; i++) {
+        for(int i = LAWN_HEIGHT - 1; i >= 0; i--) {
             lawnmowers.add(new Lawnmower(this, i));
         }
         
@@ -215,7 +215,7 @@ public class DayWorld implements Screen {
 
             batch.draw(lawnmower.getTextureRegion(), lawnmower.getX(), lawnmower.getY(), lawnmower.getWidth(), lawnmower.getHeight());
 
-            if(lawnmower.getX() > Gdx.graphics.getWidth()) {
+            if(lawnmower.getX()> Gdx.graphics.getWidth()) {
                 lawnmower.dispose();
                 lawnmowers.removeValue(lawnmower, true);
                 break;
@@ -228,22 +228,24 @@ public class DayWorld implements Screen {
 
     private void renderZombie(float delta) {
         for(Zombie zombie : zombies) {
-
             if(zombie.getCol() < 0) {
-
+                Lawnmower lawnmower = null;
+                for(Lawnmower lm : lawnmowers) {
+                    if(lm.getRow() == zombie.getRow()) {
+                        lawnmower = lm;
+                        break;
+                    }
+                }
                 
-                if(lawnmowers.get(LAWN_HEIGHT - zombie.getRow() - 1) == null) {
-                    // removeZombie(zombie);
-                    // goEndscreen();
+                if(lawnmower == null) {
+                    // handle game over
                 } else {
-                    lawnmowers.get(LAWN_HEIGHT - zombie.getRow() - 1).activate();
+                    lawnmower.activate();
                 }
                 
                 break;
-                // TODO end screen go there
             }
             
-            // System.out.println(zombie.getRow());
             
             batch.draw(zombie.getTextureRegion(), 
                       zombie.getX(), 
@@ -269,7 +271,6 @@ public class DayWorld implements Screen {
     }
 
     public void addZombie(Zombie zombie) {
-        System.out.println(3333);
         zombies.add(zombie);
     }
     
@@ -290,7 +291,7 @@ public class DayWorld implements Screen {
     }
 
     private boolean checkCollision(Collidable left, Collidable right) {
-        return (left.getX() + left.getWidth()) > right.getX() && left.getRow() == right.getRow();
+        return  (left.getRow() == right.getRow()) && (left.getX() + left.getWidth()) > right.getX() ;
     }
 
     @Override
