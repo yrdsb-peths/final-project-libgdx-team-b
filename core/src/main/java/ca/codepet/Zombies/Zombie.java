@@ -30,6 +30,9 @@ public abstract class Zombie implements Collidable {
     private Texture zombieTexture;
     private TextureRegion textureRegion;
     private Sound[] chompSounds;
+    private Sound[] groanSounds;
+    private float groanTimer = 0f;
+    private static final float GROAN_INTERVAL = 5f; // Groan every 5 seconds
 
     private int row, col;
     
@@ -64,7 +67,18 @@ public abstract class Zombie implements Collidable {
         chompSounds = new Sound[] {
             Gdx.audio.newSound(Gdx.files.internal("sounds/chomp.ogg")),
             Gdx.audio.newSound(Gdx.files.internal("sounds/chomp2.ogg")),
-            Gdx.audio.newSound(Gdx.files.internal("sounds/chomp3.ogg"))
+            Gdx.audio.newSound(Gdx.files.internal("sounds/chomp3.ogg")),
+            Gdx.audio.newSound(Gdx.files.internal("sounds/chomp4.ogg"))
+        };
+
+        // Load multiple groan sounds
+        groanSounds = new Sound[] {
+            Gdx.audio.newSound(Gdx.files.internal("sounds/groan.ogg")),
+            Gdx.audio.newSound(Gdx.files.internal("sounds/groan2.ogg")),
+            Gdx.audio.newSound(Gdx.files.internal("sounds/groan3.ogg")),
+            Gdx.audio.newSound(Gdx.files.internal("sounds/groan4.ogg")),
+            Gdx.audio.newSound(Gdx.files.internal("sounds/groan5.ogg")),
+            Gdx.audio.newSound(Gdx.files.internal("sounds/groan6.ogg"))
         };
 
         world = theWorld;
@@ -108,6 +122,11 @@ public abstract class Zombie implements Collidable {
     public void update(float delta) {
         attackTimer += delta;
         stateTime += delta;  // Update animation state time
+        groanTimer += delta;
+        if (groanTimer >= GROAN_INTERVAL) {
+            playGroanSound();
+            groanTimer = 0f;
+        }
     }
 
     public boolean canAttack() {
@@ -130,6 +149,10 @@ public abstract class Zombie implements Collidable {
         chompSounds[rand.nextInt(chompSounds.length)].play(0.5f);
     }
 
+    private void playGroanSound() {
+        groanSounds[rand.nextInt(groanSounds.length)].play(0.3f);
+    }
+
     public int getRow() {
         return row;
     }
@@ -149,6 +172,9 @@ public abstract class Zombie implements Collidable {
     public void dispose() {
         zombieTexture.dispose();
         for(Sound sound : chompSounds) {
+            sound.dispose();
+        }
+        for(Sound sound : groanSounds) {
             sound.dispose();
         }
     }
