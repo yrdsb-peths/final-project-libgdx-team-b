@@ -6,8 +6,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.utils.ObjectMap;
 
 import ca.codepet.Collidable;
 import ca.codepet.Plant;
@@ -37,12 +38,18 @@ public abstract class Zombie implements Collidable {
     private float atkDelay; // 1 second between attacks
     private float attackTimer = 0.0f;
 
-    private int width = 64;
-    private int height = 120;
+    private int width = 135;
+    private int height = 160;
     
     DayWorld world;
 
-  
+    protected ObjectMap<String, Animation<AtlasRegion>> animations;
+    protected String currentAnimation = "walk";
+    protected float stateTime = 0;
+
+    private int xOffset = -40; // Adjust this value as needed
+    private int yOffset = -40;  // Adjust this value as needed
+
     public Zombie(DayWorld theWorld, Texture zombieTexture, int hp, int damage, float atkDelay)
     {
         this.hp = hp;
@@ -63,7 +70,8 @@ public abstract class Zombie implements Collidable {
         world = theWorld;
 
         row = rand.nextInt(world.getLawnHeight());
-        
+        this.animations = new ObjectMap<>();
+        currentAnimation = "walk"; // Set default animation
     }
 
     public Texture getTexture() {
@@ -71,7 +79,11 @@ public abstract class Zombie implements Collidable {
     }
 
     public TextureRegion getTextureRegion() {
-        return textureRegion;
+        Animation<AtlasRegion> currentAnim = animations.get(currentAnimation);
+        if (currentAnim != null) {
+            return currentAnim.getKeyFrame(stateTime, true);
+        }
+        return textureRegion; // Fallback to static texture if no animation
     }
 
     public int getWidth() {
@@ -95,6 +107,7 @@ public abstract class Zombie implements Collidable {
 
     public void update(float delta) {
         attackTimer += delta;
+        stateTime += delta;  // Update animation state time
     }
 
     public boolean canAttack() {
@@ -125,6 +138,14 @@ public abstract class Zombie implements Collidable {
         return col;
     }
     
+    public int getXOffset() {
+        return xOffset;
+    }
+    
+    public int getYOffset() {
+        return yOffset;
+    }
+
     public void dispose() {
         zombieTexture.dispose();
         for(Sound sound : chompSounds) {

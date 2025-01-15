@@ -22,6 +22,7 @@ public class PlantBar {
     private static final float CARD_SPACING = 65;
 
     private int sunDisplay = 0;
+    private boolean gameStarted = false;
 
     public PlantBar(int sun) {
         barTexture = new Texture("ui-components/bar.png");
@@ -40,8 +41,20 @@ public class PlantBar {
         selectedCards = new Array<>();
     }
 
+    public void startGame() {
+        gameStarted = true;
+        // Update initial affordability when game starts
+        for (PlantCard card : selectedCards) {
+            card.setAffordable(sunDisplay >= card.getCost());
+        }
+    }
+
     public void setSunDisplay(int sun) {
         sunDisplay = sun;
+        // Update affordability of all cards
+        for (PlantCard card : selectedCards) {
+            card.setAffordable(card.getCost() <= sun);
+        }
     }
 
     public boolean addCard(PlantCard card) {
@@ -49,6 +62,8 @@ public class PlantBar {
             float x = CARD_START_X + (selectedCards.size * CARD_SPACING);
             float y = Gdx.graphics.getHeight() - 90;
             card.setPosition(x, y);
+            card.updateOriginalPosition(x, y);  // Store original position when adding
+            card.setAffordable(sunDisplay >= card.getCost());  // Set initial affordability
             selectedCards.add(card);
             return true;
         }
@@ -59,10 +74,55 @@ public class PlantBar {
         for (PlantCard card : selectedCards) {
             if (card.contains(x, y)) {
                 selectedCards.removeValue(card, true);
+                repositionRemainingCards(); // Add this line
                 return card;
             }
         }
         return null;
+    }
+
+    public boolean canAffordCard(PlantCard card) {
+        return !gameStarted || sunDisplay >= card.getCost();
+    }
+    
+    public PlantCard checkCardDragStart(float x, float y) {
+        for (PlantCard card : selectedCards) {
+            if (card.contains(x, y) && !card.isOnCooldown() && canAffordCard(card)) {
+                card.startDragging(x, y);
+                return card;
+            }
+        }
+        return null;
+    }
+
+    // Add new method to start all cooldowns
+    public void startAllCardCooldowns() {
+        for (PlantCard card : selectedCards) {
+            card.startCooldown();
+        }
+    }
+
+    public void resetCardPosition(PlantCard card) {
+        // Find card index in selected cards
+        int index = selectedCards.indexOf(card, true);
+        if (index != -1) {
+            float x = CARD_START_X + (index * CARD_SPACING);
+            float y = Gdx.graphics.getHeight() - 90;
+            card.setPosition(x, y);
+            card.updateOriginalPosition(x, y);  // Update the original position
+        }
+    }
+
+    public boolean deductSun(int amount) {
+        if (sunDisplay >= amount) {
+            sunDisplay -= amount;
+            // Update affordability of all cards after deduction
+            for (PlantCard card : selectedCards) {
+                card.setAffordable(card.getCost() <= sunDisplay);
+            }
+            return true;
+        }
+        return false;
     }
 
     public void render() {
@@ -84,9 +144,29 @@ public class PlantBar {
         float textY = barY + newHeight - 75;
         font.draw(batch, sunText, textX, textY);
 
+        // Update cooldowns and affordability before rendering cards
+        for (PlantCard card : selectedCards) {
+            card.updateCooldown(Gdx.graphics.getDeltaTime());
+            if (gameStarted) {
+                card.setAffordable(sunDisplay >= card.getCost());  // Only check affordability after game starts
+            } else {
+                card.setAffordable(true);  // Always affordable during picking phase
+            }
+        }
+
         // Draw selected cards
         for (PlantCard card : selectedCards) {
-            card.render(batch);
+            if (!card.isDragging()) {
+                card.render(batch);
+            }
+        }
+        
+        // Draw dragged card last to appear on top
+        for (PlantCard card : selectedCards) {
+            if (card.isDragging()) {
+                card.render(batch);
+                break;
+            }
         }
 
         batch.end();
@@ -96,5 +176,16 @@ public class PlantBar {
         barTexture.dispose();
         batch.dispose();
         font.dispose();
+    }
+
+    // Add this new method
+    private void repositionRemainingCards() {
+        for (int i = 0; i < selectedCards.size; i++) {
+            PlantCard card = selectedCards.get(i);
+            float x = CARD_START_X + (i * CARD_SPACING);
+            float y = Gdx.graphics.getHeight() - 90;
+            card.setPosition(x, y);
+            card.updateOriginalPosition(x, y);
+        }
     }
 }

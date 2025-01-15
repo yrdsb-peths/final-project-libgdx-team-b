@@ -48,17 +48,15 @@ public class PlantPicker {
     }
 
     private void initializePlantCards() {
-        // Load Peashooter atlas and create card
-        TextureAtlas peashooterAtlas = new TextureAtlas(Gdx.files.internal("plants/Peashooter.atlas"));
         int row = 0;
         int col = 0;
         
+        // Peashooter card
+        TextureAtlas peashooterAtlas = new TextureAtlas(Gdx.files.internal("plants/Peashooter.atlas"));
         float x = CARD_START_X + (col * (50 + CARD_SPACING));
         float y = CARD_START_Y - (row * (70 + CARD_SPACING));
-        
-        // Create Peashooter card
         PlantCard peashooterCard = new PlantCard(
-            peashooterAtlas.findRegion("peashooter_idle1"),  // First frame of animation
+            peashooterAtlas.findRegion("peashooter_idle1"),
             100,
             7.5f,
             "Peashooter",
@@ -66,6 +64,20 @@ public class PlantPicker {
             y
         );
         plantCards.add(peashooterCard);
+
+        // Sunflower card
+        col++;
+        TextureAtlas sunflowerAtlas = new TextureAtlas(Gdx.files.internal("plants/Sunflower.atlas"));
+        x = CARD_START_X + (col * (50 + CARD_SPACING));
+        PlantCard sunflowerCard = new PlantCard(
+            sunflowerAtlas.findRegion("sunflower_idle1"),
+            50,
+            7.5f,
+            "Sunflower",
+            x,
+            y
+        );
+        plantCards.add(sunflowerCard);
     }
 
     public void render() {
