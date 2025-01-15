@@ -35,7 +35,7 @@ public abstract class Zombie implements Collidable {
     private static final float GROAN_INTERVAL = 5f; // Groan every 5 seconds
 
     private int row, col;
-    
+
     private int damage = 10;
 
     private float atkDelay; // 1 second between attacks
@@ -43,7 +43,7 @@ public abstract class Zombie implements Collidable {
 
     private int width = 135;
     private int height = 160;
-    
+
     DayWorld world;
 
     protected ObjectMap<String, Animation<AtlasRegion>> animations;
@@ -51,34 +51,39 @@ public abstract class Zombie implements Collidable {
     protected float stateTime = 0;
 
     private int xOffset = -40; // Adjust this value as needed
-    private int yOffset = -40;  // Adjust this value as needed
+    private int yOffset = -40; // Adjust this value as needed
 
-    public Zombie(DayWorld theWorld, Texture zombieTexture, int hp, int damage, float atkDelay)
-    {
+    private float rotation = 0;
+    private float scaleY = 1;
+    private boolean isSquashed = false;
+    public static final float SQUASH_DURATION = 0.5f;
+    private float squashTimer = 0;
+
+    public Zombie(DayWorld theWorld, Texture zombieTexture, int hp, int damage, float atkDelay) {
         this.hp = hp;
         this.damage = damage;
         this.atkDelay = atkDelay;
 
         this.zombieTexture = zombieTexture;
-        
+
         textureRegion = new TextureRegion(zombieTexture);
 
         // Load multiple chomp sounds
         chompSounds = new Sound[] {
-            Gdx.audio.newSound(Gdx.files.internal("sounds/chomp.ogg")),
-            Gdx.audio.newSound(Gdx.files.internal("sounds/chomp2.ogg")),
-            Gdx.audio.newSound(Gdx.files.internal("sounds/chomp3.ogg")),
-            Gdx.audio.newSound(Gdx.files.internal("sounds/chomp4.ogg"))
+                Gdx.audio.newSound(Gdx.files.internal("sounds/chomp.ogg")),
+                Gdx.audio.newSound(Gdx.files.internal("sounds/chomp2.ogg")),
+                Gdx.audio.newSound(Gdx.files.internal("sounds/chomp3.ogg")),
+                Gdx.audio.newSound(Gdx.files.internal("sounds/chomp4.ogg"))
         };
 
         // Load multiple groan sounds
         groanSounds = new Sound[] {
-            Gdx.audio.newSound(Gdx.files.internal("sounds/groan.ogg")),
-            Gdx.audio.newSound(Gdx.files.internal("sounds/groan2.ogg")),
-            Gdx.audio.newSound(Gdx.files.internal("sounds/groan3.ogg")),
-            Gdx.audio.newSound(Gdx.files.internal("sounds/groan4.ogg")),
-            Gdx.audio.newSound(Gdx.files.internal("sounds/groan5.ogg")),
-            Gdx.audio.newSound(Gdx.files.internal("sounds/groan6.ogg"))
+                Gdx.audio.newSound(Gdx.files.internal("sounds/groan.ogg")),
+                Gdx.audio.newSound(Gdx.files.internal("sounds/groan2.ogg")),
+                Gdx.audio.newSound(Gdx.files.internal("sounds/groan3.ogg")),
+                Gdx.audio.newSound(Gdx.files.internal("sounds/groan4.ogg")),
+                Gdx.audio.newSound(Gdx.files.internal("sounds/groan5.ogg")),
+                Gdx.audio.newSound(Gdx.files.internal("sounds/groan6.ogg"))
         };
 
         world = theWorld;
@@ -114,18 +119,29 @@ public abstract class Zombie implements Collidable {
 
     public void move() {
         x -= 1;
-        col = (int) (x/world.getLawnTileWidth()) - 1 ;
-        if(col > 9) col = 8;
-        
+        // Add bounds checking for column calculation
+        int newCol = (int) (x / world.getLawnTileWidth()) - 1;
+        col = Math.min(Math.max(newCol, 0), 8); // Clamp between 0 and 8
+    }
+
+    public boolean hasReachedHouse() {
+        return x <= world.getLawnTileWidth(); // Add this method
     }
 
     public void update(float delta) {
         attackTimer += delta;
-        stateTime += delta;  // Update animation state time
-        groanTimer += delta;
-        if (groanTimer >= GROAN_INTERVAL) {
-            playGroanSound();
-            groanTimer = 0f;
+        stateTime += delta; // Update animation state time
+
+        if (isSquashed) {
+            squashTimer += delta;
+            rotation = Math.min(90, squashTimer * (90 / SQUASH_DURATION));
+            scaleY = Math.max(0.3f, 1 - (squashTimer / SQUASH_DURATION));
+
+            groanTimer += delta;
+            if (groanTimer >= GROAN_INTERVAL) {
+                playGroanSound();
+                groanTimer = 0f;
+            }
         }
     }
 
@@ -143,7 +159,7 @@ public abstract class Zombie implements Collidable {
             playChompSound();
         }
     }
-        
+
     public void playChompSound() {
         // Play random chomp sound
         chompSounds[rand.nextInt(chompSounds.length)].play(0.4f);
@@ -152,7 +168,7 @@ public abstract class Zombie implements Collidable {
     private void playGroanSound() {
         groanSounds[rand.nextInt(groanSounds.length)].play(0.5f);
     } 
-  
+
     public void damage(int dmg) {
         hp -= dmg;
         if (hp <= 0) {
@@ -167,22 +183,43 @@ public abstract class Zombie implements Collidable {
     public int getCol() {
         return col;
     }
-    
+
     public int getXOffset() {
         return xOffset;
     }
-    
+
     public int getYOffset() {
         return yOffset;
     }
 
     public void dispose() {
         zombieTexture.dispose();
-        for(Sound sound : chompSounds) {
+        for (Sound sound : chompSounds) {
             sound.dispose();
         }
-        for(Sound sound : groanSounds) {
+        for (Sound sound : groanSounds) {
             sound.dispose();
         }
+    }
+
+    public void squash() {
+        isSquashed = true;
+        squashTimer = 0;
+    }
+
+    public float getRotation() {
+        return rotation;
+    }
+
+    public float getScaleY() {
+        return scaleY;
+    }
+
+    public boolean isSquashed() {
+        return isSquashed;
+    }
+
+    public float getSquashTimer() {
+        return squashTimer;
     }
 }
