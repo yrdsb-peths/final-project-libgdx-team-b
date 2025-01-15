@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.utils.ObjectMap;
 
+import ca.codepet.Collidable;
 import ca.codepet.Plant;
 import ca.codepet.worlds.DayWorld;
 
@@ -19,7 +20,7 @@ import ca.codepet.worlds.DayWorld;
 // https://plantsvszombies.fandom.com/wiki/Plants_(PvZ)#List_of_plants
 // https://pvzstrategy.fandom.com/wiki/Plant_Stats
 
-public abstract class Zombie {
+public abstract class Zombie implements Collidable {
 
     private int hp;
     private int x = Gdx.graphics.getWidth();
