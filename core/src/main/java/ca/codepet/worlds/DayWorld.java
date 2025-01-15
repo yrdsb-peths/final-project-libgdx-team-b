@@ -23,6 +23,7 @@ import ca.codepet.GameRoot;
 import ca.codepet.characters.PlantCard;
 import ca.codepet.characters.Sun;
 import ca.codepet.ui.PlantPicker;
+import ca.codepet.ui.Shovel;
 
 import java.util.Random;
 
@@ -66,6 +67,9 @@ public class DayWorld implements Screen {
 
     private Array<Zombie> randomZombies = new Array<>();
 
+    private Shovel shovel;
+    private boolean isShovelDragging = false;
+
     public DayWorld(GameRoot game) {
         this.game = game;
 
@@ -85,6 +89,8 @@ public class DayWorld implements Screen {
             }
         }
         plantPicker = new PlantPicker(plantBar);
+
+        shovel = new Shovel(650, Gdx.graphics.getHeight() - 64);
     }
 
 
@@ -132,6 +138,36 @@ public class DayWorld implements Screen {
 
         // Draw the plant bar first (at the bottom layer)
         plantBar.render();
+
+        // After plantBar.render(), add shovel handling
+        if (Gdx.input.justTouched()) {
+            float mouseX = Gdx.input.getX();
+            float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
+            
+            if (shovel.isClicked(mouseX, mouseY)) {
+                isShovelDragging = true;
+                shovel.setDragging(true);
+            }
+        }
+        
+        if (isShovelDragging && !Gdx.input.isTouched()) {
+            float mouseX = Gdx.input.getX();
+            float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
+            int tileX = MathUtils.floor((mouseX - LAWN_TILEX) / LAWN_TILEWIDTH);
+            int tileY = -MathUtils.floor((mouseY - LAWN_TILEY) / LAWN_TILEHEIGHT);
+            
+            if (tileX >= 0 && tileX < LAWN_WIDTH && tileY >= 0 && tileY < LAWN_HEIGHT) {
+                if (plants[tileY][tileX] != null) {
+                    plants[tileY][tileX].dispose();
+                    plants[tileY][tileX] = null;
+                }
+            }
+            
+            isShovelDragging = false;
+            shovel.setDragging(false);
+        }
+
+        shovel.render();
 
         if (!gameStarted) {
             // Render plant picker if game hasn't started
@@ -402,5 +438,8 @@ public class DayWorld implements Screen {
             zombie.dispose();
         }
         zombies.clear();
+
+        // Add to existing dispose method
+        shovel.dispose();
     }
 }
