@@ -85,6 +85,8 @@ public class PlantBar {
     public void startAllCardCooldowns() {
         for (PlantCard card : selectedCards) {
             card.startCooldown();
+            // Check initial affordability when game starts
+            card.setAffordable(card.getCost() <= sunDisplay);
         }
     }
 
