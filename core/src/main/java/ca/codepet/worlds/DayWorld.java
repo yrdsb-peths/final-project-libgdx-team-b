@@ -167,8 +167,6 @@ public class DayWorld implements Screen {
             shovel.setDragging(false);
         }
 
-        shovel.render();
-
         if (!gameStarted) {
             // Render plant picker if game hasn't started
             plantPicker.render();
@@ -359,6 +357,9 @@ public class DayWorld implements Screen {
                 sun.render(batch);
             }
         }
+
+        // Render the shovel last (on top of everything)
+        shovel.render();
 
         batch.end();
 
