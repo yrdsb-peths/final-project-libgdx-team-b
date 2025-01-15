@@ -369,8 +369,9 @@ public class DayWorld implements Screen {
                         zombie.attack(plant);
                     }
                     if(plant.isDead()) plants[zombie.getRow()][zombie.getCol()] = null;
-                  
+
                     zombie.attack(plant);
+                  
                     if(plant.isDead()) {
                         plants[zombie.getRow()][zombie.getCol()] = null;
                     }
