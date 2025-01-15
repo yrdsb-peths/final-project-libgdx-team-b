@@ -1,6 +1,7 @@
 package ca.codepet.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -26,6 +27,8 @@ public class PlantPicker {
     private static final float CARD_START_Y = 375;
 
     private PlantBar plantBar;
+
+    private final Sound buttonClickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/buttonClick.ogg"));
 
     public PlantPicker(PlantBar plantBar) {
         this.plantBar = plantBar;
@@ -182,6 +185,7 @@ public class PlantPicker {
             float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY(); // Flip Y coordinate
             if (buttonBounds.contains(mouseX, mouseY)) {
                 picked = true;
+                buttonClickSound.play(0.5f);
             }
         }
     }
@@ -223,5 +227,7 @@ public class PlantPicker {
         for (PlantCard card : plantCards) {
             card.dispose();
         }
+
+        buttonClickSound.dispose();
     }
 }
