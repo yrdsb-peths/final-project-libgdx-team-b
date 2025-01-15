@@ -35,6 +35,8 @@ import ca.codepet.ui.Shovel;
 import java.util.Random;
 
 public class DayWorld implements Screen {
+    private Random rand = new Random();
+
     private Texture backgroundTexture;
     private SpriteBatch batch;
     private PlantBar plantBar;
@@ -85,9 +87,13 @@ public class DayWorld implements Screen {
     private boolean isShovelDragging = false;
 
     private WaveManager waveManager;
+    
+    private boolean loseSoundPlayed = false;
 
     private final Sound loseSound = Gdx.audio.newSound(Gdx.files.internal("sounds/loseMusic.ogg"));
-    private boolean loseSoundPlayed = false;
+    private final Sound shovelSound = Gdx.audio.newSound(Gdx.files.internal("sounds/shovel.ogg"));
+    
+    protected Sound[] plantSpawnSound;
 
     public DayWorld(GameRoot game) {
         this.game = game;
@@ -95,6 +101,13 @@ public class DayWorld implements Screen {
     }
     @Override
     public void show() {
+
+        // Load plant spawn sounds
+        plantSpawnSound = new Sound[] {
+            Gdx.audio.newSound(Gdx.files.internal("sounds/plant_spawn.ogg")),
+            Gdx.audio.newSound(Gdx.files.internal("sounds/plant_spawn2.ogg"))
+        };
+
         for(int i = LAWN_HEIGHT - 1; i >= 0; i--) {
             lawnmowers.add(new Lawnmower(this, i));
         }
@@ -135,33 +148,7 @@ public class DayWorld implements Screen {
         // Draw the plant bar first (at the bottom layer)
         plantBar.render();
 
-        // After plantBar.render(), add shovel handling
-        if (Gdx.input.justTouched()) {
-            float mouseX = Gdx.input.getX();
-            float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
-            
-            if (shovel.isClicked(mouseX, mouseY)) {
-                isShovelDragging = true;
-                shovel.setDragging(true);
-            }
-        }
-        
-        if (isShovelDragging && !Gdx.input.isTouched()) {
-            float mouseX = Gdx.input.getX();
-            float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
-            int tileX = MathUtils.floor((mouseX - LAWN_TILEX) / LAWN_TILEWIDTH);
-            int tileY = -MathUtils.floor((mouseY - LAWN_TILEY) / LAWN_TILEHEIGHT);
-            
-            if (tileX >= 0 && tileX < LAWN_WIDTH && tileY >= 0 && tileY < LAWN_HEIGHT) {
-                if (plants[tileY][tileX] != null) {
-                    plants[tileY][tileX].dispose();
-                    plants[tileY][tileX] = null;
-                }
-            }
-            
-            isShovelDragging = false;
-            shovel.setDragging(false);
-        }
+        renderShovel();
 
         if (!gameStarted) {
             // Render plant picker if game hasn't started
@@ -191,6 +178,7 @@ public class DayWorld implements Screen {
         }
 
         batch.begin();
+
         // Draw plants first
         float mouseX = Gdx.input.getX();
         float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
@@ -246,6 +234,7 @@ public class DayWorld implements Screen {
                         float plantY = LAWN_TILEY - (clickedTileY * LAWN_TILEHEIGHT) + (LAWN_TILEHEIGHT / 2);
                         draggedPlant.setPosition(plantX, plantY);
                         plants[clickedTileY][clickedTileX] = draggedPlant;
+                        plantSpawnSound[rand.nextInt(plantSpawnSound.length)].play(0.5f);
                         draggedCard.startCooldown();
                     }
                 }
@@ -451,6 +440,39 @@ public class DayWorld implements Screen {
         }
     }
 
+    public void renderShovel() {
+        
+        // After plantBar.render(), add shovel handling
+        if (Gdx.input.justTouched()) {
+            float mouseX = Gdx.input.getX();
+            float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
+            
+            if (shovel.isClicked(mouseX, mouseY)) {
+                isShovelDragging = true;
+                shovel.setDragging(true);
+            }
+        }
+        
+        if (isShovelDragging && !Gdx.input.isTouched()) {
+            float mouseX = Gdx.input.getX();
+            float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
+            int tileX = MathUtils.floor((mouseX - LAWN_TILEX) / LAWN_TILEWIDTH);
+            int tileY = -MathUtils.floor((mouseY - LAWN_TILEY) / LAWN_TILEHEIGHT);
+            
+            if (tileX >= 0 && tileX < LAWN_WIDTH && tileY >= 0 && tileY < LAWN_HEIGHT) {
+                if (plants[tileY][tileX] != null) {
+                    shovelSound.play(0.5f); //play shovel sound
+
+                    plants[tileY][tileX].dispose();
+                    plants[tileY][tileX] = null;
+                }
+            }
+            
+            isShovelDragging = false;
+            shovel.setDragging(false);
+        }
+    }
+
     public void addZombie(Zombie zombie) {
         zombies.add(zombie);
     }
@@ -537,5 +559,10 @@ public class DayWorld implements Screen {
         shovel.dispose();
 
         loseSound.dispose();
+
+        
+        for(Sound sound : plantSpawnSound) {
+            sound.dispose();
+        }
     }
 }
