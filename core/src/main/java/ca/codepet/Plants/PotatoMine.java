@@ -13,15 +13,17 @@ public class PotatoMine extends Plant {
     private static final int EXPLODE_FRAMES = 8;
     private static final int DEFAULT_HEALTH = 300;
     
-    private static final float ARMING_TIME = 15f;
+    private static final float ARMING_TIME = 1f;
     private float armingTimer = 0f;
     private boolean isArmed = false;
     private boolean hasExploded = false;
+    private boolean hasPopped = false;
     private float explosionDamage = 1800f;
     
     public PotatoMine(float x, float y) {
         super(x, y);
         health = DEFAULT_HEALTH;
+        setScale(2.3f);  // Add this line to scale the potato mine
         
         // Load popup animation
         TextureAtlas popupAtlas = new TextureAtlas(Gdx.files.internal("plants/potato-popup.atlas"));
@@ -65,21 +67,31 @@ public class PotatoMine extends Plant {
         if (hasExploded) {
             if (animations.get("explode").isAnimationFinished(imageIndex)) {
                 health = 0; // Mark for removal
+                return; // Don't increment imageIndex anymore
             }
             imageIndex += delta;
             return;
         }
         
         if (!isArmed) {
+            imageIndex = 0; // Keep showing first frame while arming
             armingTimer += delta;
             if (armingTimer >= ARMING_TIME) {
                 isArmed = true;
-                setAnimation("idle");
-                imageIndex = 0;
+                if (!hasPopped) {
+                    setAnimation("popup");
+                    imageIndex = 0;
+                    hasPopped = true;
+                }
             }
+        } else if (hasPopped && animations.get("popup").isAnimationFinished(imageIndex)) {
+            setAnimation("idle");
+            imageIndex = 0;
         }
         
-        imageIndex += delta;
+        if (isArmed) { // Only advance animation after arming
+            imageIndex += delta;
+        }
     }
     
     public boolean isArmed() {
