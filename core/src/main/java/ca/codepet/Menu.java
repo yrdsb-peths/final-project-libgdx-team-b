@@ -44,7 +44,7 @@ public class Menu implements Screen {
      System.out.println(buttonY);
 
         this.game = game;
-        sound.play(1.0f);
+        sound.play(0.5f);
 
         // Initialize the button with the texture path
         button = new Button("images/button.png", game, buttonX , buttonY, buttonWidth, buttonHeight);
