@@ -64,6 +64,7 @@ public class PlantBar {
         for (PlantCard card : selectedCards) {
             if (card.contains(x, y)) {
                 selectedCards.removeValue(card, true);
+                repositionRemainingCards(); // Add this line
                 return card;
             }
         }
@@ -156,5 +157,16 @@ public class PlantBar {
         barTexture.dispose();
         batch.dispose();
         font.dispose();
+    }
+
+    // Add this new method
+    private void repositionRemainingCards() {
+        for (int i = 0; i < selectedCards.size; i++) {
+            PlantCard card = selectedCards.get(i);
+            float x = CARD_START_X + (i * CARD_SPACING);
+            float y = Gdx.graphics.getHeight() - 90;
+            card.setPosition(x, y);
+            card.updateOriginalPosition(x, y);
+        }
     }
 }
