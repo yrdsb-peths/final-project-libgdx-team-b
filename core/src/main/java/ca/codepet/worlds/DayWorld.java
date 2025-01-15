@@ -92,7 +92,8 @@ public class DayWorld implements Screen {
 
     private final Sound loseSound = Gdx.audio.newSound(Gdx.files.internal("sounds/loseMusic.ogg"));
     private final Sound shovelSound = Gdx.audio.newSound(Gdx.files.internal("sounds/shovel.ogg"));
-    
+    private Sound sunPickupSound = Gdx.audio.newSound(Gdx.files.internal("sounds/sunPickup.mp3"));
+
     protected Sound[] plantSpawnSound;
 
     public DayWorld(GameRoot game) {
@@ -410,6 +411,9 @@ public class DayWorld implements Screen {
             Sun sun = suns.get(i);
             // Check if the sun was collected
             if (sun.checkClick()) {
+                //play sun pick up sound
+                sunPickupSound.play(0.5f);
+
                 // Add 25 balance
                 sunBalance += 25;
                 plantBar.setSunDisplay(sunBalance);
@@ -558,11 +562,17 @@ public class DayWorld implements Screen {
         // Add to existing dispose method
         shovel.dispose();
 
+        for(Lawnmower lawnmower : lawnmowers) {
+            lawnmower.dispose();
+        }
+
         loseSound.dispose();
 
         
         for(Sound sound : plantSpawnSound) {
             sound.dispose();
         }
+
+        sunPickupSound.dispose();
     }
 }
