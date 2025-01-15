@@ -19,7 +19,9 @@ import ca.codepet.Zombies.BasicZombie;
 import ca.codepet.Zombies.BucketheadZombie;
 import ca.codepet.Zombies.Zombie;
 import ca.codepet.ui.PlantBar;
+import ca.codepet.Collidable;
 import ca.codepet.GameRoot;
+import ca.codepet.Lawnmower;
 import ca.codepet.characters.PlantCard;
 import ca.codepet.characters.Sun;
 import ca.codepet.ui.PlantPicker;
@@ -56,6 +58,7 @@ public class DayWorld implements Screen {
 
     // private Zombie zombie = new BasicZombie(this);
     private Array<Zombie> zombies = new Array<>();
+    private Array<Lawnmower> lawnmowers = new Array<>();
 
     private float waveTimer = 0f;
     private float timeBetweenWaves = 10f; // seconds
@@ -77,7 +80,11 @@ public class DayWorld implements Screen {
     @Override
     public void show() {
         addZombie(new BasicZombie(this));
-
+        
+        for(int i = LAWN_HEIGHT - 1; i >= 0; i--) {
+            lawnmowers.add(new Lawnmower(this, i));
+        }
+        
         // Load the background texture
         backgroundTexture = new Texture("backgrounds/day.png");
         batch = new SpriteBatch();
@@ -289,40 +296,103 @@ public class DayWorld implements Screen {
             ghostPlant.setAlpha(1.0f);  // Reset alpha
         }
 
+        renderLawnmower();
+        renderZombie(delta);
+
+
+    }
+
+    private void renderLawnmower() {
+        Array<Lawnmower> lawnmowersToRemove = new Array<>();
+        Array<Zombie> zombiesToRemove = new Array<>();
+
+        for(Lawnmower lawnmower : lawnmowers) {
+            if(lawnmower.getIsActivated()) {
+                lawnmower.move();
+
+                for(Zombie zombie : zombies) {
+                    if(checkCollision(lawnmower, zombie)) {
+                        zombiesToRemove.add(zombie);
+                    }
+                }
+            }
+
+            batch.draw(lawnmower.getTextureRegion(), 
+                      lawnmower.getX(), 
+                      lawnmower.getY(), 
+                      lawnmower.getWidth(), 
+                      lawnmower.getHeight());
+
+            if(lawnmower.getX() > Gdx.graphics.getWidth()) {
+                lawnmowersToRemove.add(lawnmower);
+            }
+        }
+
+        // Clean up zombies and lawnmowers after iteration
+        for(Zombie zombie : zombiesToRemove) {
+            removeZombie(zombie);
+        }
+        
+        for(Lawnmower lawnmower : lawnmowersToRemove) {
+            lawnmower.dispose();
+            lawnmowers.removeValue(lawnmower, true);
+        }
+    }
+
+    private void renderZombie(float delta) {
+        Array<Zombie> zombiesToRemove = new Array<>();
+      
         // Draw zombies second (on top of plants)
         for(Zombie zombie : zombies) {
-
+            // Check if zombie reached the house
             if(zombie.getCol() < 0) {
-                removeZombie(zombie);
-                goEndscreen();
-                break;
-                // TODO end screen go there
+                Lawnmower lawnmower = null;
+                for(Lawnmower lm : lawnmowers) {
+                    if(lm.getRow() == zombie.getRow()) {
+                        lawnmower = lm;
+                        break;
+                    }
+                }
+                
+                if(lawnmower == null) {
+                    // handle game over
+                } else {
+                    lawnmower.activate();
+                }
+                
+                zombiesToRemove.add(zombie);
+                continue;
             }
+
+            // Update zombie first
+            zombie.update(delta);
             
-            // System.out.println(zombie.getRow());
-            
+            // Then render
             batch.draw(zombie.getTextureRegion(), 
                       zombie.getX() + zombie.getXOffset(), 
                       (LAWN_HEIGHT - zombie.getRow()) * LAWN_TILEHEIGHT - (zombie.getHeight() - LAWN_TILEHEIGHT)/2 + zombie.getYOffset(),
                       zombie.getWidth(),
                       zombie.getHeight());
 
-
+            // Handle plant interactions
             Plant plant = plants[zombie.getRow()][zombie.getCol()];
-
-
-            zombie.update(delta);
-            
             if(plant != null) {
-                if(zombie.canAttack()) {  // Only attack if cooldown is ready
+                if(zombie.canAttack()) {
                     zombie.attack(plant);
-                    if(plant.isDead()) plants[zombie.getRow()][zombie.getCol()] = null;
+                    if(plant.isDead()) {
+                        plants[zombie.getRow()][zombie.getCol()] = null;
+                    }
                 }
             } else {
                 zombie.move();
             }
         }
 
+        // Remove zombies after the iteration
+        for(Zombie zombie : zombiesToRemove) {
+            removeZombie(zombie);
+        }
+      
         // Draw suns last (on top of zombies)
         // Update sun spawning
         sunSpawnTimer += delta;
@@ -368,7 +438,6 @@ public class DayWorld implements Screen {
     }
 
     public void addZombie(Zombie zombie) {
-        System.out.println(3333);
         zombies.add(zombie);
     }
     
@@ -386,6 +455,10 @@ public class DayWorld implements Screen {
         for (int i = 0; i < numberOfZombies; i++) {
             addZombie(new BucketheadZombie(this));
         }
+    }
+
+    private boolean checkCollision(Collidable left, Collidable right) {
+        return (left.getRow() == right.getRow()) && (left.getX() + left.getWidth()) > right.getX();
     }
 
     public void addSun(Sun sun) {
