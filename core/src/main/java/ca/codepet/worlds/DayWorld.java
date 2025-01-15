@@ -299,10 +299,7 @@ public class DayWorld implements Screen {
         renderLawnmower();
         renderZombie(delta);
 
-        batch.end();
 
-        // Draw the plant bar
-        plantBar.render();
     }
 
     private void renderLawnmower() {
@@ -462,7 +459,8 @@ public class DayWorld implements Screen {
 
     private boolean checkCollision(Collidable left, Collidable right) {
         return (left.getRow() == right.getRow()) && (left.getX() + left.getWidth()) > right.getX();
-      
+    }
+
     public void addSun(Sun sun) {
         suns.add(sun);
     }
