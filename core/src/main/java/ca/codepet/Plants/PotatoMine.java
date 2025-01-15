@@ -102,7 +102,7 @@ public class PotatoMine extends Plant {
     }
     
     public void explode() {
-        explodeSound.play(0.5f);
+        explodeSound.play(0.8f);
 
         if (!hasExploded && isArmed) {
             hasExploded = true;

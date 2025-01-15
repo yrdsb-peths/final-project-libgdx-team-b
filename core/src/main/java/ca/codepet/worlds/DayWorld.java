@@ -96,6 +96,9 @@ public class DayWorld implements Screen {
 
     protected Sound[] plantSpawnSound;
 
+    private final Sound backgroundMusic = Gdx.audio.newSound(Gdx.files.internal("sounds/dayMusic.mp3"));
+    private long backgroundMusicId;
+
     public DayWorld(GameRoot game) {
         this.game = game;
 
@@ -128,6 +131,9 @@ public class DayWorld implements Screen {
         shovel = new Shovel(650, Gdx.graphics.getHeight() - 64);
 
         waveManager = new WaveManager(this);
+
+        // Start playing background music on loop
+        backgroundMusicId = backgroundMusic.loop(0.3f); // 0.3f is the volume, adjust as needed
     }
 
     @Override
@@ -488,6 +494,7 @@ public class DayWorld implements Screen {
 
     public void gameOver(float delta) {
         if (!loseSoundPlayed) {
+            backgroundMusic.stop(); // Stop background music when game over
             loseSound.play();
             loseSoundPlayed = true;
         }
@@ -574,5 +581,7 @@ public class DayWorld implements Screen {
         }
 
         sunPickupSound.dispose();
+        backgroundMusic.stop();
+        backgroundMusic.dispose();
     }
 }

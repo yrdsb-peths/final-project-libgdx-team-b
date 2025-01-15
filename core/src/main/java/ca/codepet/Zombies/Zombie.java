@@ -146,7 +146,7 @@ public abstract class Zombie implements Collidable {
         
     public void playChompSound() {
         // Play random chomp sound
-        chompSounds[rand.nextInt(chompSounds.length)].play(0.6f);
+        chompSounds[rand.nextInt(chompSounds.length)].play(0.4f);
     }
 
     private void playGroanSound() {
