@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import ca.codepet.worlds.DayWorld;
 
-public class Lawnmower {
+public class Lawnmower implements Collidable {
     private Texture texture;
     private TextureRegion textureRegion;
     private int row;
@@ -41,6 +41,10 @@ public class Lawnmower {
         x += 5;
     }
 
+    public int getRow() {
+        return row;
+    }
+
     public TextureRegion getTextureRegion() {
         return textureRegion;
     }
@@ -63,5 +67,9 @@ public class Lawnmower {
 
     public int getY() {
         return y;
+    }
+
+    public void dispose() {
+        texture.dispose();
     }
 }

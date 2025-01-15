@@ -17,6 +17,7 @@ import ca.codepet.Zombies.BasicZombie;
 import ca.codepet.Zombies.BucketheadZombie;
 import ca.codepet.Zombies.Zombie;
 import ca.codepet.ui.PlantBar;
+import ca.codepet.Collidable;
 import ca.codepet.GameRoot;
 import ca.codepet.Lawnmower;
 import ca.codepet.characters.PlantCard;
@@ -204,8 +205,23 @@ public class DayWorld implements Screen {
         for(Lawnmower lawnmower : lawnmowers) {
             if(lawnmower.getIsActivated()) {
                 lawnmower.move();
+
+                for(Zombie zombie : zombies) {
+                    if(checkCollision(lawnmower, zombie)) {
+                        removeZombie(zombie);
+                    }
+                }
             }
+
             batch.draw(lawnmower.getTextureRegion(), lawnmower.getX(), lawnmower.getY(), lawnmower.getWidth(), lawnmower.getHeight());
+
+            if(lawnmower.getX() > Gdx.graphics.getWidth()) {
+                lawnmower.dispose();
+                lawnmowers.removeValue(lawnmower, true);
+                break;
+            }
+
+            
         }
         
     }
@@ -214,9 +230,11 @@ public class DayWorld implements Screen {
         for(Zombie zombie : zombies) {
 
             if(zombie.getCol() < 0) {
+
+                
                 if(lawnmowers.get(LAWN_HEIGHT - zombie.getRow() - 1) == null) {
-                    removeZombie(zombie);
-                    goEndscreen();
+                    // removeZombie(zombie);
+                    // goEndscreen();
                 } else {
                     lawnmowers.get(LAWN_HEIGHT - zombie.getRow() - 1).activate();
                 }
@@ -269,6 +287,10 @@ public class DayWorld implements Screen {
         for (int i = 0; i < numberOfZombies; i++) {
             addZombie(new BucketheadZombie(this));
         }
+    }
+
+    private boolean checkCollision(Collidable left, Collidable right) {
+        return (left.getX() + left.getWidth()) > right.getX() && left.getRow() == right.getRow();
     }
 
     @Override
