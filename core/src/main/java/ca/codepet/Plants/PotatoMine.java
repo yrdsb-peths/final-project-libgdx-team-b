@@ -3,11 +3,17 @@ package ca.codepet.Plants;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
 import ca.codepet.Plant;
 
 public class PotatoMine extends Plant {
-    private static final float ARMING_TIME = 15f; // seconds to arm
+    private static final int POPUP_FRAMES = 3;
+    private static final int IDLE_FRAMES = 5;
+    private static final int EXPLODE_FRAMES = 8;
+    private static final int DEFAULT_HEALTH = 300;
+    
+    private static final float ARMING_TIME = 15f;
     private float armingTimer = 0f;
     private boolean isArmed = false;
     private boolean hasExploded = false;
@@ -15,22 +21,43 @@ public class PotatoMine extends Plant {
     
     public PotatoMine(float x, float y) {
         super(x, y);
+        health = DEFAULT_HEALTH;
         
-        // Load animations from atlas files
+        // Load popup animation
         TextureAtlas popupAtlas = new TextureAtlas(Gdx.files.internal("plants/potato-popup.atlas"));
+        AtlasRegion[] popup = new AtlasRegion[POPUP_FRAMES];
+        for (int i = 0; i < POPUP_FRAMES; i++) {
+            popup[i] = popupAtlas.findRegion(String.valueOf(i + 1));
+        }
+        animations.put("popup", new Animation<>(0.2f, popup));
+
+        // Load idle animation
         TextureAtlas idleAtlas = new TextureAtlas(Gdx.files.internal("plants/potato-idle.atlas"));
+        AtlasRegion[] idle = new AtlasRegion[IDLE_FRAMES];
+        for (int i = 0; i < IDLE_FRAMES; i++) {
+            idle[i] = idleAtlas.findRegion("tile00" + i);
+        }
+        // Create boomerang animation by adding reversed frames
+        AtlasRegion[] boomerangFrames = new AtlasRegion[IDLE_FRAMES * 2 - 2];
+        // Forward frames
+        for (int i = 0; i < IDLE_FRAMES; i++) {
+            boomerangFrames[i] = idle[i];
+        }
+        // Reverse frames (excluding first and last to avoid duplicates)
+        for (int i = IDLE_FRAMES - 2; i > 0; i--) {
+            boomerangFrames[IDLE_FRAMES * 2 - 2 - i] = idle[i];
+        }
+        animations.put("idle", new Animation<>(0.2f, boomerangFrames));
+
+        // Load explode animation
         TextureAtlas explodeAtlas = new TextureAtlas(Gdx.files.internal("plants/potato-explode.atlas"));
+        AtlasRegion[] explode = new AtlasRegion[EXPLODE_FRAMES];
+        for (int i = 0; i < EXPLODE_FRAMES; i++) {
+            explode[i] = explodeAtlas.findRegion(String.valueOf(i + 10));
+        }
+        animations.put("explode", new Animation<>(0.1f, explode));
         
-        // Create animations
-        animations.put("popup", new Animation<>(0.1f, popupAtlas.getRegions()));
-        animations.put("idle", new Animation<>(0.1f, idleAtlas.getRegions()));
-        animations.put("explode", new Animation<>(0.1f, explodeAtlas.getRegions()));
-        
-        // Set initial animation
         setAnimation("popup");
-        
-        // Set health
-        health = 300;
     }
     
     @Override
