@@ -12,13 +12,13 @@ public class Repeater extends ShooterPlant {
     static int IDLE_FRAMES = 5;
     static int ATTACK_FRAMES = 2;
     static int DEFAULT_HEALTH = 100;
-    static float DEFAULT_ATTACK_COOLDOWN = 1.5f;
+    static float DEFAULT_ATTACK_COOLDOWN = 2.0f; // Increased to account for double shot
     static int DEFAULT_DAMAGE = 20;
 
     public static final String PROJECTILE_ATLAS = "projectiles/pea.atlas";
     public static final float PROJECTILE_SCALE = 3f;
     private boolean firedSecondShot = false;
-    private float secondShotDelay = 0.2f;
+    private float secondShotDelay = 0.1f; // Reduced delay between shots
     private float secondShotTimer = 0;
 
     public Repeater(float x, float y) {
@@ -70,6 +70,7 @@ public class Repeater extends ShooterPlant {
     @Override
     public void startAttack() {
         super.startAttack();
+        setAnimation("attack");
         Projectile firstProj = createProjectile(); // Create first projectile immediately
         if (firstProj != null) {
             projectiles.add(firstProj);
