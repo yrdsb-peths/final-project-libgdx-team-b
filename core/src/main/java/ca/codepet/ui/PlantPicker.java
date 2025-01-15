@@ -92,6 +92,20 @@ public class PlantPicker {
             y
         );
         plantCards.add(potatoCard);
+
+        // Add Walnut card
+        col++;
+        TextureAtlas walnutAtlas = new TextureAtlas(Gdx.files.internal("plants/walnut-idle-1.atlas"));
+        x = CARD_START_X + (col * (50 + CARD_SPACING));
+        PlantCard walnutCard = new PlantCard(
+            walnutAtlas.findRegion("tile000"),
+            50,
+            10f,
+            "Walnut",
+            x,
+            y
+        );
+        plantCards.add(walnutCard);
     }
 
     public void render() {

@@ -1,0 +1,40 @@
+walnut-idle-3.png
+size: 26, 131
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tile000
+  rotate: false
+  xy: 0, 0
+  size: 26, 27
+  orig: 26, 27
+  offset: 0, 0
+  index: -1
+tile001
+  rotate: false
+  xy: 0, 27
+  size: 26, 26
+  orig: 26, 26
+  offset: 0, 0
+  index: -1
+tile002
+  rotate: false
+  xy: 0, 53
+  size: 26, 25
+  orig: 26, 25
+  offset: 0, 0
+  index: -1
+tile003
+  rotate: false
+  xy: 0, 78
+  size: 26, 26
+  orig: 26, 26
+  offset: 0, 0
+  index: -1
+tile004
+  rotate: false
+  xy: 0, 104
+  size: 26, 27
+  orig: 26, 27
+  offset: 0, 0
+  index: -1
