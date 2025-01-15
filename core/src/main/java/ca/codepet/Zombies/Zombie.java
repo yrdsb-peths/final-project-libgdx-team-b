@@ -32,10 +32,14 @@ public abstract class Zombie implements Collidable {
     private TextureRegion textureRegion;
     private Sound[] chompSounds;
     private Sound[] groanSounds;
+    private Sound[] deathSounds;
     private float groanTimer = 0f;
     private static final float GROAN_INTERVAL = 5f; // Groan every 5 seconds
+    private boolean hasGroanedOnSpawn = false;
+    private static final float INITIAL_GROAN_DELAY = 0.5f;
 
-    private int row, col;
+    private int row;
+    private int col = 8;
     
     private int damage = 30;
 
@@ -59,6 +63,13 @@ public abstract class Zombie implements Collidable {
     private boolean isSquashed = false;
     public static final float SQUASH_DURATION = 0.5f;
     private float squashTimer = 0;
+
+    private boolean isDying = false;
+    private float deathTimer = 0f;
+    private static final float DEATH_SOUND_DURATION = 1.5f; // Adjust based on your sound length
+
+    private boolean isDeathSoundPlaying = false;
+    private long deathSoundId;
 
     public Zombie(DayWorld theWorld, Texture zombieTexture, int hp, int damage, float atkDelay) {
         this.hp = hp;
@@ -87,11 +98,20 @@ public abstract class Zombie implements Collidable {
                 Gdx.audio.newSound(Gdx.files.internal("sounds/groan6.ogg"))
         };
 
+        //load death sound
+        deathSounds = new Sound[] {
+            Gdx.audio.newSound(Gdx.files.internal("sounds/zombieDeath1.ogg")),
+            Gdx.audio.newSound(Gdx.files.internal("sounds/zombieDeath2.ogg"))
+        };
+
         world = theWorld;
 
         row = rand.nextInt(world.getLawnHeight());
         this.animations = new ObjectMap<>();
         currentAnimation = "walk"; // Set default animation
+
+        // Play initial groan with delay
+        groanTimer = INITIAL_GROAN_DELAY;
     }
 
     public Texture getTexture() {
@@ -123,6 +143,7 @@ public abstract class Zombie implements Collidable {
         // Add bounds checking for column calculation
         int newCol = (int) (x / world.getLawnTileWidth()) - 1;
         col = Math.min(Math.max(newCol, 0), 8); // Clamp between 0 and 8
+
     }
 
     public boolean hasReachedHouse() {
@@ -133,6 +154,23 @@ public abstract class Zombie implements Collidable {
         attackTimer += delta;
         stateTime += delta; // Update animation state time
 
+        // Add spawn groan
+        if (!hasGroanedOnSpawn) {
+            groanTimer -= delta;
+            if (groanTimer <= 0) {
+                playGroanSound();
+                hasGroanedOnSpawn = true;
+                groanTimer = GROAN_INTERVAL;
+            }
+        } else {
+            // Regular groaning
+            groanTimer += delta;
+            if (groanTimer >= GROAN_INTERVAL) {
+                playGroanSound();
+                groanTimer = 0f;
+            }
+        }
+
         if (isSquashed) {
             squashTimer += delta;
             rotation = Math.min(90, squashTimer * (90 / SQUASH_DURATION));
@@ -142,6 +180,23 @@ public abstract class Zombie implements Collidable {
             if (groanTimer >= GROAN_INTERVAL) {
                 playGroanSound();
                 groanTimer = 0f;
+            }
+        }
+
+        if (isDying) {
+            deathTimer += delta;
+            if (deathTimer >= DEATH_SOUND_DURATION) {
+                world.removeZombie(this);
+            }
+        }
+
+        if (isDeathSoundPlaying) {
+            deathTimer += delta;
+            if (deathTimer >= DEATH_SOUND_DURATION) {
+                // Only dispose death sounds after they finish playing
+                for (Sound sound : deathSounds) {
+                    sound.dispose();
+                }
             }
         }
     }
@@ -167,13 +222,16 @@ public abstract class Zombie implements Collidable {
     }
 
     private void playGroanSound() {
-        groanSounds[rand.nextInt(groanSounds.length)].play(0.5f);
+        if (!isSquashed && !isDying) {
+            groanSounds[rand.nextInt(groanSounds.length)].play(0.4f);
+        }
     } 
 
     public void damage(int dmg) {
         hp -= dmg;
-        if (hp <= 0) {
-            world.removeZombie(this);
+        if (hp <= 0 && !isDying) {
+            isDying = true;
+            deathSounds[rand.nextInt(deathSounds.length)].play(0.5f);
         }
     }
 
@@ -194,6 +252,12 @@ public abstract class Zombie implements Collidable {
     }
 
     public void dispose() {
+        if (!isDeathSoundPlaying) {
+            // Play death sound and set flag
+            deathSoundId = deathSounds[rand.nextInt(deathSounds.length)].play(0.5f);
+            isDeathSoundPlaying = true;
+        }
+
         zombieTexture.dispose();
         for (Sound sound : chompSounds) {
             sound.dispose();
@@ -201,6 +265,7 @@ public abstract class Zombie implements Collidable {
         for (Sound sound : groanSounds) {
             sound.dispose();
         }
+        // Death sounds will be disposed after they finish playing
     }
 
     public void squash() {
