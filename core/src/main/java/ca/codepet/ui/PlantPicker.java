@@ -171,6 +171,7 @@ public class PlantPicker {
             
             for (PlantCard card : plantCards) {
                 if (card.contains(mouseX, mouseY)) {
+                    buttonClickSound.play(0.5f);
                     handleCardSelection(card);
                     break;
                 }
