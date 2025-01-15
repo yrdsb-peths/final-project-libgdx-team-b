@@ -1,0 +1,26 @@
+potato-popup.png
+size: 68, 22
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+1
+  rotate: false
+  xy: 0, 0
+  size: 17, 22
+  orig: 17, 22
+  offset: 0, 0
+  index: -1
+2
+  rotate: false
+  xy: 17, 0
+  size: 21, 22
+  orig: 21, 22
+  offset: 0, 0
+  index: -1
+3
+  rotate: false
+  xy: 38, 0
+  size: 30, 22
+  orig: 30, 22
+  offset: 0, 0
+  index: -1

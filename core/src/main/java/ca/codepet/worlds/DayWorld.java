@@ -16,7 +16,9 @@ import com.badlogic.gdx.utils.Array;
 import ca.codepet.Plant;
 import ca.codepet.WaveManager;
 import ca.codepet.Plants.Peashooter;
+import ca.codepet.Plants.PotatoMine;
 import ca.codepet.Plants.Sunflower;
+import ca.codepet.Plants.Walnut;
 import ca.codepet.Zombies.BasicZombie;
 import ca.codepet.Zombies.BucketheadZombie;
 import ca.codepet.Zombies.Zombie;
@@ -206,6 +208,12 @@ public class DayWorld implements Screen {
                 } else if (draggedCard.getPlantType().equals("Sunflower")) {
                     draggedPlant = new Sunflower(mouseX, mouseY, this);
                     ghostPlant = new Sunflower(0, 0, this);
+                } else if (draggedCard.getPlantType().equals("PotatoMine")) {
+                    draggedPlant = new PotatoMine(mouseX, mouseY);
+                    ghostPlant = new PotatoMine(0, 0);
+                } else if (draggedCard.getPlantType().equals("Walnut")) {
+                    draggedPlant = new Walnut(mouseX, mouseY);
+                    ghostPlant = new Walnut(0, 0);
                 }
             } else {
                 draggedCard = null;
@@ -373,7 +381,21 @@ public class DayWorld implements Screen {
             Plant plant = plants[zombie.getRow()][zombie.getCol()];
             if(plant != null) {
                 if(zombie.canAttack()) {
+                    if (plant instanceof PotatoMine) {
+                        PotatoMine potatoMine = (PotatoMine)plant;
+                        if (potatoMine.isArmed() && !potatoMine.hasExploded()) {
+                            potatoMine.explode();
+                            zombie.damage((int)potatoMine.getExplosionDamage());
+                        } else {
+                            zombie.attack(plant);
+                        }
+                    } else {
+                        zombie.attack(plant);
+                    }
+                    if(plant.isDead()) plants[zombie.getRow()][zombie.getCol()] = null;
+
                     zombie.attack(plant);
+                  
                     if(plant.isDead()) {
                         plants[zombie.getRow()][zombie.getCol()] = null;
                     }

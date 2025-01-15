@@ -151,6 +151,13 @@ public abstract class Zombie implements Collidable {
 
     private void playGroanSound() {
         groanSounds[rand.nextInt(groanSounds.length)].play(0.3f);
+    } 
+  
+    public void damage(int dmg) {
+        hp -= dmg;
+        if (hp <= 0) {
+            world.removeZombie(this);
+        }
     }
 
     public int getRow() {
