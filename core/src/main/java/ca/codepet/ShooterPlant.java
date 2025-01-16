@@ -18,6 +18,11 @@ public abstract class ShooterPlant extends Plant {
         Gdx.audio.newSound(Gdx.files.internal("sounds/shootSound2.mp3"))
     };
 
+    private final Sound[] hitSounds = {
+        Gdx.audio.newSound(Gdx.files.internal("sounds/hitSound.mp3")),
+        Gdx.audio.newSound(Gdx.files.internal("sounds/shootSound2.mp3"))
+    };
+
     
 
     public ShooterPlant(float x, float y) {
@@ -67,7 +72,7 @@ public abstract class ShooterPlant extends Plant {
                     float distance = zombie.getX() - this.x;
                     if (distance > 0 && distance <= range) {
                         foundTarget = true;
-
+                        hitSounds[rand.nextInt(hitSounds.length)].play(0.5f);
                         
                         break;
                     }
@@ -99,6 +104,10 @@ public abstract class ShooterPlant extends Plant {
         projectiles.clear();
 
         for (Sound sound : shootSounds) {
+            sound.dispose();
+        }
+
+        for (Sound sound : hitSounds) {
             sound.dispose();
         }
     }
