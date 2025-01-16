@@ -1,0 +1,33 @@
+squash-attack.png
+size: 125, 36
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tile000
+  rotate: false
+  xy: 35, 1
+  size: 28, 34
+  orig: 28, 34
+  offset: 0, 0
+  index: -1
+tile001
+  rotate: false
+  xy: 65, 1
+  size: 28, 34
+  orig: 28, 34
+  offset: 0, 0
+  index: -1
+tile002
+  rotate: false
+  xy: 95, 1
+  size: 29, 34
+  orig: 29, 34
+  offset: 0, 0
+  index: -1
+tile003
+  rotate: false
+  xy: 1, 1
+  size: 32, 24
+  orig: 32, 24
+  offset: 0, 0
+  index: -1

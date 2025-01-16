@@ -154,6 +154,22 @@ public class PlantPicker {
                 1.4f // Added scale parameter to make the icon larger
         );
         plantCards.add(snowPeaCard);
+
+        // Add Squash card after SnowPea
+        col++;
+        TextureAtlas squashAtlas = new TextureAtlas(Gdx.files.internal("plants/squash/squash-idle.atlas"));
+        x = CARD_START_X + (col * (50 + CARD_SPACING));
+        y = CARD_START_Y - (row * (70 + CARD_SPACING));
+        PlantCard squashCard = new PlantCard(
+                squashAtlas.findRegion("tile000"),
+                50,
+                3f,
+                "Squash",
+                x,
+                y,
+                1.4f
+        );
+        plantCards.add(squashCard);
     }
 
     public void render() {
