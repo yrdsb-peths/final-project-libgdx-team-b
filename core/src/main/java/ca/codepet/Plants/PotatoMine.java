@@ -25,7 +25,7 @@ public class PotatoMine extends Plant {
     private final Sound explodeSound = Gdx.audio.newSound(Gdx.files.internal("sounds/potato_mine.ogg"));
 
     public PotatoMine(DayWorld world, float x, float y) {
-        super(world, x, y);
+        super(world, x, y, 200);
         health = DEFAULT_HEALTH;
         setScale(2.7f); // Add this line to scale the potato mine
 

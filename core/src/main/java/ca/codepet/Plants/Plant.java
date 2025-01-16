@@ -31,10 +31,11 @@ public abstract class Plant {
     protected float attackTimer = 0;
     protected boolean isAttacking = false;
 
-    public Plant(DayWorld world, float x, float y) {
+    public Plant(DayWorld world, float x, float y, int health) {
         this.world = world;
         this.x = x;
         this.y = y;
+        this.health = health;
     }
 
     protected void setAnimation(String spr) {

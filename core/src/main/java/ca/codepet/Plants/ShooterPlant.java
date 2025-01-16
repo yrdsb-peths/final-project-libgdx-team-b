@@ -21,7 +21,7 @@ public abstract class ShooterPlant extends Plant {
     };
 
     public ShooterPlant(DayWorld world, float x, float y) {
-        super(world, x, y);
+        super(world, x, y, 300);
     }
 
     @Override

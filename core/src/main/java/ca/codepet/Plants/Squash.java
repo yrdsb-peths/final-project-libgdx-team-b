@@ -49,7 +49,7 @@ public class Squash extends Plant {
     };
 
     public Squash(DayWorld world, float x, float y) {
-        super(world, x, y);
+        super(world, x, y, DEFAULT_HEALTH);
         originalY = y;
         setScale(2.5f);
 

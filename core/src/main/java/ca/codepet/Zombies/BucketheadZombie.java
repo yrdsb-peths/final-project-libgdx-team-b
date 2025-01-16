@@ -92,13 +92,22 @@ public class BucketheadZombie extends Zombie {
         Animation<AtlasRegion> attackanim3 = new Animation<>(0.2f, attack3);
         animations.put("attack3", attackanim3);
 
+        // Fix death animation with proper size and timing
         TextureAtlas deathAtlas = new TextureAtlas(Gdx.files.internal("zombies/zombie-death.atlas"));
         AtlasRegion[] death = new AtlasRegion[FRAMES_DEATH];
         for (int i = 0; i < FRAMES_DEATH; i++) {
             death[i] = deathAtlas.findRegion("tile00" + i);
         }
-        Animation<AtlasRegion> deathanim = new Animation<>(0.2f, death);
+        // Slow down death animation and make it non-looping
+
+        Animation<AtlasRegion> deathanim = new Animation<>(0.4f, death);
+        deathanim.setPlayMode(Animation.PlayMode.NORMAL);  // Make it play only once
+
         animations.put("death", deathanim);
+
+        // Set custom size for death animation frames
+        deathWidth = 51 * 3; // Match original width from atlas
+        deathHeight = 40 * 3; // Match original height from atlas
 
         currentAnimation = "walk";
     }
