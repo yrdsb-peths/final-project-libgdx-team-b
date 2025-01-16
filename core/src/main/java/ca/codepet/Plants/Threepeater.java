@@ -23,7 +23,7 @@ public class Threepeater extends ShooterPlant {
     private float shotTimer = 0;
 
     public Threepeater(DayWorld world, float x, float y) {
-        super(world, x, y + 50);
+        super(world, x, y + 50, DEFAULT_HEALTH);
 
         setScale(3f);
         attackCooldown = DEFAULT_ATTACK_COOLDOWN;

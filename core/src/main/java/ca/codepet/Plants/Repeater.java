@@ -21,7 +21,7 @@ public class Repeater extends ShooterPlant {
     private float secondShotTimer = 0;
 
     public Repeater(DayWorld world, float x, float y) {
-        super(world, x, y);
+        super(world, x, y, DEFAULT_HEALTH);
 
         setScale(2.2f);
 

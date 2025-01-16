@@ -683,7 +683,7 @@ public class DayWorld implements Screen {
     }
 
     private boolean checkCollision(Collidable left, Collidable right) {
-        return (left.getRow() == right.getRow()) && (left.getX() + left.getWidth()) > right.getX();
+        return (left.getRow() == right.getRow()) && (left.getX() + left.getWidth()) > right.getX() && left.getX() < (right.getX() + right.getWidth());
     }
 
     public void addSun(Sun sun) {

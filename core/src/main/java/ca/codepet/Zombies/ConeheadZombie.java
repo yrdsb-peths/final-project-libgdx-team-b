@@ -8,9 +8,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
 import ca.codepet.Plants.Plant;
 import ca.codepet.worlds.DayWorld;
-import ca.codepet.Zombies.Zombie;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ConeheadZombie extends Zombie {
     static int WALK_FRAMES = 7;

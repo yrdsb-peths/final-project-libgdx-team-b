@@ -17,7 +17,7 @@ public class Peashooter extends ShooterPlant {
     public static final float PROJECTILE_SCALE = 3f;
 
     public Peashooter(DayWorld world, float x, float y) {
-        super(world, x, y);
+        super(world, x, y, DEFAULT_HEALTH);
 
         setScale(2.2f);
 

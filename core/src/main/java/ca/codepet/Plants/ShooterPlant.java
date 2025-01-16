@@ -21,8 +21,8 @@ public abstract class ShooterPlant extends Plant {
             Gdx.audio.newSound(Gdx.files.internal("sounds/shootSound2.mp3"))
     };
 
-    public ShooterPlant(DayWorld world, float x, float y) {
-        super(world, x, y, 300);
+    public ShooterPlant(DayWorld world, float x, float y, int health) {
+        super(world, x, y, health);
     }
 
     @Override
