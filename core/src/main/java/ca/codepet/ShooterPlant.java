@@ -58,6 +58,8 @@ public abstract class ShooterPlant extends Plant {
                     float distance = zombie.getX() - this.x;
                     if (distance > 0 && distance <= range) {
                         foundTarget = true;
+
+                        
                         break;
                     }
                 }
