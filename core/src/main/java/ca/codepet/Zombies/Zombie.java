@@ -162,6 +162,14 @@ public abstract class Zombie implements Collidable {
         return height;
     }
 
+    public void setScaleX(float scaleX) {
+        width *= scaleX;
+    }
+
+    public void setScaleY(float scaleY) {
+        height *= scaleY;
+    }
+
     public float getX() {
         return x;
     }
