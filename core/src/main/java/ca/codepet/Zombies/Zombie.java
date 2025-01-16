@@ -141,14 +141,14 @@ public abstract class Zombie implements Collidable {
         return textureRegion; // Fallback to static texture if no animation
     }
 
-    public int getWidth() {
+    public float getWidth() {
         if (isDying) {
             return deathWidth;
         }
         return width;
     }
 
-    public int getHeight() {
+    public float getHeight() {
         if (isDying) {
             return deathHeight;
         }
