@@ -6,20 +6,23 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 
-import ca.codepet.Plant;
-import ca.codepet.Projectile;
-import ca.codepet.ShooterPlant;
 import ca.codepet.WaveManager;
 import ca.codepet.Plants.Peashooter;
+import ca.codepet.Plants.Plant;
 import ca.codepet.Plants.PotatoMine;
+import ca.codepet.Plants.Projectile;
 import ca.codepet.Plants.Repeater;
+import ca.codepet.Plants.SnowPea;
+import ca.codepet.Plants.ShooterPlant;
 import ca.codepet.Plants.Sunflower;
 import ca.codepet.Plants.TallNut;
 import ca.codepet.Plants.Walnut;
@@ -30,7 +33,6 @@ import ca.codepet.ui.PlantBar;
 import ca.codepet.Collidable;
 import ca.codepet.GameRoot;
 import ca.codepet.Lawnmower;
-import ca.codepet.Menu;
 import ca.codepet.characters.PlantCard;
 import ca.codepet.characters.Sun;
 import ca.codepet.ui.PlantPicker;
@@ -110,6 +112,28 @@ public class DayWorld implements Screen {
 
     private float gameOverScale = 0f;
     private Texture gameOverTexture;
+
+    private String flashVertex =    "attribute vec4 a_position;\n" +
+                                    "attribute vec4 a_color;\n" +
+                                    "attribute vec2 a_texCoord0;\n" +
+                                    "uniform mat4 u_projTrans;\n" +
+                                    "varying vec4 v_color;\n" +
+                                    "varying vec2 v_texCoords;\n" +
+                                    "void main() {\n" +
+                                        "v_color = a_color;\n" +
+                                        "v_texCoords = a_texCoord0;\n" +
+                                        "gl_Position =  u_projTrans * a_position;\n" +
+                                    "}";
+    private String flashFragment = "#ifdef GL_ES\n" +
+                                    "precision mediump float;\n" +
+                                    "#endif\n" +
+                                    "varying vec4 v_color;\n" +
+                                    "varying vec2 v_texCoords;\n" +
+                                    "uniform sampler2D u_texture;\n" +
+                                    "void main() {\n" +
+                                        "gl_FragColor = vec4(1., 1., 1., texture2D(u_texture, v_texCoords).a * v_color.a);\n" +
+                                    "}";
+    private final ShaderProgram flashShader = new ShaderProgram(flashVertex, flashFragment); 
 
     public DayWorld(GameRoot game) {
         this.game = game;
@@ -214,24 +238,35 @@ public class DayWorld implements Screen {
             draggedCard = plantBar.checkCardDragStart(mouseX, mouseY);
             if (draggedCard != null && plantBar.canAffordCard(draggedCard)) {
                 // Create actual plant and ghost plant
-                if (draggedCard.getPlantType().equals("Peashooter")) {
-                    draggedPlant = new Peashooter(mouseX, mouseY);
-                    ghostPlant = new Peashooter(0, 0);
-                } else if (draggedCard.getPlantType().equals("Sunflower")) {
-                    draggedPlant = new Sunflower(mouseX, mouseY, this);
-                    ghostPlant = new Sunflower(0, 0, this);
-                } else if (draggedCard.getPlantType().equals("PotatoMine")) {
-                    draggedPlant = new PotatoMine(mouseX, mouseY);
-                    ghostPlant = new PotatoMine(0, 0);
-                } else if (draggedCard.getPlantType().equals("Walnut")) {
-                    draggedPlant = new Walnut(mouseX, mouseY);
-                    ghostPlant = new Walnut(0, 0);
-                } else if (draggedCard.getPlantType().equals("TallNut")) {
-                    draggedPlant = new TallNut(mouseX, mouseY);
-                    ghostPlant = new TallNut(0, 0);
-                } else if (draggedCard.getPlantType().equals("Repeater")) {
-                    draggedPlant = new Repeater(mouseX, mouseY);
-                    ghostPlant = new Repeater(0, 0);
+                switch (draggedCard.getPlantType()) {
+                    case "Peashooter":
+                        draggedPlant = new Peashooter(mouseX, mouseY);
+                        ghostPlant = new Peashooter(0, 0);
+                    break;
+                    case "Sunflower":
+                        draggedPlant = new Sunflower(mouseX, mouseY, this);
+                        ghostPlant = new Sunflower(0, 0, this);
+                    break;
+                    case "PotatoMine":
+                        draggedPlant = new PotatoMine(mouseX, mouseY);
+                        ghostPlant = new PotatoMine(0, 0);
+                    break;
+                    case "Walnut":
+                        draggedPlant = new Walnut(mouseX, mouseY);
+                        ghostPlant = new Walnut(0, 0);
+                    break;
+                    case "TallNut":
+                        draggedPlant = new TallNut(mouseX, mouseY);
+                        ghostPlant = new TallNut(0, 0);
+                    break;
+                    case "Repeater":
+                        draggedPlant = new Repeater(mouseX, mouseY);
+                        ghostPlant = new Repeater(0, 0);
+                    break;
+                    case "SnowPea":
+                        draggedPlant = new SnowPea(mouseX, mouseY);
+                        ghostPlant = new SnowPea(0, 0);
+                    break;
                 }
             } else {
                 draggedCard = null;
@@ -380,6 +415,26 @@ public class DayWorld implements Screen {
             zombie.update(delta);
             
             // Render the zombie no matter what state it's in
+            if(zombie.isSquashed() && zombie.getSquashTimer() >= Zombie.SQUASH_DURATION) {
+                zombiesToRemove.add(zombie);
+                continue;
+            }
+
+            // Render zombie
+            if (zombie.getSlowTimer() > 0f)
+                batch.setColor(0f, 0f, 1f,1f);
+            batch.draw(zombie.getTextureRegion(), 
+                    zombie.getX() + zombie.getXOffset(), 
+                    (LAWN_HEIGHT - zombie.getRow()) * LAWN_TILEHEIGHT - (zombie.getHeight() - LAWN_TILEHEIGHT)/2 + zombie.getYOffset(),
+                    zombie.getWidth()/2,
+                    zombie.getHeight()/2,
+                    zombie.getWidth(),
+                    zombie.getHeight(),
+                    1,
+                    zombie.getScaleY(),
+                    zombie.getRotation());
+                    batch.setShader(flashShader);
+            batch.setColor(1f, 1f, 1f, zombie.getFlashTimer() / 0.2f);
             batch.draw(zombie.getTextureRegion(), 
                       zombie.getX() + zombie.getXOffset(), 
                       (LAWN_HEIGHT - zombie.getRow()) * LAWN_TILEHEIGHT - (zombie.getHeight() - LAWN_TILEHEIGHT)/2 + zombie.getYOffset(),
@@ -390,6 +445,8 @@ public class DayWorld implements Screen {
                       1,
                       zombie.getScaleY(),
                       zombie.getRotation());
+            batch.setShader(null);
+            batch.setColor(1f, 1f, 1f, 1f);
 
             // Only mark for removal if death animation is complete
             if(zombie.isDying() && zombie.isDeathAnimationComplete()) {
@@ -680,7 +737,7 @@ public class DayWorld implements Screen {
                             for (Zombie zombie : zombies) {
                                 if (!zombie.isSquashed() && !proj.isHit() && checkCollision(proj, zombie)) {
                                     zombie.damage(proj.getDamage());
-                                    proj.hit();
+                                    proj.hit(zombie);
                                     break;
                                 }
                             }

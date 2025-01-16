@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
-import ca.codepet.Plant;
+import ca.codepet.Plants.Plant;
 import ca.codepet.worlds.DayWorld;
 
 public class BucketheadZombie extends Zombie {
@@ -15,10 +15,10 @@ public class BucketheadZombie extends Zombie {
     static int FRAMES_DEATH = 9;
 
     public BucketheadZombie(DayWorld theWorld) {
-        super(theWorld, new Texture("images/bucketHeadZombie.png"), 300, 50, 2.0f);
-
+        super(theWorld, new Texture("zombies/bucketheadZombie/BucketHeadZombie.png"), 300, 50, 2.0f);
+        
         // Load walk animation
-        TextureAtlas walkAtlas = new TextureAtlas(Gdx.files.internal("zombies/BucketheadZombieWalk.atlas"));
+        TextureAtlas walkAtlas = new TextureAtlas(Gdx.files.internal("zombies/bucketheadZombie/BucketheadZombieWalk.atlas"));
         AtlasRegion[] walk = new AtlasRegion[WALK_FRAMES];
         for (int i = 0; i < WALK_FRAMES; i++) {
             walk[i] = walkAtlas.findRegion("tile00" + i);
@@ -27,7 +27,7 @@ public class BucketheadZombie extends Zombie {
         animations.put("walk", walkanim);
 
         // Load attack animation
-        TextureAtlas attackAtlas = new TextureAtlas(Gdx.files.internal("zombies/BucketheadZombieAttack.atlas"));
+        TextureAtlas attackAtlas = new TextureAtlas(Gdx.files.internal("zombies/bucketheadZombie/BucketheadZombieAttack.atlas"));
         AtlasRegion[] attack = new AtlasRegion[ATTACK_FRAMES];
         for (int i = 0; i < ATTACK_FRAMES; i++) {
             attack[i] = attackAtlas.findRegion("tile00" + i);

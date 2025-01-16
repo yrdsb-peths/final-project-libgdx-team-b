@@ -6,6 +6,8 @@ import com.badlogic.gdx.assets.AssetManager;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import ca.codepet.worlds.Menu;
+
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class GameRoot extends Game {
     public SpriteBatch batch;

@@ -143,6 +143,23 @@ public class PlantPicker {
             1.4f  // Added scale parameter to make the icon larger
         );
         plantCards.add(repeaterCard);
+
+        // Add SnowPea card
+        row++;
+        col = 0;
+        TextureAtlas snowPeaAtlas = new TextureAtlas(Gdx.files.internal("plants/snowpea-idle.atlas"));
+        x = CARD_START_X + (col * (50 + CARD_SPACING));
+        y = CARD_START_Y - (row * (70 + CARD_SPACING));
+        PlantCard snowPeaCard = new PlantCard(
+            snowPeaAtlas.findRegion("snowpea_idle1"),
+            175,
+            7.5f,
+            "SnowPea",
+            x,
+            y,
+            1.4f  // Added scale parameter to make the icon larger
+        );
+        plantCards.add(snowPeaCard);
     }
 
     public void render() {
