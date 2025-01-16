@@ -31,7 +31,7 @@ public class ConeheadZombie extends Zombie {
     
 
     public ConeheadZombie(DayWorld theWorld) {
-        super(theWorld, new Texture("zombies/coneZombie/ConeheadZombie.png"), TOTAL_HP, 100, 1f, 4.7f);
+        super(theWorld, new Texture("zombies/coneZombie/ConeheadZombie.png"), TOTAL_HP, 100, 1f, 9.4f);
 
         // Adjust scale
 
