@@ -13,11 +13,17 @@ public class BucketheadZombie extends Zombie {
     static int WALK_FRAMES = 7;
     static int ATTACK_FRAMES = 7;
     static int FRAMES_DEATH = 9;
+    
+    static int STAGE_1_HP = 500;
+    static int STAGE_2_HP = 400;
+    static int STAGE_3_HP = 300;
+
+    static int TOTAL_HP = STAGE_1_HP + STAGE_2_HP + STAGE_3_HP;
 
     static float FRAME_DURATION = 0.7f;
 
     public BucketheadZombie(DayWorld theWorld) {
-        super(theWorld, new Texture("zombies/bucketheadZombie/BucketHeadZombie.png"), 300, 50, 2.0f);
+        super(theWorld, new Texture("zombies/bucketheadZombie/BucketHeadZombie.png"), TOTAL_HP, 50, 2.0f);
         
         // Load walk animation 1 
         TextureAtlas walkAtlas = new TextureAtlas(Gdx.files.internal("zombies/bucketheadZombie/buckethead-idle-1.atlas"));
@@ -87,6 +93,10 @@ public class BucketheadZombie extends Zombie {
     }
 
     private void updateAnimation() {
+        if(currentAnimation.equals("death")) {
+            return;
+        }
+
         String baseAnim = isAttacking ? "attack" : "walk";
         if (hp > STAGE_1_HP + STAGE_2_HP) {
             currentAnimation = baseAnim + "1";
@@ -96,18 +106,20 @@ public class BucketheadZombie extends Zombie {
             currentAnimation = baseAnim + "3";
         }
     }
-    
+
     @Override
     public void attack(Plant plant) {
         if (plant != null) {
-            currentAnimation = "attack";
+            isAttacking = true;
+            updateAnimation();
             super.attack(plant);
         }
     }
 
     @Override
     public void move(float delta) {
-        currentAnimation = "walk";
+        isAttacking = false;
+        updateAnimation();
         super.move(delta);
     }
 
