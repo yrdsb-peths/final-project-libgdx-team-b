@@ -48,6 +48,8 @@ public abstract class Zombie implements Collidable {
     private float atkDelay; // 1 second between attacks
     private float attackTimer = 0.0f;
 
+    private float moveSpeed = 15f;
+
     private float width = 135;
     private float height = 160;
 
@@ -78,20 +80,17 @@ public abstract class Zombie implements Collidable {
 
     private boolean isDeathSoundPlaying = false;
 
-
-    private static final float MOVE_SPEED = 15f; 
-
-
     private boolean isDeathAnimationComplete = false;
     private static final float DEATH_ANIMATION_DURATION = 1.8f; // 9 frames * 0.2s per frame
 
     protected boolean isAttacking;
 
 
-    public Zombie(DayWorld theWorld, Texture zombieTexture, int hp, int damage, float atkDelay) {
+    public Zombie(DayWorld theWorld, Texture zombieTexture, int hp, int damage, float atkDelay, float moveSpeed) {
         this.hp = hp;
         this.damage = damage;
         this.atkDelay = atkDelay;
+        this.moveSpeed = moveSpeed;
 
         this.zombieTexture = zombieTexture;
 
@@ -138,6 +137,10 @@ public abstract class Zombie implements Collidable {
         return isDying;
     }
 
+    public void setSpeed(float speed) {
+         moveSpeed = speed;
+    }
+
     public TextureRegion getTextureRegion() {
         Animation<AtlasRegion> currentAnim = animations.get(currentAnimation);
         if (currentAnim != null) {
@@ -175,7 +178,7 @@ public abstract class Zombie implements Collidable {
     }
 
     public void move(float delta) {
-        float speed = MOVE_SPEED * delta;
+        float speed = moveSpeed * delta;
         if (slowTimer > 0.0f)
             speed /= 2f;
         x -= speed; // Slower movement speed
