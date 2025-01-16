@@ -1,6 +1,9 @@
 package ca.codepet.Plants;
 
+import java.util.Random;
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -19,6 +22,7 @@ public class Squash extends Plant {
     static float JUMP_HEIGHT = 80f; // Add constant for consistent jump height
     static float ATTACK_RANGE = 120f; // Increased detection range
     static float SQUASH_RANGE = 80f; // Range for squash damage
+    static float NOTICE_DELAY = 1.3f; // Time between noticing zombie and attacking
 
     private boolean hasSquashed = false;
     private float attackTimer = 0;
@@ -26,11 +30,28 @@ public class Squash extends Plant {
     private float originalY;
     private int row; // Add row variable
     private Zombie targetZombie = null;
+    private float noticeTimer = 0f;
+    private boolean hasNoticed = false;
+
+    private boolean isHmmPlayed = false;
+
+    private Random rand = new Random();
+
+    private final Sound[] splatSounds = {
+            Gdx.audio.newSound(Gdx.files.internal("sounds/splat.ogg")),
+            Gdx.audio.newSound(Gdx.files.internal("sounds/splat2.ogg")),
+            Gdx.audio.newSound(Gdx.files.internal("sounds/splat3.ogg"))
+    };
+
+    private final Sound[] hmmSounds = {
+            Gdx.audio.newSound(Gdx.files.internal("sounds/squash_hmm.ogg")),
+            Gdx.audio.newSound(Gdx.files.internal("sounds/squash_hmm2.ogg"))
+    };
 
     public Squash(DayWorld world, float x, float y) {
         super(world, x, y);
         originalY = y;
-        setScale(2.2f);
+        setScale(2.5f);
 
         TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("plants/squash/squash-idle.atlas"));
         AtlasRegion[] idle = new AtlasRegion[IDLE_FRAMES];
@@ -63,9 +84,21 @@ public class Squash extends Plant {
             for (Zombie zombie : zombies) {
                 if (zombie.getRow() == row && !zombie.isSquashed() && !zombie.isDying() 
                     && Math.abs(zombie.getX() - x) < ATTACK_RANGE) {
-                    startAttack();
-                    targetZombie = zombie;
+
+                    if(!isHmmPlayed) {
+                        hmmSounds[rand.nextInt(hmmSounds.length)].play(0.8f);
+                        isHmmPlayed = true;
+                        hasNoticed = true;
+                        targetZombie = zombie;
+                    }
                     break;
+                }
+            }
+
+            if (hasNoticed) {
+                noticeTimer += delta;
+                if (noticeTimer >= NOTICE_DELAY) {
+                    startAttack();
                 }
             }
         }
@@ -100,6 +133,8 @@ public class Squash extends Plant {
     private void squash() {
         Array<Zombie> zombies = getWorld().getZombies();
         
+        splatSounds[rand.nextInt(splatSounds.length)].play(0.5f);
+
         // Deal damage to any zombies in range
         for (Zombie zombie : zombies) {
             if (zombie.getRow() == row && !zombie.isSquashed() && !zombie.isDying() 
@@ -121,5 +156,14 @@ public class Squash extends Plant {
     public void render(SpriteBatch batch) {
         super.render(batch);
         imageIndex += Gdx.graphics.getDeltaTime();
+    }
+
+    public void dipose() {
+        for (Sound sound : splatSounds) {
+            sound.dispose();
+        }
+        for (Sound sound : hmmSounds) {
+            sound.dispose();
+        }
     }
 }
