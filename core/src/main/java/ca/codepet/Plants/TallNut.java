@@ -9,9 +9,9 @@ import ca.codepet.Plant;
 
 public class TallNut extends Plant {
     private static final int FRAMES = 4;
-    private static final int DEFAULT_HEALTH = 8000;
-    private static final int STAGE2_HEALTH = 5400;
-    private static final int STAGE3_HEALTH = 2600;
+    private static final int DEFAULT_HEALTH = 400;
+    private static final int STAGE2_HEALTH = 300;
+    private static final int STAGE3_HEALTH = 200;
     
     public TallNut(float x, float y) {
         super(x, y);

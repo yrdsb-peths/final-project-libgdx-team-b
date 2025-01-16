@@ -61,7 +61,7 @@ public class PlantCard {
         this.cooldownTimer = 0;
         this.isSelected = false;
         this.plantType = plantType;
-        this.bounds = new Rectangle(x, y, 60, 70);
+        this.bounds = new Rectangle(x, y, 70, 80);
         this.isDarkened = false;
         this.originalX = x;
         this.originalY = y;

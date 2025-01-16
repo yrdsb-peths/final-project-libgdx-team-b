@@ -18,8 +18,8 @@ public class PlantBar {
 
     private Array<PlantCard> selectedCards;
     private static final int MAX_CARDS = 6;
-    private static final float CARD_START_X = 100;
-    private static final float CARD_SPACING = 65;
+    private static final float CARD_START_X = 90;
+    private static final float CARD_SPACING = 70;
 
     private int sunDisplay = 0;
     private boolean gameStarted = false;
