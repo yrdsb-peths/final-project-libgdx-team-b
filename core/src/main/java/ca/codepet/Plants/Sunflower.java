@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
-import ca.codepet.Plant;
 import ca.codepet.characters.Sun;
 import ca.codepet.worlds.DayWorld;
 
@@ -18,6 +17,7 @@ public class Sunflower extends Plant {
     public Sunflower(float x, float y, DayWorld world) {
         super(x, y);
         this.world = world;
+        this.scale = 1.1f; // Make sunflower 50% bigger
         TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("plants/Sunflower.atlas"));
         AtlasRegion[] idle = new AtlasRegion[IDLE_FRAMES];
         for (int i = 0; i < IDLE_FRAMES; i++) {

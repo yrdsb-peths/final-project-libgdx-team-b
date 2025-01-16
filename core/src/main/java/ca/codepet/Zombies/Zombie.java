@@ -13,7 +13,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.utils.ObjectMap;
 
 import ca.codepet.Collidable;
-import ca.codepet.Plant;
+import ca.codepet.Plants.Plant;
 import ca.codepet.worlds.DayWorld;
 
 // info
@@ -66,13 +66,16 @@ public abstract class Zombie implements Collidable {
     private boolean isSquashed = false;
     public static final float SQUASH_DURATION = 0.5f;
     private float squashTimer = 0;
+    private float flashTimer = 0;
 
     private boolean isDying = false;
     private float deathTimer = 0f;
-    private static final float DEATH_SOUND_DURATION = 1.5f; // Adjust based on your sound length
+    private static final float DEATH_SOUND_DURATION = 1.5f; 
 
     private boolean isDeathSoundPlaying = false;
     private long deathSoundId;
+
+    private static final float MOVE_SPEED = 30f; 
 
     public Zombie(DayWorld theWorld, Texture zombieTexture, int hp, int damage, float atkDelay) {
         this.hp = hp;
@@ -87,8 +90,7 @@ public abstract class Zombie implements Collidable {
         chompSounds = new Sound[] {
                 Gdx.audio.newSound(Gdx.files.internal("sounds/chomp.ogg")),
                 Gdx.audio.newSound(Gdx.files.internal("sounds/chomp2.ogg")),
-                Gdx.audio.newSound(Gdx.files.internal("sounds/chomp3.ogg")),
-                Gdx.audio.newSound(Gdx.files.internal("sounds/chomp4.ogg"))
+                Gdx.audio.newSound(Gdx.files.internal("sounds/chomp3.ogg"))
         };
 
         // Load multiple groan sounds
@@ -141,7 +143,7 @@ public abstract class Zombie implements Collidable {
         return x;
     }
 
-    public void move() {
+    public void move(float delta) {
         float speed = 0.5f;
         if (slowTimer > 0.0f)
             speed /= 2f;
@@ -163,6 +165,10 @@ public abstract class Zombie implements Collidable {
             modDelta /= 2f;
         attackTimer += modDelta;
         stateTime += modDelta; // Update animation state time
+        
+        flashTimer = Math.max(0, flashTimer - delta);
+        attackTimer += delta;
+        stateTime += delta; // Update animation state time
 
         // Add spawn groan
         if (!hasGroanedOnSpawn) {
@@ -243,6 +249,7 @@ public abstract class Zombie implements Collidable {
 
     public void damage(int dmg) {
         hp -= dmg;
+        flashTimer = 0.2f;
         if (hp <= 0 && !isDying) {
             isDying = true;
             deathSounds[rand.nextInt(deathSounds.length)].play(0.5f);
@@ -305,6 +312,10 @@ public abstract class Zombie implements Collidable {
 
     public float getSlowTimer() {
         return slowTimer;
+    }
+
+    public float getFlashTimer() {
+        return flashTimer;
     }
 
     public Rectangle getBounds() {

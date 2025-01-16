@@ -5,9 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
-import ca.codepet.Projectile;
-import ca.codepet.ShooterPlant;
-
 public class Peashooter extends ShooterPlant {
     static int IDLE_FRAMES = 5;
     static int ATTACK_FRAMES = 3;
@@ -54,7 +51,6 @@ public class Peashooter extends ShooterPlant {
         try {
             // Pass the row number to the projectile
             Projectile proj = new Projectile(x + 30, y + 15, DEFAULT_DAMAGE, PROJECTILE_ATLAS, PROJECTILE_SCALE, currentRow);
-            System.out.println("Created peashooter projectile in row: " + currentRow);
             return proj;
         } catch (Exception e) {
             System.out.println("Error creating projectile: " + e.getMessage());

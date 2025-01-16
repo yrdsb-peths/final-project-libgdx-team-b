@@ -1,4 +1,4 @@
-package ca.codepet;
+package ca.codepet.Plants;
 
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.ObjectMap.Entry;

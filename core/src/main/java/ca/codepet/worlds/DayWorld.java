@@ -11,17 +11,18 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 
-import ca.codepet.Plant;
-import ca.codepet.Projectile;
-import ca.codepet.ShooterPlant;
 import ca.codepet.WaveManager;
 import ca.codepet.Plants.Peashooter;
+import ca.codepet.Plants.Plant;
 import ca.codepet.Plants.PotatoMine;
+import ca.codepet.Plants.Projectile;
 import ca.codepet.Plants.Repeater;
 import ca.codepet.Plants.SnowPea;
+import ca.codepet.Plants.ShooterPlant;
 import ca.codepet.Plants.Sunflower;
 import ca.codepet.Plants.TallNut;
 import ca.codepet.Plants.Walnut;
@@ -32,7 +33,6 @@ import ca.codepet.ui.PlantBar;
 import ca.codepet.Collidable;
 import ca.codepet.GameRoot;
 import ca.codepet.Lawnmower;
-import ca.codepet.Menu;
 import ca.codepet.characters.PlantCard;
 import ca.codepet.characters.Sun;
 import ca.codepet.ui.PlantPicker;
@@ -98,10 +98,14 @@ public class DayWorld implements Screen {
 
     private final Sound loseSound = Gdx.audio.newSound(Gdx.files.internal("sounds/loseMusic.ogg"));
     private final Sound shovelSound = Gdx.audio.newSound(Gdx.files.internal("sounds/shovel.ogg"));
-    private Sound sunPickupSound = Gdx.audio.newSound(Gdx.files.internal("sounds/sunPickup.mp3"));
+    private final Sound sunPickupSound = Gdx.audio.newSound(Gdx.files.internal("sounds/sunPickup.mp3"));
     private final Sound buttonClickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/buttonClick.ogg"));
+    private final Sound[] plantDeathSounds = new Sound[] { 
+        Gdx.audio.newSound(Gdx.files.internal("sounds/plantDie.mp3")),
+        Gdx.audio.newSound(Gdx.files.internal("sounds/plantDie2.ogg"))
+    };
 
-    protected Sound[] plantSpawnSound;
+    private Sound[] plantSpawnSound;
 
     private final Sound backgroundMusic = Gdx.audio.newSound(Gdx.files.internal("sounds/dayMusic.mp3"));
     private long backgroundMusicId;
@@ -109,10 +113,32 @@ public class DayWorld implements Screen {
     private float gameOverScale = 0f;
     private Texture gameOverTexture;
 
+    private String flashVertex =    "attribute vec4 a_position;\n" +
+                                    "attribute vec4 a_color;\n" +
+                                    "attribute vec2 a_texCoord0;\n" +
+                                    "uniform mat4 u_projTrans;\n" +
+                                    "varying vec4 v_color;\n" +
+                                    "varying vec2 v_texCoords;\n" +
+                                    "void main() {\n" +
+                                        "v_color = a_color;\n" +
+                                        "v_texCoords = a_texCoord0;\n" +
+                                        "gl_Position =  u_projTrans * a_position;\n" +
+                                    "}";
+    private String flashFragment = "#ifdef GL_ES\n" +
+                                    "precision mediump float;\n" +
+                                    "#endif\n" +
+                                    "varying vec4 v_color;\n" +
+                                    "varying vec2 v_texCoords;\n" +
+                                    "uniform sampler2D u_texture;\n" +
+                                    "void main() {\n" +
+                                        "gl_FragColor = vec4(1., 1., 1., texture2D(u_texture, v_texCoords).a * v_color.a);\n" +
+                                    "}";
+    private final ShaderProgram flashShader = new ShaderProgram(flashVertex, flashFragment); 
+
     public DayWorld(GameRoot game) {
         this.game = game;
-
     }
+
     @Override
     public void show() {
 
@@ -159,6 +185,7 @@ public class DayWorld implements Screen {
 
     public void renderGame(float delta) {
         
+
         // Draw the background texture
         batch.begin();
         batch.draw(backgroundTexture, -200, 0);
@@ -168,6 +195,8 @@ public class DayWorld implements Screen {
         plantBar.render();
 
         renderShovel();
+
+        renderLawnmower();
 
         if (!gameStarted) {
             // Render plant picker if game hasn't started
@@ -325,12 +354,14 @@ public class DayWorld implements Screen {
         shovel.render();
 
 
-        renderLawnmower();
-        renderSun(delta);
         renderZombie(delta);
+        
+        renderSun(delta);
     }
 
     private void renderLawnmower() {
+        batch.begin();
+
         Array<Lawnmower> lawnmowersToRemove = new Array<>();
 
         for(Lawnmower lawnmower : lawnmowers) {
@@ -372,6 +403,8 @@ public class DayWorld implements Screen {
             lawnmower.dispose();
             lawnmowers.removeValue(lawnmower, true);
         }
+
+        batch.end();
     }
 
     private void renderZombie(float delta) {
@@ -390,7 +423,6 @@ public class DayWorld implements Screen {
                 
                 if(lawnmower == null) {
                     isGameOver = true;
-                    System.out.println("Game Over");
                 } else {
                     lawnmower.activate();
                 }
@@ -407,6 +439,18 @@ public class DayWorld implements Screen {
             if (zombie.getSlowTimer() > 0f)
                 batch.setColor(0f, 0f, 1f,1f);
             batch.draw(zombie.getTextureRegion(), 
+                    zombie.getX() + zombie.getXOffset(), 
+                    (LAWN_HEIGHT - zombie.getRow()) * LAWN_TILEHEIGHT - (zombie.getHeight() - LAWN_TILEHEIGHT)/2 + zombie.getYOffset(),
+                    zombie.getWidth()/2,
+                    zombie.getHeight()/2,
+                    zombie.getWidth(),
+                    zombie.getHeight(),
+                    1,
+                    zombie.getScaleY(),
+                    zombie.getRotation());
+                    batch.setShader(flashShader);
+            batch.setColor(1f, 1f, 1f, zombie.getFlashTimer() / 0.2f);
+            batch.draw(zombie.getTextureRegion(), 
                       zombie.getX() + zombie.getXOffset(), 
                       (LAWN_HEIGHT - zombie.getRow()) * LAWN_TILEHEIGHT - (zombie.getHeight() - LAWN_TILEHEIGHT)/2 + zombie.getYOffset(),
                       zombie.getWidth()/2,
@@ -416,6 +460,7 @@ public class DayWorld implements Screen {
                       1,
                       zombie.getScaleY(),
                       zombie.getRotation());
+            batch.setShader(null);
             batch.setColor(1f, 1f, 1f, 1f);
 
             // Only move or attack if not squashed
@@ -425,7 +470,6 @@ public class DayWorld implements Screen {
                 int col = zombie.getCol();
                 if(row >= 0 && row < LAWN_HEIGHT && col >= 0 && col < LAWN_WIDTH) {
                     Plant plant = plants[row][col];
-                    System.out.println(col);
                     if(plant != null) {
                         // Check if it's a potato mine and handle explosion
                         if(plant instanceof PotatoMine) {
@@ -440,14 +484,16 @@ public class DayWorld implements Screen {
                         if(zombie.canAttack()) {
                             zombie.attack(plant);
                             if(plant.isDead()) {
+                                plantDeathSounds[rand.nextInt(plantDeathSounds.length)].play(0.7f);
+                                plant.dispose();
                                 plants[row][col] = null;
                             }
                         }
                     } else {
-                        zombie.move();
+                        zombie.move(delta);
                     }
                 } else {
-                    zombie.move();
+                    zombie.move(delta);
                 }
             }
         }
@@ -462,6 +508,8 @@ public class DayWorld implements Screen {
     }
 
     public void renderSun(float delta) {
+        batch.begin();
+
         // Render all suns and check for collection
         // Loop through suns
         for (int i = 0; i < suns.size; i++) {
@@ -499,6 +547,8 @@ public class DayWorld implements Screen {
             // Create new sun and add to array
             suns.add(new Sun());
         }
+
+        batch.end();
     }
 
     public void renderShovel() {
@@ -642,6 +692,10 @@ public class DayWorld implements Screen {
 
         
         for(Sound sound : plantSpawnSound) {
+            sound.dispose();
+        }
+
+        for(Sound sound : plantDeathSounds) {
             sound.dispose();
         }
 
