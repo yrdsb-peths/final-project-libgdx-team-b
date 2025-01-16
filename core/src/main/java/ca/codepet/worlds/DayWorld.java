@@ -520,6 +520,9 @@ public class DayWorld implements Screen {
                             if (plant instanceof Spikeweed) { // Handle Spikeweed
                                 Spikeweed spikeweed = (Spikeweed) plant;
                                 spikeweed.attack(zombie);
+                                if (zombie.isDead()) {
+                                    continue;
+                                }
                             }
                         }
                     }
