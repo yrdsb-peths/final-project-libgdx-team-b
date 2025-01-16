@@ -29,7 +29,6 @@ public class Squash extends Plant {
     private boolean hasSquashed = false;
     private float attackTimer = 0;
     private float jumpHeight = 0;
-    private float originalY;
     private int row; // Add row variable
     private Zombie targetZombie = null;
     private float noticeTimer = 0f;
@@ -53,7 +52,6 @@ public class Squash extends Plant {
 
     public Squash(DayWorld world, float x, float y) {
         super(world, x, y, DEFAULT_HEALTH);
-        originalY = y;
         setScale(2.5f);
 
         TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("plants/squash/squash-idle.atlas"));
