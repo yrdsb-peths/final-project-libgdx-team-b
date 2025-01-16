@@ -170,6 +170,22 @@ public class PlantPicker {
                 1.4f
         );
         plantCards.add(squashCard);
+
+        // Add Threepeater card
+        col++;
+        TextureAtlas threepeaterAtlas = new TextureAtlas(Gdx.files.internal("plants/threepeater/threepeater-idle.atlas"));
+        x = CARD_START_X + (col * (50 + CARD_SPACING));
+        y = CARD_START_Y - (row * (70 + CARD_SPACING));
+        PlantCard threepeaterCard = new PlantCard(
+                threepeaterAtlas.findRegion("tile000"),
+                325,
+                7.5f,
+                "Threepeater",
+                x,
+                y,
+                1.4f
+        );
+        plantCards.add(threepeaterCard);
     }
 
     public void render() {
