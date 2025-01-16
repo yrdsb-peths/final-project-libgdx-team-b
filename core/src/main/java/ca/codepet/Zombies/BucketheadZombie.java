@@ -71,7 +71,6 @@ public class BucketheadZombie extends Zombie {
         animations.put("walk4", walkanim4);
 
         // Load attack animation
-
         TextureAtlas attackAtlas1 = new TextureAtlas(
                 Gdx.files.internal("zombies/bucketheadZombie/buckethead-attack-1.atlas"));
         AtlasRegion[] attack1 = new AtlasRegion[ATTACK_FRAMES];
