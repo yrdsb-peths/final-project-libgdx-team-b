@@ -8,7 +8,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import ca.codepet.worlds.Menu;
 
-/** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
+/**
+ * {@link com.badlogic.gdx.ApplicationListener} implementation shared by all
+ * platforms.
+ */
 public class GameRoot extends Game {
     public SpriteBatch batch;
     public AssetManager assetManager;
@@ -19,7 +22,6 @@ public class GameRoot extends Game {
         assetManager = new AssetManager();
 
         assetManager.load("images/menu.png", Texture.class);
-
 
         setScreen(new Menu(this));
     }

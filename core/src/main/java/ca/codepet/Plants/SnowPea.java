@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
 import ca.codepet.SnowProjectile;
-import ca.codepet.Plants.ShooterPlant;
 
 public class SnowPea extends ShooterPlant {
     static int IDLE_FRAMES = 8;
@@ -23,9 +22,9 @@ public class SnowPea extends ShooterPlant {
         setScale(2.2f);
 
         attackCooldown = DEFAULT_ATTACK_COOLDOWN;
-        
+
         TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("plants/snowpea-idle.atlas"));
-        
+
         // Load idle animation (looping)
         AtlasRegion[] idle = new AtlasRegion[IDLE_FRAMES];
         for (int i = 0; i < IDLE_FRAMES; i++) {
@@ -35,7 +34,7 @@ public class SnowPea extends ShooterPlant {
         Animation<AtlasRegion> idleanim = new Animation<>(0.2f, idle);
         idleanim.setPlayMode(Animation.PlayMode.LOOP);
         animations.put("idle", idleanim);
-        
+
         // Attack animation (non-looping)
         TextureAtlas attackAtlas = new TextureAtlas(Gdx.files.internal("plants/snowpea-attack.atlas"));
         AtlasRegion[] attack = new AtlasRegion[ATTACK_FRAMES];
@@ -45,7 +44,7 @@ public class SnowPea extends ShooterPlant {
         Animation<AtlasRegion> attackAnim = new Animation<>(0.1f, attack);
         attackAnim.setPlayMode(Animation.PlayMode.NORMAL);
         animations.put("attack", attackAnim);
-        
+
         setAnimation("idle"); // Set initial animation
     }
 
@@ -53,7 +52,8 @@ public class SnowPea extends ShooterPlant {
     protected SnowProjectile createProjectile() {
         try {
             // Pass the row number to the projectile
-            SnowProjectile proj = new SnowProjectile(x + 30, y + 15, DEFAULT_DAMAGE, PROJECTILE_ATLAS, PROJECTILE_SCALE, currentRow);
+            SnowProjectile proj = new SnowProjectile(x + 30, y + 15, DEFAULT_DAMAGE, PROJECTILE_ATLAS, PROJECTILE_SCALE,
+                    currentRow);
             System.out.println("Created peashooter projectile in row: " + currentRow);
             return proj;
         } catch (Exception e) {

@@ -22,7 +22,7 @@ public class Repeater extends ShooterPlant {
         super(x, y);
 
         setScale(2.2f);
-        
+
         TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("plants/repeater-idle.atlas"));
         AtlasRegion[] idle = new AtlasRegion[IDLE_FRAMES];
         for (int i = 0; i < IDLE_FRAMES; i++) {
@@ -40,7 +40,7 @@ public class Repeater extends ShooterPlant {
         Animation<AtlasRegion> attackAnim = new Animation<>(0.1f, attack);
         attackAnim.setPlayMode(Animation.PlayMode.NORMAL);
         animations.put("attack", attackAnim);
-        
+
         setAnimation("idle"); // Set initial animation
     }
 

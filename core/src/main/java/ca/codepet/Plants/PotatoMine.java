@@ -11,7 +11,7 @@ public class PotatoMine extends Plant {
     private static final int IDLE_FRAMES = 5;
     private static final int EXPLODE_FRAMES = 8;
     private static final int DEFAULT_HEALTH = 300;
-    
+
     private static final float ARMING_TIME = 10f;
     private float armingTimer = 0f;
     private boolean isArmed = false;
@@ -21,12 +21,12 @@ public class PotatoMine extends Plant {
     private boolean hasCheckedAfterArming = false;
 
     private final Sound explodeSound = Gdx.audio.newSound(Gdx.files.internal("sounds/potato_mine.ogg"));
-    
+
     public PotatoMine(float x, float y) {
         super(x, y);
         health = DEFAULT_HEALTH;
-        setScale(2.7f);  // Add this line to scale the potato mine
-        
+        setScale(2.7f); // Add this line to scale the potato mine
+
         // Load popup animation
         TextureAtlas popupAtlas = new TextureAtlas(Gdx.files.internal("plants/potato-popup.atlas"));
         AtlasRegion[] popup = new AtlasRegion[POPUP_FRAMES];
@@ -60,10 +60,10 @@ public class PotatoMine extends Plant {
             explode[i] = explodeAtlas.findRegion(String.valueOf(i + 10));
         }
         animations.put("explode", new Animation<>(0.1f, explode));
-        
+
         setAnimation("popup");
     }
-    
+
     @Override
     public void update(float delta) {
         if (hasExploded) {
@@ -74,7 +74,7 @@ public class PotatoMine extends Plant {
             imageIndex += delta;
             return;
         }
-        
+
         if (!isArmed) {
             imageIndex = 0; // Keep showing first frame while arming
             armingTimer += delta;
@@ -90,26 +90,28 @@ public class PotatoMine extends Plant {
             setAnimation("idle");
             imageIndex = 0;
             hasCheckedAfterArming = true;
-            // Force an explosion check after becoming armed in case there's already a zombie
+            // Force an explosion check after becoming armed in case there's already a
+            // zombie
             if (System.getProperty("isTest") == null) { // Skip during tests
                 notifyArmed();
             }
         }
-        
+
         if (isArmed) { // Only advance animation after arming
             imageIndex += delta;
         }
     }
-    
+
     // Add this method to notify that the mine is armed
     private void notifyArmed() {
-        // This is just a hook - the explosion logic is handled by the zombie collision in DayWorld
+        // This is just a hook - the explosion logic is handled by the zombie collision
+        // in DayWorld
     }
 
     public boolean isArmed() {
         return isArmed;
     }
-    
+
     public void explode() {
         explodeSound.play(0.8f);
 
@@ -119,11 +121,11 @@ public class PotatoMine extends Plant {
             imageIndex = 0;
         }
     }
-    
+
     public int getExplosionDamage() {
         return explosionDamage;
     }
-    
+
     public boolean hasExploded() {
         return hasExploded;
     }

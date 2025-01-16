@@ -20,9 +20,9 @@ public class Peashooter extends ShooterPlant {
         setScale(2.2f);
 
         attackCooldown = DEFAULT_ATTACK_COOLDOWN;
-        
+
         TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("plants/peashooter-idle.atlas"));
-        
+
         // Load idle animation (looping)
         AtlasRegion[] idle = new AtlasRegion[IDLE_FRAMES];
         for (int i = 0; i < IDLE_FRAMES; i++) {
@@ -32,7 +32,7 @@ public class Peashooter extends ShooterPlant {
         Animation<AtlasRegion> idleanim = new Animation<>(0.2f, idle);
         idleanim.setPlayMode(Animation.PlayMode.LOOP);
         animations.put("idle", idleanim);
-        
+
         // Attack animation (non-looping)
         TextureAtlas attackAtlas = new TextureAtlas(Gdx.files.internal("plants/peashooter-attack.atlas"));
         AtlasRegion[] attack = new AtlasRegion[ATTACK_FRAMES];
@@ -42,7 +42,7 @@ public class Peashooter extends ShooterPlant {
         Animation<AtlasRegion> attackAnim = new Animation<>(0.1f, attack);
         attackAnim.setPlayMode(Animation.PlayMode.NORMAL);
         animations.put("attack", attackAnim);
-        
+
         setAnimation("idle"); // Set initial animation
     }
 
@@ -50,7 +50,8 @@ public class Peashooter extends ShooterPlant {
     protected Projectile createProjectile() {
         try {
             // Pass the row number to the projectile
-            Projectile proj = new Projectile(x + 30, y + 15, DEFAULT_DAMAGE, PROJECTILE_ATLAS, PROJECTILE_SCALE, currentRow);
+            Projectile proj = new Projectile(x + 30, y + 15, DEFAULT_DAMAGE, PROJECTILE_ATLAS, PROJECTILE_SCALE,
+                    currentRow);
             return proj;
         } catch (Exception e) {
             System.out.println("Error creating projectile: " + e.getMessage());

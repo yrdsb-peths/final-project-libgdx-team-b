@@ -5,11 +5,10 @@ import java.util.Random;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.ObjectMap;
 
 import ca.codepet.Collidable;
@@ -41,7 +40,7 @@ public abstract class Zombie implements Collidable {
 
     private int row;
     private int col = 8;
-    
+
     private int damage = 30;
 
     private float atkDelay; // 1 second between attacks
@@ -52,7 +51,7 @@ public abstract class Zombie implements Collidable {
 
     private float slowTimer = 0.0f;
 
-    protected int deathWidth = 51;  // Default death animation width
+    protected int deathWidth = 51; // Default death animation width
     protected int deathHeight = 40; // Default death animation height
 
     DayWorld world;
@@ -73,16 +72,13 @@ public abstract class Zombie implements Collidable {
 
     private boolean isDying = false;
     private float deathTimer = 0f;
-    private static final float DEATH_SOUND_DURATION = 1.5f; 
+    private static final float DEATH_SOUND_DURATION = 1.5f;
 
     private boolean isDeathSoundPlaying = false;
-    private long deathSoundId;
-
-    private static final float MOVE_SPEED = 30f; 
 
     private boolean isDeathAnimationComplete = false;
     private static final float DEATH_ANIMATION_DURATION = 1.8f; // 9 frames * 0.2s per frame
-  
+
     protected boolean isAttacking;
 
     public Zombie(DayWorld theWorld, Texture zombieTexture, int hp, int damage, float atkDelay) {
@@ -111,10 +107,10 @@ public abstract class Zombie implements Collidable {
                 Gdx.audio.newSound(Gdx.files.internal("sounds/groan6.ogg"))
         };
 
-        //load death sound
+        // load death sound
         deathSounds = new Sound[] {
-            Gdx.audio.newSound(Gdx.files.internal("sounds/zombieDeath1.ogg")),
-            Gdx.audio.newSound(Gdx.files.internal("sounds/zombieDeath2.ogg"))
+                Gdx.audio.newSound(Gdx.files.internal("sounds/zombieDeath1.ogg")),
+                Gdx.audio.newSound(Gdx.files.internal("sounds/zombieDeath2.ogg"))
         };
 
         world = theWorld;
@@ -181,7 +177,7 @@ public abstract class Zombie implements Collidable {
             modDelta /= 2f;
         attackTimer += modDelta;
         stateTime += modDelta; // Update animation state time
-        
+
         flashTimer = Math.max(0, flashTimer - delta);
         attackTimer += delta;
         stateTime += delta; // Update animation state time
@@ -278,7 +274,7 @@ public abstract class Zombie implements Collidable {
         if (!isSquashed && !isDying) {
             groanSounds[rand.nextInt(groanSounds.length)].play(0.4f);
         }
-    } 
+    }
 
     public void doSlow() {
         slowTimer = 10f;
@@ -311,7 +307,6 @@ public abstract class Zombie implements Collidable {
     public void dispose() {
         if (!isDeathSoundPlaying) {
             // Play death sound and set flag
-            deathSoundId = deathSounds[rand.nextInt(deathSounds.length)].play(0.5f);
             isDeathSoundPlaying = true;
         }
 
@@ -355,7 +350,7 @@ public abstract class Zombie implements Collidable {
     }
 
     public Rectangle getBounds() {
-        return new Rectangle(x + xOffset, y, width/2, height); // Adjust collision box
+        return new Rectangle(x + xOffset, y, width / 2, height); // Adjust collision box
     }
 
     public boolean isDeathAnimationComplete() {
