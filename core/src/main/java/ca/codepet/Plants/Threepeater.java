@@ -12,7 +12,7 @@ import ca.codepet.Zombies.Zombie;
 public class Threepeater extends ShooterPlant {
     static int IDLE_FRAMES = 8;
     static int ATTACK_FRAMES = 2;
-    static int DEFAULT_HEALTH = 300;
+    static int DEFAULT_HEALTH = 600;
     static float DEFAULT_ATTACK_COOLDOWN = 1.5f;
     static int DEFAULT_DAMAGE = 20;
     public static final String PROJECTILE_ATLAS = "projectiles/pea.atlas";
