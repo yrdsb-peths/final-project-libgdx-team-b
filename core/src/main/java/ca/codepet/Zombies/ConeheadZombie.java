@@ -19,6 +19,7 @@ public class ConeheadZombie extends Zombie {
     private int hp;
     static int WALK_FRAMES = 7;
     static int ATTACK_FRAMES = 7;
+    static int FRAMES_DEATH = 9;
 
     static int STAGE_1_HP = 190;
     static int STAGE_2_HP = 190;
@@ -27,16 +28,20 @@ public class ConeheadZombie extends Zombie {
     static int TOTAL_HP = STAGE_1_HP + STAGE_2_HP + STAGE_3_HP;
 
     static float FRAME_DURATION = 0.7f;
+    
 
     public ConeheadZombie(DayWorld theWorld) {
         super(theWorld, new Texture("zombies/coneZombie/ConeheadZombie.png"), TOTAL_HP, 50, 2.0f, 15f);
 
         // Adjust scale
-        setScaleX(0.55f);
-        setScaleY(0.88f);
+
+        setScaleX(1f);
+        setScaleY(0.9f);
+
 
         // Initialize hp
         this.hp = TOTAL_HP;
+
         
 
         // Load walk animation
@@ -93,10 +98,35 @@ public class ConeheadZombie extends Zombie {
         Animation<AtlasRegion> attackanim3 = new Animation<>(FRAME_DURATION, attack3);
         animations.put("attack3", attackanim3);
 
+        // Fix death animation with proper size and timing
+        TextureAtlas deathAtlas = new TextureAtlas(Gdx.files.internal("zombies/zombie-death.atlas"));
+        AtlasRegion[] death = new AtlasRegion[FRAMES_DEATH];
+        for (int i = 0; i < FRAMES_DEATH; i++) {
+            death[i] = deathAtlas.findRegion("tile00" + i);
+        }
+        // Slow down death animation and make it non-looping
+
+        Animation<AtlasRegion> deathanim = new Animation<>(0.4f, death);
+        deathanim.setPlayMode(Animation.PlayMode.NORMAL);  // Make it play only once
+
+        animations.put("death", deathanim);
+
+        // Set custom size for death animation frames
+        deathWidth = 51 * 3; // Match original width from atlas
+        deathHeight = 40 * 3; // Match original height from atlas
+
+
         currentAnimation = "walk";
+
+
     }
 
     private void updateAnimation() {
+        if(currentAnimation.equals("death")) {
+            return;
+        }
+
+
         String baseAnim = isAttacking ? "attack" : "walk";
         if (hp > STAGE_1_HP + STAGE_2_HP) {
             currentAnimation = baseAnim + "1";

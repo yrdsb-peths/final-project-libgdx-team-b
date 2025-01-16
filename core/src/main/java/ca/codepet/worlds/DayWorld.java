@@ -752,6 +752,13 @@ public class DayWorld implements Screen {
                 Plant p = plants[y][x];
                 if (p != null) {
                     p.update(delta);
+                    
+                    // Remove dead plants
+                    if (p.isDead()) {
+                        p.dispose();
+                        plants[y][x] = null;
+                        continue;
+                    }
 
                     // Handle shooter plant attacks
                     if (p instanceof ShooterPlant) {

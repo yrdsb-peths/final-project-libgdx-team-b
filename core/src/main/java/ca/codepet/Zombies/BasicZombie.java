@@ -69,11 +69,4 @@ public class BasicZombie extends Zombie {
         currentAnimation = "walk";
         super.move(delta);
     }
-
-    @Override
-    public void die() {
-        currentAnimation = "death";
-        super.die();
-    }
-
 }

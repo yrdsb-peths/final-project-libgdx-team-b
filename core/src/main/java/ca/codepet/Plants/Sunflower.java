@@ -15,7 +15,7 @@ public class Sunflower extends Plant {
     private DayWorld world;
 
     public Sunflower(DayWorld world, float x, float y) {
-        super(world, x, y);
+        super(world, x, y, 300);
         this.scale = 1.1f; // Make sunflower 50% bigger
         TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("plants/sunflower/Sunflower.atlas"));
         AtlasRegion[] idle = new AtlasRegion[IDLE_FRAMES];

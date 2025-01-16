@@ -1,54 +1,54 @@
 conehead-attack-1.png
-size: 224, 56
+size: 388, 56
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 tile000
   rotate: false
   xy: 1, 1
-  size: 31, 54
-  orig: 31, 54
+  size: 54, 54
+  orig: 54, 54
   offset: 0, 0
   index: -1
 tile001
   rotate: false
-  xy: 100, 1
-  size: 30, 53
-  orig: 30, 53
+  xy: 169, 1
+  size: 53, 53
+  orig: 53, 53
   offset: 0, 0
   index: -1
 tile002
   rotate: false
-  xy: 132, 1
-  size: 30, 53
-  orig: 30, 53
+  xy: 224, 1
+  size: 53, 53
+  orig: 53, 53
   offset: 0, 0
   index: -1
 tile003
   rotate: false
-  xy: 34, 1
-  size: 31, 54
-  orig: 31, 54
+  xy: 57, 1
+  size: 54, 54
+  orig: 54, 54
   offset: 0, 0
   index: -1
 tile004
   rotate: false
-  xy: 164, 1
-  size: 29, 53
-  orig: 29, 53
+  xy: 279, 1
+  size: 53, 53
+  orig: 53, 53
   offset: 0, 0
   index: -1
 tile005
   rotate: false
-  xy: 195, 1
-  size: 28, 53
-  orig: 28, 53
+  xy: 334, 1
+  size: 53, 53
+  orig: 53, 53
   offset: 0, 0
   index: -1
 tile006
   rotate: false
-  xy: 67, 1
-  size: 31, 54
-  orig: 31, 54
+  xy: 113, 1
+  size: 54, 54
+  orig: 54, 54
   offset: 0, 0
   index: -1

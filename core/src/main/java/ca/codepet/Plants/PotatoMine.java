@@ -5,6 +5,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import ca.codepet.worlds.DayWorld;
 
@@ -24,8 +25,10 @@ public class PotatoMine extends Plant {
 
     private final Sound explodeSound = Gdx.audio.newSound(Gdx.files.internal("sounds/potato_mine.ogg"));
 
+    private static final float EXPLOSION_Y_OFFSET = 40f; // Add this constant
+
     public PotatoMine(DayWorld world, float x, float y) {
-        super(world, x, y);
+        super(world, x, y, 200);
         health = DEFAULT_HEALTH;
         setScale(2.7f); // Add this line to scale the potato mine
 
@@ -103,6 +106,19 @@ public class PotatoMine extends Plant {
         if (isArmed) { // Only advance animation after arming
             health = 10000; // once armed, becomes instant use plant, therefore unkillable
             imageIndex += delta;
+        }
+    }
+
+    @Override
+    public void render(SpriteBatch batch) {
+        if (hasExploded) {
+            // Temporarily adjust y position up for explosion animation
+            float originalY = y;
+            y += EXPLOSION_Y_OFFSET;
+            super.render(batch);
+            y = originalY;
+        } else {
+            super.render(batch);
         }
     }
 
