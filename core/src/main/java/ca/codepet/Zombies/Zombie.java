@@ -63,6 +63,7 @@ public abstract class Zombie implements Collidable {
     private boolean isSquashed = false;
     public static final float SQUASH_DURATION = 0.5f;
     private float squashTimer = 0;
+    private float flashTimer = 0;
 
     private boolean isDying = false;
     private float deathTimer = 0f;
@@ -152,6 +153,7 @@ public abstract class Zombie implements Collidable {
     }
 
     public void update(float delta) {
+        flashTimer = Math.max(0, flashTimer - delta);
         attackTimer += delta;
         stateTime += delta; // Update animation state time
 
@@ -230,6 +232,7 @@ public abstract class Zombie implements Collidable {
 
     public void damage(int dmg) {
         hp -= dmg;
+        flashTimer = 0.2f;
         if (hp <= 0 && !isDying) {
             isDying = true;
             deathSounds[rand.nextInt(deathSounds.length)].play(0.5f);
@@ -288,6 +291,10 @@ public abstract class Zombie implements Collidable {
 
     public float getSquashTimer() {
         return squashTimer;
+    }
+
+    public float getFlashTimer() {
+        return flashTimer;
     }
 
     public Rectangle getBounds() {
