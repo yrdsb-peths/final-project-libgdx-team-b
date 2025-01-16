@@ -26,8 +26,8 @@ public class BucketheadZombie extends Zombie {
         super(theWorld, new Texture("zombies/bucketheadZombie/BucketHeadZombie.png"), TOTAL_HP, 50, 2.0f);
 
         // Adjust scale
-        setScaleX(0.95f);
-        setScaleY(0.83f);
+        setScaleX(1f);
+        setScaleY(1f);
 
         // Load walk animation 1
         TextureAtlas walkAtlas = new TextureAtlas(
