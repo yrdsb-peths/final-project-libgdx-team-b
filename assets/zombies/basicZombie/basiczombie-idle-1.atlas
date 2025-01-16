@@ -1,54 +1,54 @@
-BasicZombieWalk.png
-size: 357, 60
+basiczombie-idle-1.png
+size: 329, 49
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 tile000
   rotate: false
-  xy: 0, 0
-  size: 51, 60
-  orig: 51, 60
+  xy: 192, 1
+  size: 44, 44
+  orig: 44, 44
   offset: 0, 0
   index: -1
 tile001
   rotate: false
-  xy: 51, 0
-  size: 51, 60
-  orig: 51, 60
+  xy: 50, 1
+  size: 46, 46
+  orig: 46, 46
   offset: 0, 0
   index: -1
 tile002
   rotate: false
-  xy: 102, 0
-  size: 51, 60
-  orig: 51, 60
+  xy: 98, 1
+  size: 45, 45
+  orig: 45, 45
   offset: 0, 0
   index: -1
 tile003
   rotate: false
-  xy: 153, 0
-  size: 51, 60
-  orig: 51, 60
+  xy: 238, 1
+  size: 44, 44
+  orig: 44, 44
   offset: 0, 0
   index: -1
 tile004
   rotate: false
-  xy: 204, 0
-  size: 51, 60
-  orig: 51, 60
+  xy: 1, 1
+  size: 47, 47
+  orig: 47, 47
   offset: 0, 0
   index: -1
 tile005
   rotate: false
-  xy: 255, 0
-  size: 51, 60
-  orig: 51, 60
+  xy: 145, 1
+  size: 45, 45
+  orig: 45, 45
   offset: 0, 0
   index: -1
 tile006
   rotate: false
-  xy: 306, 0
-  size: 51, 60
-  orig: 51, 60
+  xy: 284, 1
+  size: 44, 44
+  orig: 44, 44
   offset: 0, 0
   index: -1

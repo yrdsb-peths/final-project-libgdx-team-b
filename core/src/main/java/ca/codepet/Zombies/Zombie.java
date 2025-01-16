@@ -245,7 +245,7 @@ public abstract class Zombie implements Collidable {
 
             grassStepTimer += delta;
             if(grassStepTimer > GRASS_STEP_DELAY) {
-                grassStepSound.play(0.3f);
+                grassStepSound.play(0.1f);
                 grassStepTimer = 0f;
             }
         }
