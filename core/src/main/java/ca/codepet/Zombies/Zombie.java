@@ -78,7 +78,7 @@ public abstract class Zombie implements Collidable {
     private boolean isDeathSoundPlaying = false;
     private long deathSoundId;
 
-    private static final float MOVE_SPEED = 30f; 
+    private static final float MOVE_SPEED = 10f; 
 
     private boolean isDeathAnimationComplete = false;
     private static final float DEATH_ANIMATION_DURATION = 1.8f; // 9 frames * 0.2s per frame
@@ -160,7 +160,7 @@ public abstract class Zombie implements Collidable {
     }
 
     public void move(float delta) {
-        float speed = 0.5f;
+        float speed = MOVE_SPEED * delta;
         if (slowTimer > 0.0f)
             speed /= 2f;
         x -= speed; // Slower movement speed

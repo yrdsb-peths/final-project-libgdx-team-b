@@ -17,6 +17,7 @@ public class BasicZombie extends Zombie {
     static int WALK_FRAMES = 7;  // Based on the atlas file which has 7 frames (tile000 to tile006)
     static int ATTACK_FRAMES = 7;
     static int FRAMES_DEATH = 9;
+    static float FRAME_DURATION = 0.7f;
 
     public BasicZombie(DayWorld theWorld) {
         super(theWorld, new Texture("zombies/basicZombie/BasicZombieWalk.png"), 100, 10, 2.0f);
@@ -27,7 +28,7 @@ public class BasicZombie extends Zombie {
         for (int i = 0; i < WALK_FRAMES; i++) {
             walk[i] = walkAtlas.findRegion("tile00" + i);
         }
-        Animation<AtlasRegion> walkanim = new Animation<>(0.2f, walk);
+        Animation<AtlasRegion> walkanim = new Animation<>(FRAME_DURATION, walk);
         animations.put("walk", walkanim);
 
         // Load attack animation
@@ -36,7 +37,7 @@ public class BasicZombie extends Zombie {
         for (int i = 0; i < ATTACK_FRAMES; i++) {
             attack[i] = attackAtlas.findRegion("tile00" + i);
         }
-        Animation<AtlasRegion> attackanim = new Animation<>(0.2f, attack);
+        Animation<AtlasRegion> attackanim = new Animation<>(FRAME_DURATION, attack);
         animations.put("attack", attackanim);
 
         // Fix death animation with proper size and timing
@@ -48,7 +49,7 @@ public class BasicZombie extends Zombie {
             death[i] = deathAtlas.findRegion(frameName);
         }
         // Slow down death animation and make it non-looping
-        Animation<AtlasRegion> deathanim = new Animation<>(0.2f, death);
+        Animation<AtlasRegion> deathanim = new Animation<>(FRAME_DURATION, death);
         deathanim.setPlayMode(Animation.PlayMode.NORMAL);  // Make it play only once
         animations.put("death", deathanim);
         
