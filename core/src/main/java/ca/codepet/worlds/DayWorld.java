@@ -532,6 +532,7 @@ public class DayWorld implements Screen {
                                 if (mine.isArmed() && !mine.hasExploded()) {
                                     mine.explode();
                                     zombie.damage(mine.getExplosionDamage());
+                                    continue;
                                 } else
                                     doAttack = true;
                             } else if (!(plant instanceof Spikeweed)) // Handle Spikeweed
