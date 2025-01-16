@@ -30,7 +30,7 @@ public class PotatoMine extends Plant {
         setScale(2.7f); // Add this line to scale the potato mine
 
         // Load popup animation
-        TextureAtlas popupAtlas = new TextureAtlas(Gdx.files.internal("plants/potato-popup.atlas"));
+        TextureAtlas popupAtlas = new TextureAtlas(Gdx.files.internal("plants/potato/potato-popup.atlas"));
         AtlasRegion[] popup = new AtlasRegion[POPUP_FRAMES];
         for (int i = 0; i < POPUP_FRAMES; i++) {
             popup[i] = popupAtlas.findRegion(String.valueOf(i + 1));
@@ -38,7 +38,7 @@ public class PotatoMine extends Plant {
         animations.put("popup", new Animation<>(0.2f, popup));
 
         // Load idle animation
-        TextureAtlas idleAtlas = new TextureAtlas(Gdx.files.internal("plants/potato-idle.atlas"));
+        TextureAtlas idleAtlas = new TextureAtlas(Gdx.files.internal("plants/potato/potato-idle.atlas"));
         AtlasRegion[] idle = new AtlasRegion[IDLE_FRAMES];
         for (int i = 0; i < IDLE_FRAMES; i++) {
             idle[i] = idleAtlas.findRegion("tile00" + i);
@@ -56,7 +56,7 @@ public class PotatoMine extends Plant {
         animations.put("idle", new Animation<>(0.2f, boomerangFrames));
 
         // Load explode animation
-        TextureAtlas explodeAtlas = new TextureAtlas(Gdx.files.internal("plants/potato-explode.atlas"));
+        TextureAtlas explodeAtlas = new TextureAtlas(Gdx.files.internal("plants/potato/potato-explode.atlas"));
         AtlasRegion[] explode = new AtlasRegion[EXPLODE_FRAMES];
         for (int i = 0; i < EXPLODE_FRAMES; i++) {
             explode[i] = explodeAtlas.findRegion(String.valueOf(i + 10));

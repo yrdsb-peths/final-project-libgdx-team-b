@@ -21,6 +21,7 @@ import ca.codepet.Plants.Projectile;
 import ca.codepet.Plants.Repeater;
 import ca.codepet.Plants.ShooterPlant;
 import ca.codepet.Plants.SnowPea;
+import ca.codepet.Plants.Squash;
 import ca.codepet.Plants.Sunflower;
 import ca.codepet.Plants.TallNut;
 import ca.codepet.Plants.Walnut;
@@ -238,6 +239,10 @@ public class DayWorld implements Screen {
                         draggedPlant = new SnowPea(this, mouseX, mouseY);
                         ghostPlant = new SnowPea(this, 0, 0);
                         break;
+                    case "Squash":
+                        draggedPlant = new Squash(this, mouseX, mouseY);
+                        ghostPlant = new Squash(this, 0, 0);
+                        break;
                 }
             } else {
                 draggedCard = null;
@@ -269,6 +274,9 @@ public class DayWorld implements Screen {
                         float plantX = LAWN_TILEX + (clickedTileX * LAWN_TILEWIDTH) + (LAWN_TILEWIDTH / 2);
                         float plantY = LAWN_TILEY - (clickedTileY * LAWN_TILEHEIGHT) + (LAWN_TILEHEIGHT / 2);
                         draggedPlant.setPosition(plantX, plantY);
+                        if (draggedPlant instanceof Squash) {
+                            ((Squash)draggedPlant).setRow(clickedTileY);
+                        }
                         plants[clickedTileY][clickedTileX] = draggedPlant;
                         plantSpawnSound[rand.nextInt(plantSpawnSound.length)].play(0.5f);
                         draggedCard.startCooldown();
@@ -660,6 +668,10 @@ public class DayWorld implements Screen {
         return LAWN_TILEWIDTH;
     }
 
+    public int getLawnTileY() {
+        return LAWN_TILEY;
+    }
+
     public GameRoot getGame() {
         return game;
     }
@@ -743,5 +755,10 @@ public class DayWorld implements Screen {
                 }
             }
         }
+    }
+
+    // Add getter for zombies array
+    public Array<Zombie> getZombies() {
+        return zombies;
     }
 }

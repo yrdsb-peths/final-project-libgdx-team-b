@@ -23,7 +23,7 @@ public class Peashooter extends ShooterPlant {
 
         attackCooldown = DEFAULT_ATTACK_COOLDOWN;
 
-        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("plants/peashooter-idle.atlas"));
+        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("plants/peashooter/peashooter-idle.atlas"));
 
         // Load idle animation (looping)
         AtlasRegion[] idle = new AtlasRegion[IDLE_FRAMES];
@@ -36,7 +36,7 @@ public class Peashooter extends ShooterPlant {
         animations.put("idle", idleanim);
 
         // Attack animation (non-looping)
-        TextureAtlas attackAtlas = new TextureAtlas(Gdx.files.internal("plants/peashooter-attack.atlas"));
+        TextureAtlas attackAtlas = new TextureAtlas(Gdx.files.internal("plants/peashooter/peashooter-attack.atlas"));
         AtlasRegion[] attack = new AtlasRegion[ATTACK_FRAMES];
         for (int i = 0; i < ATTACK_FRAMES; i++) {
             attack[i] = attackAtlas.findRegion("tile00" + i);
