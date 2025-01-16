@@ -1,0 +1,33 @@
+squash-idle.png
+size: 119, 37
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tile000
+  rotate: false
+  xy: 1, 1
+  size: 26, 35
+  orig: 26, 35
+  offset: 0, 0
+  index: -1
+tile001
+  rotate: false
+  xy: 60, 1
+  size: 28, 34
+  orig: 28, 34
+  offset: 0, 0
+  index: -1
+tile002
+  rotate: false
+  xy: 29, 1
+  size: 29, 34
+  orig: 29, 34
+  offset: 0, 0
+  index: -1
+tile003
+  rotate: false
+  xy: 90, 1
+  size: 28, 34
+  orig: 28, 34
+  offset: 0, 0
+  index: -1

@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
+import ca.codepet.worlds.DayWorld;
+
 public class Repeater extends ShooterPlant {
     static int IDLE_FRAMES = 5;
     static int ATTACK_FRAMES = 2;
@@ -18,12 +20,12 @@ public class Repeater extends ShooterPlant {
     private float secondShotDelay = 0.15f; // Reduced delay between shots
     private float secondShotTimer = 0;
 
-    public Repeater(float x, float y) {
-        super(x, y);
+    public Repeater(DayWorld world, float x, float y) {
+        super(world, x, y);
 
         setScale(2.2f);
-        
-        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("plants/repeater-idle.atlas"));
+
+        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("plants/repeater/repeater-idle.atlas"));
         AtlasRegion[] idle = new AtlasRegion[IDLE_FRAMES];
         for (int i = 0; i < IDLE_FRAMES; i++) {
             idle[i] = atlas.findRegion("tile00" + i);
@@ -32,7 +34,7 @@ public class Repeater extends ShooterPlant {
         idleanim.setPlayMode(Animation.PlayMode.LOOP);
         animations.put("idle", idleanim);
 
-        TextureAtlas attackAtlas = new TextureAtlas(Gdx.files.internal("plants/repeater-attack.atlas"));
+        TextureAtlas attackAtlas = new TextureAtlas(Gdx.files.internal("plants/repeater/repeater-attack.atlas"));
         AtlasRegion[] attack = new AtlasRegion[ATTACK_FRAMES];
         for (int i = 0; i < ATTACK_FRAMES; i++) {
             attack[i] = attackAtlas.findRegion("tile00" + i);
@@ -40,7 +42,7 @@ public class Repeater extends ShooterPlant {
         Animation<AtlasRegion> attackAnim = new Animation<>(0.1f, attack);
         attackAnim.setPlayMode(Animation.PlayMode.NORMAL);
         animations.put("attack", attackAnim);
-        
+
         setAnimation("idle"); // Set initial animation
     }
 

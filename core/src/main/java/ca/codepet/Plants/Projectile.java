@@ -1,6 +1,5 @@
 package ca.codepet.Plants;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -34,8 +33,8 @@ public class Projectile implements Collidable {
     private Random rand = new Random();
 
     private final Sound[] hitSounds = {
-        Gdx.audio.newSound(Gdx.files.internal("sounds/zombieHit.mp3")),
-        Gdx.audio.newSound(Gdx.files.internal("sounds/zombieHit2.mp3"))
+            Gdx.audio.newSound(Gdx.files.internal("sounds/zombieHit.mp3")),
+            Gdx.audio.newSound(Gdx.files.internal("sounds/zombieHit2.mp3"))
     };
 
     public Projectile(float x, float y, int damage, String atlasPath, float scale, int row) {
@@ -45,9 +44,9 @@ public class Projectile implements Collidable {
         this.scale = scale;
         this.row = row;
         this.bounds = new Rectangle(x, y, 10 * scale, 10 * scale); // Smaller collision box
-        
+
         animations = new ObjectMap<>();
-        
+
         try {
             TextureAtlas atlas = new TextureAtlas(Gdx.files.internal(atlasPath));
             // Just get the first frame for flying
@@ -55,7 +54,7 @@ public class Projectile implements Collidable {
             if (flyingFrame == null) {
                 System.out.println("Could not find flying frame in atlas: " + atlasPath);
             }
-            
+
             // Load splat animation frames
             Array<AtlasRegion> splatFrames = atlas.findRegions("splat");
             if (splatFrames.size > 0) {
@@ -80,21 +79,21 @@ public class Projectile implements Collidable {
     public void render(SpriteBatch batch) {
         if (!isHit && flyingFrame != null) {
             // Render static flying frame
-            batch.draw(flyingFrame, 
-                      x - (flyingFrame.getRegionWidth() * scale)/2, 
-                      y - (flyingFrame.getRegionHeight() * scale)/2,
-                      flyingFrame.getRegionWidth() * scale,
-                      flyingFrame.getRegionHeight() * scale);
+            batch.draw(flyingFrame,
+                    x - (flyingFrame.getRegionWidth() * scale) / 2,
+                    y - (flyingFrame.getRegionHeight() * scale) / 2,
+                    flyingFrame.getRegionWidth() * scale,
+                    flyingFrame.getRegionHeight() * scale);
         } else if (isHit) {
             // Render splat animation
             Animation<AtlasRegion> splatAnim = animations.get("splat");
             if (splatAnim != null) {
                 AtlasRegion currentFrame = splatAnim.getKeyFrame(stateTime, false);
-                batch.draw(currentFrame, 
-                          x - (currentFrame.getRegionWidth() * scale)/2, 
-                          y - (currentFrame.getRegionHeight() * scale)/2,
-                          currentFrame.getRegionWidth() * scale,
-                          currentFrame.getRegionHeight() * scale);
+                batch.draw(currentFrame,
+                        x - (currentFrame.getRegionWidth() * scale) / 2,
+                        y - (currentFrame.getRegionHeight() * scale) / 2,
+                        currentFrame.getRegionWidth() * scale,
+                        currentFrame.getRegionHeight() * scale);
             }
         }
     }
@@ -102,7 +101,6 @@ public class Projectile implements Collidable {
     public void hit(Zombie zombie) {
         if (animations.containsKey("splat")) {
 
-            
             hitSounds[rand.nextInt(hitSounds.length)].play(0.6f);
 
             isHit = true;
@@ -112,7 +110,8 @@ public class Projectile implements Collidable {
     }
 
     public boolean isFinished() {
-        if (!isHit) return false;
+        if (!isHit)
+            return false;
         return animations.get(currentAnimation).isAnimationFinished(stateTime);
     }
 
@@ -140,7 +139,7 @@ public class Projectile implements Collidable {
 
     @Override
     public float getX() {
-        return (int)x;
+        return (int) x;
     }
 
     @Override

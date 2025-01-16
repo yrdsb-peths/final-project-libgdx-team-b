@@ -1,44 +1,37 @@
 package ca.codepet.worlds;
 
-import com.badlogic.gdx.math.MathUtils;
+import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 
+import ca.codepet.Collidable;
+import ca.codepet.GameRoot;
+import ca.codepet.Lawnmower;
 import ca.codepet.WaveManager;
 import ca.codepet.Plants.Peashooter;
 import ca.codepet.Plants.Plant;
 import ca.codepet.Plants.PotatoMine;
 import ca.codepet.Plants.Projectile;
 import ca.codepet.Plants.Repeater;
-import ca.codepet.Plants.SnowPea;
 import ca.codepet.Plants.ShooterPlant;
+import ca.codepet.Plants.SnowPea;
+import ca.codepet.Plants.Squash;
 import ca.codepet.Plants.Sunflower;
 import ca.codepet.Plants.TallNut;
+import ca.codepet.Plants.Threepeater;
 import ca.codepet.Plants.Walnut;
-import ca.codepet.Zombies.BasicZombie;
-import ca.codepet.Zombies.BucketheadZombie;
 import ca.codepet.Zombies.Zombie;
-import ca.codepet.ui.PlantBar;
-import ca.codepet.Collidable;
-import ca.codepet.GameRoot;
-import ca.codepet.Lawnmower;
 import ca.codepet.characters.PlantCard;
 import ca.codepet.characters.Sun;
+import ca.codepet.ui.PlantBar;
 import ca.codepet.ui.PlantPicker;
 import ca.codepet.ui.Shovel;
-
-import java.util.Random;
 
 public class DayWorld implements Screen {
     private Random rand = new Random();
@@ -47,11 +40,9 @@ public class DayWorld implements Screen {
     private SpriteBatch batch;
     private PlantBar plantBar;
     private Plant[][] plants;
-    private ShapeRenderer shape = new ShapeRenderer();
     private PlantPicker plantPicker;
     private boolean gameStarted = false;
 
-    
     // "final" denotes that this is a constant and cannot be reassigned
     final private int LAWN_WIDTH = 9;
     final private int LAWN_HEIGHT = 5;
@@ -78,67 +69,39 @@ public class DayWorld implements Screen {
 
     private int sunBalance = 0;
 
-    private final GameRoot game; 
+    private final GameRoot game;
 
     // private Zombie zombie = new BasicZombie(this);
     private Array<Zombie> zombies = new Array<>();
     private Array<Lawnmower> lawnmowers = new Array<>();
-
-    private float waveTimer = 0f;
-    private float timeBetweenWaves = 10f; // seconds
 
     private PlantCard draggedCard = null;
     private Plant draggedPlant = null;
     private Plant ghostPlant = null;
     private boolean isValidPlacement = false;
 
-    private Array<Zombie> randomZombies = new Array<>();
-
     private Shovel shovel;
     private boolean isShovelDragging = false;
 
     private WaveManager waveManager;
-    
+
     private boolean loseSoundPlayed = false;
 
     private final Sound loseSound = Gdx.audio.newSound(Gdx.files.internal("sounds/loseMusic.ogg"));
     private final Sound shovelSound = Gdx.audio.newSound(Gdx.files.internal("sounds/shovel.ogg"));
     private final Sound sunPickupSound = Gdx.audio.newSound(Gdx.files.internal("sounds/sunPickup.mp3"));
     private final Sound buttonClickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/buttonClick.ogg"));
-    private final Sound[] plantDeathSounds = new Sound[] { 
-        Gdx.audio.newSound(Gdx.files.internal("sounds/plantDie.mp3")),
-        Gdx.audio.newSound(Gdx.files.internal("sounds/plantDie2.ogg"))
+    private final Sound[] plantDeathSounds = new Sound[] {
+            Gdx.audio.newSound(Gdx.files.internal("sounds/plantDie.mp3")),
+            Gdx.audio.newSound(Gdx.files.internal("sounds/plantDie2.ogg"))
     };
 
     private Sound[] plantSpawnSound;
 
     private final Sound backgroundMusic = Gdx.audio.newSound(Gdx.files.internal("sounds/dayMusic.mp3"));
-    private long backgroundMusicId;
 
     private float gameOverScale = 0f;
     private Texture gameOverTexture;
-
-    private String flashVertex =    "attribute vec4 a_position;\n" +
-                                    "attribute vec4 a_color;\n" +
-                                    "attribute vec2 a_texCoord0;\n" +
-                                    "uniform mat4 u_projTrans;\n" +
-                                    "varying vec4 v_color;\n" +
-                                    "varying vec2 v_texCoords;\n" +
-                                    "void main() {\n" +
-                                        "v_color = a_color;\n" +
-                                        "v_texCoords = a_texCoord0;\n" +
-                                        "gl_Position =  u_projTrans * a_position;\n" +
-                                    "}";
-    private String flashFragment = "#ifdef GL_ES\n" +
-                                    "precision mediump float;\n" +
-                                    "#endif\n" +
-                                    "varying vec4 v_color;\n" +
-                                    "varying vec2 v_texCoords;\n" +
-                                    "uniform sampler2D u_texture;\n" +
-                                    "void main() {\n" +
-                                        "gl_FragColor = vec4(1., 1., 1., texture2D(u_texture, v_texCoords).a * v_color.a);\n" +
-                                    "}";
-    private final ShaderProgram flashShader = new ShaderProgram(flashVertex, flashFragment); 
 
     public DayWorld(GameRoot game) {
         this.game = game;
@@ -149,14 +112,14 @@ public class DayWorld implements Screen {
 
         // Load plant spawn sounds
         plantSpawnSound = new Sound[] {
-            Gdx.audio.newSound(Gdx.files.internal("sounds/plant_spawn.ogg")),
-            Gdx.audio.newSound(Gdx.files.internal("sounds/plant_spawn2.ogg"))
+                Gdx.audio.newSound(Gdx.files.internal("sounds/plant_spawn.ogg")),
+                Gdx.audio.newSound(Gdx.files.internal("sounds/plant_spawn2.ogg"))
         };
 
-        for(int i = LAWN_HEIGHT - 1; i >= 0; i--) {
+        for (int i = LAWN_HEIGHT - 1; i >= 0; i--) {
             lawnmowers.add(new Lawnmower(this, i));
         }
-        
+
         // Load the background texture
         backgroundTexture = new Texture("backgrounds/day.png");
         batch = new SpriteBatch();
@@ -174,7 +137,7 @@ public class DayWorld implements Screen {
         waveManager = new WaveManager(this);
 
         // Start playing background music on loop
-        backgroundMusicId = backgroundMusic.loop(0.2f); 
+        backgroundMusic.loop(0.2f);
 
         gameOverTexture = new Texture("images/gameOver.png");
     }
@@ -189,7 +152,7 @@ public class DayWorld implements Screen {
             }
         }
 
-        if(isGameOver) {
+        if (isGameOver) {
             gameOver(delta);
         } else {
             renderGame(delta);
@@ -197,7 +160,6 @@ public class DayWorld implements Screen {
     }
 
     public void renderGame(float delta) {
-        
 
         // Draw the background texture
         batch.begin();
@@ -218,7 +180,7 @@ public class DayWorld implements Screen {
                 gameStarted = true;
                 // Start cooldowns for all plant cards when game starts
                 plantBar.startAllCardCooldowns();
-                plantBar.startGame();  // Add this line to enable affordability checks
+                plantBar.startGame(); // Add this line to enable affordability checks
             }
 
             if (Gdx.input.justTouched()) {
@@ -229,7 +191,7 @@ public class DayWorld implements Screen {
                     plantPicker.returnCard(clickedCard.getPlantType());
                 }
             }
-            
+
             // Don't continue the game until picked
             return;
         }
@@ -253,33 +215,41 @@ public class DayWorld implements Screen {
                 // Create actual plant and ghost plant
                 switch (draggedCard.getPlantType()) {
                     case "Peashooter":
-                        draggedPlant = new Peashooter(mouseX, mouseY);
-                        ghostPlant = new Peashooter(0, 0);
-                    break;
+                        draggedPlant = new Peashooter(this, mouseX, mouseY);
+                        ghostPlant = new Peashooter(this, 0, 0);
+                        break;
                     case "Sunflower":
-                        draggedPlant = new Sunflower(mouseX, mouseY, this);
-                        ghostPlant = new Sunflower(0, 0, this);
-                    break;
+                        draggedPlant = new Sunflower(this, mouseX, mouseY);
+                        ghostPlant = new Sunflower(this, 0, 0);
+                        break;
                     case "PotatoMine":
-                        draggedPlant = new PotatoMine(mouseX, mouseY);
-                        ghostPlant = new PotatoMine(0, 0);
-                    break;
+                        draggedPlant = new PotatoMine(this, mouseX, mouseY);
+                        ghostPlant = new PotatoMine(this, 0, 0);
+                        break;
                     case "Walnut":
-                        draggedPlant = new Walnut(mouseX, mouseY);
-                        ghostPlant = new Walnut(0, 0);
-                    break;
+                        draggedPlant = new Walnut(this, mouseX, mouseY);
+                        ghostPlant = new Walnut(this, 0, 0);
+                        break;
                     case "TallNut":
-                        draggedPlant = new TallNut(mouseX, mouseY);
-                        ghostPlant = new TallNut(0, 0);
-                    break;
+                        draggedPlant = new TallNut(this, mouseX, mouseY);
+                        ghostPlant = new TallNut(this, 0, 0);
+                        break;
                     case "Repeater":
-                        draggedPlant = new Repeater(mouseX, mouseY);
-                        ghostPlant = new Repeater(0, 0);
-                    break;
+                        draggedPlant = new Repeater(this, mouseX, mouseY);
+                        ghostPlant = new Repeater(this, 0, 0);
+                        break;
                     case "SnowPea":
-                        draggedPlant = new SnowPea(mouseX, mouseY);
-                        ghostPlant = new SnowPea(0, 0);
-                    break;
+                        draggedPlant = new SnowPea(this, mouseX, mouseY);
+                        ghostPlant = new SnowPea(this, 0, 0);
+                        break;
+                    case "Squash":
+                        draggedPlant = new Squash(this, mouseX, mouseY);
+                        ghostPlant = new Squash(this, 0, 0);
+                        break;
+                    case "Threepeater":
+                        draggedPlant = new Threepeater(this, mouseX, mouseY);
+                        ghostPlant = new Threepeater(this, 0, 0);
+                        break;
                 }
             } else {
                 draggedCard = null;
@@ -289,11 +259,11 @@ public class DayWorld implements Screen {
             if (draggedPlant != null) {
                 draggedPlant.setPosition(mouseX, mouseY);
             }
-            
+
             // Update ghost plant position and validity
             isValidPlacement = false;
-            if (clickedTileX >= 0 && clickedTileX < LAWN_WIDTH && 
-                clickedTileY >= 0 && clickedTileY < LAWN_HEIGHT) {
+            if (clickedTileX >= 0 && clickedTileX < LAWN_WIDTH &&
+                    clickedTileY >= 0 && clickedTileY < LAWN_HEIGHT) {
                 if (ghostPlant != null) {
                     float plantX = LAWN_TILEX + (clickedTileX * LAWN_TILEWIDTH) + (LAWN_TILEWIDTH / 2);
                     float plantY = LAWN_TILEY - (clickedTileY * LAWN_TILEHEIGHT) + (LAWN_TILEHEIGHT / 2);
@@ -301,28 +271,31 @@ public class DayWorld implements Screen {
                 }
                 isValidPlacement = plants[clickedTileY][clickedTileX] == null;
             }
-            
+
             if (!Gdx.input.isTouched()) {
                 // Only try to place plant if we're in valid bounds and placement is valid
-                if (isValidPlacement && clickedTileX >= 0 && clickedTileX < LAWN_WIDTH && 
-                    clickedTileY >= 0 && clickedTileY < LAWN_HEIGHT) {
-                    
+                if (isValidPlacement && clickedTileX >= 0 && clickedTileX < LAWN_WIDTH &&
+                        clickedTileY >= 0 && clickedTileY < LAWN_HEIGHT) {
+
                     if (plantBar.deductSun(draggedCard.getCost())) {
                         float plantX = LAWN_TILEX + (clickedTileX * LAWN_TILEWIDTH) + (LAWN_TILEWIDTH / 2);
                         float plantY = LAWN_TILEY - (clickedTileY * LAWN_TILEHEIGHT) + (LAWN_TILEHEIGHT / 2);
                         draggedPlant.setPosition(plantX, plantY);
+                        if (draggedPlant instanceof Squash) {
+                            ((Squash)draggedPlant).setRow(clickedTileY);
+                        }
                         plants[clickedTileY][clickedTileX] = draggedPlant;
                         plantSpawnSound[rand.nextInt(plantSpawnSound.length)].play(0.5f);
                         draggedCard.startCooldown();
                     }
                 }
-                
+
                 // Clean up
                 if (draggedPlant != null) {
-                    if (clickedTileX < 0 || clickedTileX >= LAWN_WIDTH || 
-                        clickedTileY < 0 || clickedTileY >= LAWN_HEIGHT ||
-                        !isValidPlacement ||
-                        plants[clickedTileY][clickedTileX] != draggedPlant) {
+                    if (clickedTileX < 0 || clickedTileX >= LAWN_WIDTH ||
+                            clickedTileY < 0 || clickedTileY >= LAWN_HEIGHT ||
+                            !isValidPlacement ||
+                            plants[clickedTileY][clickedTileX] != draggedPlant) {
                         draggedPlant.dispose();
                     }
                 }
@@ -358,17 +331,16 @@ public class DayWorld implements Screen {
 
         // Render ghost plant
         if (ghostPlant != null && isValidPlacement) {
-            ghostPlant.setAlpha(0.5f);  // Make translucent
+            ghostPlant.setAlpha(0.5f); // Make translucent
             ghostPlant.render(batch);
-            ghostPlant.setAlpha(1.0f);  // Reset alpha
+            ghostPlant.setAlpha(1.0f); // Reset alpha
         }
 
         // Render the shovel last (on top of everything)
         shovel.render();
 
-
         renderZombie(delta);
-        
+
         renderSun(delta);
     }
 
@@ -377,42 +349,43 @@ public class DayWorld implements Screen {
 
         Array<Lawnmower> lawnmowersToRemove = new Array<>();
 
-        for(Lawnmower lawnmower : lawnmowers) {
-            if(lawnmower.getIsActivated()) {
+        for (Lawnmower lawnmower : lawnmowers) {
+            if (lawnmower.getIsActivated()) {
                 lawnmower.move();
 
-                for(Zombie zombie : zombies) {
-                    if(checkCollision(lawnmower, zombie) && !zombie.isSquashed()) {
+                for (Zombie zombie : zombies) {
+                    if (checkCollision(lawnmower, zombie) && !zombie.isSquashed()) {
                         zombie.squash(); // Only squash if not already squashed
                     }
                 }
             }
 
-            batch.draw(lawnmower.getTextureRegion(), 
-                      lawnmower.getX(), 
-                      lawnmower.getY(), 
-                      lawnmower.getWidth(), 
-                      lawnmower.getHeight());
+            batch.draw(lawnmower.getTextureRegion(),
+                    lawnmower.getX(),
+                    lawnmower.getY(),
+                    lawnmower.getWidth(),
+                    lawnmower.getHeight());
 
-            if(lawnmower.getX() > Gdx.graphics.getWidth()) {
+            if (lawnmower.getX() > Gdx.graphics.getWidth()) {
                 lawnmowersToRemove.add(lawnmower);
             }
         }
 
         // Check for zombies that have completed their squash animation
         Array<Zombie> zombiesToRemove = new Array<>();
-        for(Zombie zombie : zombies) {
-            if(zombie.isSquashed() && zombie.getSquashTimer() >= zombie.SQUASH_DURATION) {
+        for (Zombie zombie : zombies) {
+            if (zombie.isSquashed() && zombie.getSquashTimer() >= Zombie.SQUASH_DURATION) {
                 zombiesToRemove.add(zombie);
             }
         }
 
         // Clean up zombies and lawnmowers after iteration
+
         for(Zombie zombie : zombiesToRemove) {
             removeZombie(zombie, 7f);
         }
-        
-        for(Lawnmower lawnmower : lawnmowersToRemove) {
+
+        for (Lawnmower lawnmower : lawnmowersToRemove) {
             lawnmower.dispose();
             lawnmowers.removeValue(lawnmower, true);
         }
@@ -423,18 +396,18 @@ public class DayWorld implements Screen {
     private void renderZombie(float delta) {
         Array<Zombie> zombiesToRemove = new Array<>();
       
-        for(Zombie zombie : zombies) {
+        for (Zombie zombie : zombies) {
             // Check if zombie reached the house
-            if(zombie.hasReachedHouse() && !zombie.isSquashed()) {
+            if (zombie.hasReachedHouse() && !zombie.isSquashed()) {
                 Lawnmower lawnmower = null;
-                for(Lawnmower lm : lawnmowers) {
-                    if(lm.getRow() == zombie.getRow()) {
+                for (Lawnmower lm : lawnmowers) {
+                    if (lm.getRow() == zombie.getRow()) {
                         lawnmower = lm;
                         break;
                     }
                 }
                 
-                if(lawnmower == null) {
+                if (lawnmower == null) {
                     gameOverPending = true;
                 } else {
                     lawnmower.activate();
@@ -442,60 +415,62 @@ public class DayWorld implements Screen {
             }
 
             zombie.update(delta);
-            
+
             // Render the zombie no matter what state it's in
-            if(zombie.isSquashed() && zombie.getSquashTimer() >= Zombie.SQUASH_DURATION) {
+            if (zombie.isSquashed() && zombie.getSquashTimer() >= Zombie.SQUASH_DURATION) {
                 zombiesToRemove.add(zombie);
                 continue;
             }
 
             // Render zombie
             if (zombie.getSlowTimer() > 0f)
-                batch.setColor(0f, 0f, 1f,1f);
-            batch.draw(zombie.getTextureRegion(), 
-                    zombie.getX() + zombie.getXOffset(), 
-                    (LAWN_HEIGHT - zombie.getRow()) * LAWN_TILEHEIGHT - (zombie.getHeight() - LAWN_TILEHEIGHT)/2 + zombie.getYOffset(),
-                    zombie.getWidth()/2,
-                    zombie.getHeight()/2,
+                batch.setColor(0f, 0f, 1f, 1f);
+            batch.draw(zombie.getTextureRegion(),
+                    zombie.getX() + zombie.getXOffset(),
+                    (LAWN_HEIGHT - zombie.getRow()) * LAWN_TILEHEIGHT - (zombie.getHeight() - LAWN_TILEHEIGHT) / 2
+                            + zombie.getYOffset(),
+                    zombie.getWidth() / 2,
+                    zombie.getHeight() / 2,
                     zombie.getWidth(),
                     zombie.getHeight(),
                     1,
                     zombie.getScaleY(),
                     zombie.getRotation());
-                    batch.setShader(flashShader);
+            batch.setShader(game.getFlashShader());
             batch.setColor(1f, 1f, 1f, zombie.getFlashTimer() / 0.2f);
-            batch.draw(zombie.getTextureRegion(), 
-                      zombie.getX() + zombie.getXOffset(), 
-                      (LAWN_HEIGHT - zombie.getRow()) * LAWN_TILEHEIGHT - (zombie.getHeight() - LAWN_TILEHEIGHT)/2 + zombie.getYOffset(),
-                      zombie.getWidth()/2,
-                      zombie.getHeight()/2,
-                      zombie.getWidth(),
-                      zombie.getHeight(),
-                      1,
-                      zombie.getScaleY(),
-                      zombie.getRotation());
+            batch.draw(zombie.getTextureRegion(),
+                    zombie.getX() + zombie.getXOffset(),
+                    (LAWN_HEIGHT - zombie.getRow()) * LAWN_TILEHEIGHT - (zombie.getHeight() - LAWN_TILEHEIGHT) / 2
+                            + zombie.getYOffset(),
+                    zombie.getWidth() / 2,
+                    zombie.getHeight() / 2,
+                    zombie.getWidth(),
+                    zombie.getHeight(),
+                    1,
+                    zombie.getScaleY(),
+                    zombie.getRotation());
             batch.setShader(null);
             batch.setColor(1f, 1f, 1f, 1f);
 
             // Only mark for removal if death animation is complete
-            if(zombie.isDying() && zombie.isDeathAnimationComplete()) {
+            if (zombie.isDying() && zombie.isDeathAnimationComplete()) {
                 zombiesToRemove.add(zombie);
                 continue;
             }
 
             // Only move or attack if not dying or squashed
-            if(!zombie.isSquashed() && !zombie.isDying()) {
+            if (!zombie.isSquashed() && !zombie.isDying()) {
                 // Check if zombie reached the house
-                if(zombie.hasReachedHouse() && !zombie.isSquashed()) {
+                if (zombie.hasReachedHouse() && !zombie.isSquashed()) {
                     Lawnmower lawnmower = null;
-                    for(Lawnmower lm : lawnmowers) {
-                        if(lm.getRow() == zombie.getRow()) {
+                    for (Lawnmower lm : lawnmowers) {
+                        if (lm.getRow() == zombie.getRow()) {
                             lawnmower = lm;
                             break;
                         }
                     }
-                    
-                    if(lawnmower == null) {
+
+                    if (lawnmower == null) {
                         isGameOver = true;
                     } else {
                         lawnmower.activate();
@@ -505,22 +480,22 @@ public class DayWorld implements Screen {
                 // Add bounds checking before accessing plants array
                 int row = zombie.getRow();
                 int col = zombie.getCol();
-                if(row >= 0 && row < LAWN_HEIGHT && col >= 0 && col < LAWN_WIDTH) {
+                if (row >= 0 && row < LAWN_HEIGHT && col >= 0 && col < LAWN_WIDTH) {
                     Plant plant = plants[row][col];
-                    if(plant != null) {
+                    if (plant != null) {
                         // Check if it's a potato mine and handle explosion
-                        if(plant instanceof PotatoMine) {
-                            PotatoMine mine = (PotatoMine)plant;
-                            if(mine.isArmed() && !mine.hasExploded()) {
+                        if (plant instanceof PotatoMine) {
+                            PotatoMine mine = (PotatoMine) plant;
+                            if (mine.isArmed() && !mine.hasExploded()) {
                                 mine.explode();
                                 zombie.damage(mine.getExplosionDamage());
                                 continue;
                             }
                         }
-                        
-                        if(zombie.canAttack()) {
+
+                        if (zombie.canAttack()) {
                             zombie.attack(plant);
-                            if(plant.isDead()) {
+                            if (plant.isDead()) {
                                 plantDeathSounds[rand.nextInt(plantDeathSounds.length)].play(0.7f);
                                 plant.dispose();
                                 plants[row][col] = null;
@@ -539,7 +514,7 @@ public class DayWorld implements Screen {
         for(Zombie zombie : zombiesToRemove) {
             removeZombie(zombie, delta);
         }
-        
+
         batch.end();
     }
 
@@ -552,7 +527,7 @@ public class DayWorld implements Screen {
             Sun sun = suns.get(i);
             // Check if the sun was collected
             if (sun.checkClick()) {
-                //play sun pick up sound
+                // play sun pick up sound
                 sunPickupSound.play(0.5f);
 
                 // Add 25 balance
@@ -587,33 +562,33 @@ public class DayWorld implements Screen {
     }
 
     public void renderShovel() {
-        
+
         // After plantBar.render(), add shovel handling
         if (Gdx.input.justTouched()) {
             float mouseX = Gdx.input.getX();
             float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
-            
+
             if (shovel.isClicked(mouseX, mouseY)) {
                 isShovelDragging = true;
                 shovel.setDragging(true);
             }
         }
-        
+
         if (isShovelDragging && !Gdx.input.isTouched()) {
             float mouseX = Gdx.input.getX();
             float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
             int tileX = MathUtils.floor((mouseX - LAWN_TILEX) / LAWN_TILEWIDTH);
             int tileY = -MathUtils.floor((mouseY - LAWN_TILEY) / LAWN_TILEHEIGHT);
-            
+
             if (tileX >= 0 && tileX < LAWN_WIDTH && tileY >= 0 && tileY < LAWN_HEIGHT) {
                 if (plants[tileY][tileX] != null) {
-                    shovelSound.play(0.5f); //play shovel sound
+                    shovelSound.play(0.5f); // play shovel sound
 
                     plants[tileY][tileX].dispose();
                     plants[tileY][tileX] = null;
                 }
             }
-            
+
             isShovelDragging = false;
             shovel.setDragging(false);
         }
@@ -622,7 +597,6 @@ public class DayWorld implements Screen {
     public void addZombie(Zombie zombie) {
         zombies.add(zombie);
     }
-    
     public void removeZombie(Zombie zombime, float delta) {
         zombieDisposeTimer += delta;
         if(zombieDisposeTimer >= ZOMBIE_DISPOSE_DELAY) {
@@ -638,10 +612,11 @@ public class DayWorld implements Screen {
             loseSound.play();
             loseSoundPlayed = true;
         }
-        
+
         // Update scale
-        gameOverScale = Math.min(1.0f, gameOverScale + delta * 2); // Adjust the multiplication factor to control animation speed
-        
+        gameOverScale = Math.min(1.0f, gameOverScale + delta * 2); // Adjust the multiplication factor to control
+                                                                   // animation speed
+
         endGameTimer += delta;
         if (endGameTimer >= END_GAME_TIMER) {
             endGameTimer = 0f;
@@ -656,10 +631,10 @@ public class DayWorld implements Screen {
         float height = gameOverTexture.getHeight() * gameOverScale;
         float x = (Gdx.graphics.getWidth() - width) / 2;
         float y = (Gdx.graphics.getHeight() - height) / 2;
-        
-        batch.draw(gameOverTexture, 
-                  x, y,             // Position
-                  width, height     // Size
+
+        batch.draw(gameOverTexture,
+                x, y, // Position
+                width, height // Size
         );
         batch.end();
     }
@@ -704,6 +679,14 @@ public class DayWorld implements Screen {
         return LAWN_TILEWIDTH;
     }
 
+    public int getLawnTileY() {
+        return LAWN_TILEY;
+    }
+
+    public GameRoot getGame() {
+        return game;
+    }
+
     @Override
     public void dispose() {
         // Destroy screen's assets here.
@@ -711,11 +694,11 @@ public class DayWorld implements Screen {
         batch.dispose();
         plantBar.dispose();
         // Dispose suns
-        for(Sun sun : suns) {
+        for (Sun sun : suns) {
             sun.dispose();
         }
 
-        for(Zombie zombie : zombies) {
+        for (Zombie zombie : zombies) {
             zombie.dispose();
         }
         zombies.clear();
@@ -723,18 +706,17 @@ public class DayWorld implements Screen {
         // Add to existing dispose method
         shovel.dispose();
 
-        for(Lawnmower lawnmower : lawnmowers) {
+        for (Lawnmower lawnmower : lawnmowers) {
             lawnmower.dispose();
         }
 
         loseSound.dispose();
 
-        
-        for(Sound sound : plantSpawnSound) {
+        for (Sound sound : plantSpawnSound) {
             sound.dispose();
         }
 
-        for(Sound sound : plantDeathSounds) {
+        for (Sound sound : plantDeathSounds) {
             sound.dispose();
         }
 
@@ -754,17 +736,17 @@ public class DayWorld implements Screen {
                 Plant p = plants[y][x];
                 if (p != null) {
                     p.update(delta);
-                    
+
                     // Handle shooter plant attacks
                     if (p instanceof ShooterPlant) {
                         ShooterPlant shooter = (ShooterPlant) p;
                         shooter.tryAttack(zombies, y);
-                        
+
                         // Check projectile collisions
                         Array<Projectile> projectiles = shooter.getProjectiles();
                         for (int i = projectiles.size - 1; i >= 0; i--) {
                             Projectile proj = projectiles.get(i);
-                            
+
                             // Use Collidable interface for collision detection
                             for (Zombie zombie : zombies) {
                                 if (!zombie.isSquashed() && !proj.isHit() && checkCollision(proj, zombie) && !zombie.isDead()) {
@@ -773,7 +755,7 @@ public class DayWorld implements Screen {
                                     break;
                                 }
                             }
-                            
+
                             // Remove projectiles that are off screen
                             if (proj.getX() > Gdx.graphics.getWidth()) {
                                 proj.dispose();
@@ -784,5 +766,10 @@ public class DayWorld implements Screen {
                 }
             }
         }
+    }
+
+    // Add getter for zombies array
+    public Array<Zombie> getZombies() {
+        return zombies;
     }
 }

@@ -23,10 +23,12 @@ public class BucketheadZombie extends Zombie {
     static float FRAME_DURATION = 0.7f;
 
     public BucketheadZombie(DayWorld theWorld) {
+
         super(theWorld, new Texture("zombies/bucketheadZombie/BucketHeadZombie.png"), TOTAL_HP, 50, 2.0f);
         
         // Load walk animation 1 
         TextureAtlas walkAtlas = new TextureAtlas(Gdx.files.internal("zombies/bucketheadZombie/buckethead-idle-1.atlas"));
+
         AtlasRegion[] walk = new AtlasRegion[WALK_FRAMES];
         for (int i = 0; i < WALK_FRAMES; i++) {
             walk[i] = walkAtlas.findRegion("tile00" + i);
@@ -53,6 +55,7 @@ public class BucketheadZombie extends Zombie {
         animations.put("walk3", walkanim3);
 
         // Load attack animation
+
         TextureAtlas attackAtlas1 = new TextureAtlas(Gdx.files.internal("zombies/bucketheadZombie/buckethead-attack-1.atlas"));
         AtlasRegion[] attack1 = new AtlasRegion[ATTACK_FRAMES];
         for (int i = 0; i < ATTACK_FRAMES; i++) {
@@ -64,6 +67,7 @@ public class BucketheadZombie extends Zombie {
         // Load attack animation 2
         TextureAtlas attackAtlas2 = new TextureAtlas(Gdx.files.internal("zombies/bucketheadZombie/buckethead-attack-2.atlas"));
         AtlasRegion[] attack2 = new AtlasRegion[ATTACK_FRAMES];
+
         for (int i = 0; i < ATTACK_FRAMES; i++) {
             attack2[i] = attackAtlas2.findRegion("tile00" + i);
         }

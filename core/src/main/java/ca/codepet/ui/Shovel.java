@@ -31,17 +31,17 @@ public class Shovel {
         if (isDragging) {
             float mouseX = Gdx.input.getX() - (dragTexture.getWidth() * SCALE) / 2f;
             float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY() - (dragTexture.getHeight() * SCALE) / 2f;
-            batch.draw(dragTexture, 
-                      mouseX, 
-                      mouseY,
-                      dragTexture.getWidth() * SCALE,
-                      dragTexture.getHeight() * SCALE);
+            batch.draw(dragTexture,
+                    mouseX,
+                    mouseY,
+                    dragTexture.getWidth() * SCALE,
+                    dragTexture.getHeight() * SCALE);
         }
-        batch.draw(iconTexture, 
-                  x, 
-                  y,
-                  iconTexture.getWidth() * SCALE,
-                  iconTexture.getHeight() * SCALE);
+        batch.draw(iconTexture,
+                x,
+                y,
+                iconTexture.getWidth() * SCALE,
+                iconTexture.getHeight() * SCALE);
         batch.end();
     }
 

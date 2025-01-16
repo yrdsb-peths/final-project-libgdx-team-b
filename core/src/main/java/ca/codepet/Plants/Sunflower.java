@@ -14,11 +14,10 @@ public class Sunflower extends Plant {
     private static final float SUN_PRODUCTION_INTERVAL = 10.0f; // Produces sun every 24 seconds
     private DayWorld world;
 
-    public Sunflower(float x, float y, DayWorld world) {
-        super(x, y);
-        this.world = world;
+    public Sunflower(DayWorld world, float x, float y) {
+        super(world, x, y);
         this.scale = 1.1f; // Make sunflower 50% bigger
-        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("plants/Sunflower.atlas"));
+        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("plants/sunflower/Sunflower.atlas"));
         AtlasRegion[] idle = new AtlasRegion[IDLE_FRAMES];
         for (int i = 0; i < IDLE_FRAMES; i++) {
             idle[i] = atlas.findRegion("sunflower_idle" + (i + 1));
@@ -39,11 +38,12 @@ public class Sunflower extends Plant {
     }
 
     @Override
-    public void update(float deltaTime) {
-        imageIndex += deltaTime;
+    public void update(float delta) {
+        super.update(delta);
+        imageIndex += delta;
 
-        sunProductionTimer += deltaTime;
-        
+        sunProductionTimer += delta;
+
         if (sunProductionTimer >= SUN_PRODUCTION_INTERVAL) {
             produceSun();
             sunProductionTimer = 0;
@@ -53,13 +53,13 @@ public class Sunflower extends Plant {
     private void produceSun() {
         if (world != null) {
             // Generate random angle in radians
-            float angle = (float)(Math.random() * 2 * Math.PI);
+            float angle = (float) (Math.random() * 2 * Math.PI);
             // Generate random radius between 0 and 50
-            float radius = (float)(Math.random() * 50);
+            float radius = (float) (Math.random() * 50);
             // Calculate offset using polar coordinates
-            float offsetX = radius * (float)Math.cos(angle);
-            float offsetY = radius * (float)Math.sin(angle);
-            
+            float offsetX = radius * (float) Math.cos(angle);
+            float offsetY = radius * (float) Math.sin(angle);
+
             Sun sun = new Sun(x + offsetX, y + offsetY);
             world.addSun(sun);
         }

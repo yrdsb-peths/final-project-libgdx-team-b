@@ -20,23 +20,22 @@ public class PlantCard {
     private float cooldownTimer;
     private boolean isSelected;
     private String plantType;
-    private boolean isDarkened;
-    private float darkenAmount = 0.5f; // 0-1 value for darkening
     private boolean isDragging = false;
     private float dragOffsetX, dragOffsetY;
     private float originalX, originalY;
-    private static final float COOLDOWN_DARKEN = 0.5f;  // Was 0.3f
-    private static final float UNAFFORDABLE_DARKEN = 0.7f;  // Was 0.5f
-    private static final float SELECTED_DARKEN = 0.7f;  // New constant
+    private static final float COOLDOWN_DARKEN = 0.5f; // Was 0.3f
+    private static final float UNAFFORDABLE_DARKEN = 0.7f; // Was 0.5f
+    private static final float SELECTED_DARKEN = 0.7f; // New constant
     private static final float NORMAL_DARKEN = 1.0f;
     private boolean isAffordable = true;
-    private float iconScale = 1.0f;  // Add this field
-    
+    private float iconScale = 1.0f; // Add this field
+
     public PlantCard(TextureRegion texture, int cost, float cooldown, String plantType, float x, float y) {
         this(texture, cost, cooldown, plantType, x, y, 1.0f);
     }
 
-    public PlantCard(TextureRegion texture, int cost, float cooldown, String plantType, float x, float y, float iconScale) {
+    public PlantCard(TextureRegion texture, int cost, float cooldown, String plantType, float x, float y,
+            float iconScale) {
         if (cardBackground == null) {
             cardBackground = new Texture(Gdx.files.internal("characters/card.png"));
         }
@@ -49,7 +48,8 @@ public class PlantCard {
         }
         if (cooldownOverlay == null) {
             // Create 1x1 grey pixel texture for cooldown overlay
-            com.badlogic.gdx.graphics.Pixmap pixmap = new com.badlogic.gdx.graphics.Pixmap(1, 1, com.badlogic.gdx.graphics.Pixmap.Format.RGBA8888);
+            com.badlogic.gdx.graphics.Pixmap pixmap = new com.badlogic.gdx.graphics.Pixmap(1, 1,
+                    com.badlogic.gdx.graphics.Pixmap.Format.RGBA8888);
             pixmap.setColor(0.2f, 0.2f, 0.2f, 0.7f);
             pixmap.fill();
             cooldownOverlay = new Texture(pixmap);
@@ -62,7 +62,6 @@ public class PlantCard {
         this.isSelected = false;
         this.plantType = plantType;
         this.bounds = new Rectangle(x, y, 70, 80);
-        this.isDarkened = false;
         this.originalX = x;
         this.originalY = y;
         this.iconScale = iconScale;
@@ -94,26 +93,22 @@ public class PlantCard {
         bounds.setPosition(x, y);
     }
 
-    public void setDarkened(boolean darkened) {
-        isDarkened = darkened;
-    }
-
     public TextureRegion getCardTexture() {
         return cardTexture;
     }
-    
+
     public int getCost() {
         return cost;
     }
-    
+
     public float getCooldown() {
         return cooldown;
     }
-    
+
     public String getPlantType() {
         return plantType;
     }
-    
+
     public Rectangle getBounds() {
         return bounds;
     }
@@ -169,7 +164,7 @@ public class PlantCard {
 
     public void render(SpriteBatch batch) {
         float originalR = batch.getColor().r;
-        float originalG = batch.getColor().g; 
+        float originalG = batch.getColor().g;
         float originalB = batch.getColor().b;
         float originalA = batch.getColor().a;
 
@@ -186,21 +181,20 @@ public class PlantCard {
         }
 
         batch.setColor(
-            originalR * darkenAmount,
-            originalG * darkenAmount,
-            originalB * darkenAmount,
-            originalA
-        );
+                originalR * darkenAmount,
+                originalG * darkenAmount,
+                originalB * darkenAmount,
+                originalA);
 
         // Draw card background
         batch.draw(cardBackground, bounds.x, bounds.y, bounds.width, bounds.height);
-        
+
         // Center plant sprite on card with scaling
         float plantWidth = Math.min(bounds.width * 0.6f, cardTexture.getRegionWidth()) * iconScale;
         float plantHeight = Math.min(bounds.height * 0.6f, cardTexture.getRegionHeight()) * iconScale;
         float plantX = bounds.x + (bounds.width - plantWidth) / 2;
         float plantY = bounds.y + (bounds.height - plantHeight) / 2;
-        
+
         // Draw plant sprite
         batch.draw(cardTexture, plantX, plantY, plantWidth, plantHeight);
 
@@ -208,16 +202,16 @@ public class PlantCard {
         if (isOnCooldown()) {
             float progress = cooldownTimer / cooldown;
             float overlayHeight = bounds.height * progress;
-            batch.draw(cooldownOverlay, 
-                      bounds.x, bounds.y,
-                      bounds.width, overlayHeight);
+            batch.draw(cooldownOverlay,
+                    bounds.x, bounds.y,
+                    bounds.width, overlayHeight);
         }
 
         // Draw cost with same darkening effect
         font.setColor(batch.getColor());
-        font.draw(batch, String.valueOf(cost), 
-                 bounds.x + 13, 
-                 bounds.y + 13);
+        font.draw(batch, String.valueOf(cost),
+                bounds.x + 13,
+                bounds.y + 13);
 
         // Restore original color
         batch.setColor(originalR, originalG, originalB, originalA);

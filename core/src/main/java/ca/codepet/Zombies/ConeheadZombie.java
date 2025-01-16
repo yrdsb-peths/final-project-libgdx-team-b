@@ -23,7 +23,7 @@ public class ConeheadZombie extends Zombie {
 
     public ConeheadZombie(DayWorld theWorld) {
         super(theWorld, new Texture("zombies/coneZombie/ConeheadZombie.png"), TOTAL_HP, 50, 2.0f);
-        
+
         // Load walk animation
         TextureAtlas walkAtlas = new TextureAtlas(Gdx.files.internal("zombies/coneZombie/conehead-idle-1.atlas"));
         AtlasRegion[] walk = new AtlasRegion[WALK_FRAMES];
@@ -112,10 +112,10 @@ public class ConeheadZombie extends Zombie {
     public void damage(int dmg) {
         int oldHp = hp;
         super.damage(dmg);
-        
+
         // Check if we crossed a health threshold
         if ((oldHp > STAGE_1_HP + STAGE_2_HP && hp <= STAGE_1_HP + STAGE_2_HP) ||
-            (oldHp > STAGE_1_HP && hp <= STAGE_1_HP)) {
+                (oldHp > STAGE_1_HP && hp <= STAGE_1_HP)) {
             updateAnimation();
         }
     }

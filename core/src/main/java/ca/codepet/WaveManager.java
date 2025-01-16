@@ -14,7 +14,7 @@ public class WaveManager {
     private float zombieTimer = 0f;
     private Array<Zombie> waveZombies = new Array<>();
     private int zombiesSpawned = 0;
-    
+
     public WaveManager(DayWorld world) {
         this.world = world;
     }
@@ -31,7 +31,7 @@ public class WaveManager {
                 spawnNextZombie();
                 zombieTimer = 0f;
             }
-            
+
             if (zombiesSpawned >= waveZombies.size) {
                 waveInProgress = false;
                 waveTimer = 0f;
