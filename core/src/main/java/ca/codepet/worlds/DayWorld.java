@@ -54,6 +54,7 @@ public class DayWorld implements Screen {
     private static final float SUN_SPAWN_RATE = 1f; // seconds
     private static final float END_GAME_TIMER = 5f; // seconds
     private static final float GAME_OVER_DELAY = 5f; // seconds
+    private static final float ZOMBIE_DISPOSE_DELAY = 7f;
 
     private boolean isGameOver = false;
     private float gameOverDelayTimer = 0f;
@@ -61,6 +62,7 @@ public class DayWorld implements Screen {
 
     private float sunSpawnTimer = 0f;
     private float endGameTimer = 0f;
+    private float zombieDisposeTimer = 0f;
 
     // Add array to track suns
     private Array<Sun> suns = new Array<>();
@@ -378,8 +380,9 @@ public class DayWorld implements Screen {
         }
 
         // Clean up zombies and lawnmowers after iteration
-        for (Zombie zombie : zombiesToRemove) {
-            removeZombie(zombie);
+
+        for(Zombie zombie : zombiesToRemove) {
+            removeZombie(zombie, 7f);
         }
 
         for (Lawnmower lawnmower : lawnmowersToRemove) {
@@ -508,8 +511,8 @@ public class DayWorld implements Screen {
         }
 
         // Remove zombies after rendering everything
-        for (Zombie zombie : zombiesToRemove) {
-            removeZombie(zombie);
+        for(Zombie zombie : zombiesToRemove) {
+            removeZombie(zombie, delta);
         }
 
         batch.end();
@@ -594,10 +597,13 @@ public class DayWorld implements Screen {
     public void addZombie(Zombie zombie) {
         zombies.add(zombie);
     }
-
-    public void removeZombie(Zombie zombie) {
-        zombie.dispose();
-        zombies.removeValue(zombie, true);
+    public void removeZombie(Zombie zombime, float delta) {
+        zombieDisposeTimer += delta;
+        if(zombieDisposeTimer >= ZOMBIE_DISPOSE_DELAY) {
+            zombieDisposeTimer = 0f;
+            zombime.dispose();
+            zombies.removeValue(zombime, true);
+        }
     }
 
     public void gameOver(float delta) {
@@ -743,7 +749,7 @@ public class DayWorld implements Screen {
 
                             // Use Collidable interface for collision detection
                             for (Zombie zombie : zombies) {
-                                if (!zombie.isSquashed() && !proj.isHit() && checkCollision(proj, zombie)) {
+                                if (!zombie.isSquashed() && !proj.isHit() && checkCollision(proj, zombie) && !zombie.isDead()) {
                                     zombie.damage(proj.getDamage());
                                     proj.hit(zombie);
                                     break;
