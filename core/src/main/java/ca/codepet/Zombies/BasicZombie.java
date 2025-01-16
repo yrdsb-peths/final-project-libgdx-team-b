@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
-import ca.codepet.Plant;
+import ca.codepet.Plants.Plant;
 import ca.codepet.worlds.DayWorld;
 
 public class BasicZombie extends Zombie {
@@ -18,10 +18,10 @@ public class BasicZombie extends Zombie {
     static int ATTACK_FRAMES = 7;
 
     public BasicZombie(DayWorld theWorld) {
-        super(theWorld, new Texture("images/zombie.png"), 100, 10, 2.0f);
+        super(theWorld, new Texture("zombies/basicZombie/BasicZombieWalk.png"), 100, 10, 2.0f);
         
         // Load walk animation
-        TextureAtlas walkAtlas = new TextureAtlas(Gdx.files.internal("zombies/BasicZombieWalk.atlas"));
+        TextureAtlas walkAtlas = new TextureAtlas(Gdx.files.internal("zombies/basicZombie/BasicZombieWalk.atlas"));
         AtlasRegion[] walk = new AtlasRegion[WALK_FRAMES];
         for (int i = 0; i < WALK_FRAMES; i++) {
             walk[i] = walkAtlas.findRegion("tile00" + i);
@@ -30,7 +30,7 @@ public class BasicZombie extends Zombie {
         animations.put("walk", walkanim);
 
         // Load attack animation
-        TextureAtlas attackAtlas = new TextureAtlas(Gdx.files.internal("zombies/BasicZombieAttack.atlas"));
+        TextureAtlas attackAtlas = new TextureAtlas(Gdx.files.internal("zombies/basicZombie/BasicZombieAttack.atlas"));
         AtlasRegion[] attack = new AtlasRegion[ATTACK_FRAMES];
         for (int i = 0; i < ATTACK_FRAMES; i++) {
             attack[i] = attackAtlas.findRegion("tile00" + i);

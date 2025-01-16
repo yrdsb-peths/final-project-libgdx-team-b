@@ -6,8 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
-import ca.codepet.Plant;
-
 public class PotatoMine extends Plant {
     private static final int POPUP_FRAMES = 3;
     private static final int IDLE_FRAMES = 5;

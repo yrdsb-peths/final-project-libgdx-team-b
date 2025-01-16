@@ -1,0 +1,54 @@
+conehead-idle-3.png
+size: 210, 56
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tile000
+  rotate: false
+  xy: 64, 1
+  size: 27, 53
+  orig: 27, 53
+  offset: 0, 0
+  index: -1
+tile001
+  rotate: false
+  xy: 151, 1
+  size: 28, 51
+  orig: 28, 51
+  offset: 0, 0
+  index: -1
+tile002
+  rotate: false
+  xy: 181, 1
+  size: 28, 50
+  orig: 28, 50
+  offset: 0, 0
+  index: -1
+tile003
+  rotate: false
+  xy: 93, 1
+  size: 26, 53
+  orig: 26, 53
+  offset: 0, 0
+  index: -1
+tile004
+  rotate: false
+  xy: 121, 1
+  size: 28, 52
+  orig: 28, 52
+  offset: 0, 0
+  index: -1
+tile005
+  rotate: false
+  xy: 1, 1
+  size: 30, 54
+  orig: 30, 54
+  offset: 0, 0
+  index: -1
+tile006
+  rotate: false
+  xy: 33, 1
+  size: 29, 53
+  orig: 29, 53
+  offset: 0, 0
+  index: -1

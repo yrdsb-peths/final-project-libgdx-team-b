@@ -1,9 +1,10 @@
-package ca.codepet;
+package ca.codepet.Plants;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
+
 import ca.codepet.Zombies.Zombie;
 
 public abstract class ShooterPlant extends Plant {
