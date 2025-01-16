@@ -19,12 +19,11 @@ public class Menu implements Screen {
     Button button;
 
     float xRatio = 360f / Gdx.graphics.getWidth();
-    float yRatio =  300f / Gdx.graphics.getHeight();
+    float yRatio = 300f / Gdx.graphics.getHeight();
     int buttonX = (int) (Gdx.graphics.getWidth() * xRatio);
     int buttonY = (int) (Gdx.graphics.getHeight() * yRatio);
 
-
-    float widthRatio =  394f / Gdx.graphics.getWidth() ;
+    float widthRatio = 394f / Gdx.graphics.getWidth();
     float heightRatio = 200f / Gdx.graphics.getHeight();
     int buttonWidth = (int) (Gdx.graphics.getWidth() * widthRatio);
     int buttonHeight = (int) (Gdx.graphics.getHeight() * heightRatio);
@@ -33,40 +32,34 @@ public class Menu implements Screen {
 
     Sound buttonClick = Gdx.audio.newSound(Gdx.files.internal("sounds/buttonClick.ogg"));
 
-    private long buttonClickId;
     private boolean buttonClicked = false;
     private float buttonClickTimer = 0f;
     private static final float CLICK_SOUND_DURATION = 0.5f; // Adjust this value based on your sound length
 
     public Menu(GameRoot game) {
-        
-    System.out.println(buttonX);
-     System.out.println(buttonY);
+
+        System.out.println(buttonX);
+        System.out.println(buttonY);
 
         this.game = game;
         sound.play(0.5f);
 
         // Initialize the button with the texture path
-        button = new Button("images/button.png", game, buttonX , buttonY, buttonWidth, buttonHeight);
+        button = new Button("images/button.png", buttonX, buttonY, buttonWidth, buttonHeight);
 
         // Add a listener to the button
         button.setButtonListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                buttonClickId = buttonClick.play(0.3f);
                 buttonClicked = true;
                 return true;
             }
         });
     }
 
-    private void test() {
-        System.out.println("Button clicked!");
-    }
-
     @Override
     public void show() {
-        game.assetManager.finishLoading(); 
+        game.assetManager.finishLoading();
 
         menuTexture = game.assetManager.get("images/menu.png");
     }

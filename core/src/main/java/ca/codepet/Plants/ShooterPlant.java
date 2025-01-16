@@ -15,13 +15,9 @@ public abstract class ShooterPlant extends Plant {
     protected int currentRow;
 
     private final Sound[] shootSounds = {
-        Gdx.audio.newSound(Gdx.files.internal("sounds/shootSound.mp3")),
-        Gdx.audio.newSound(Gdx.files.internal("sounds/shootSound2.mp3"))
+            Gdx.audio.newSound(Gdx.files.internal("sounds/shootSound.mp3")),
+            Gdx.audio.newSound(Gdx.files.internal("sounds/shootSound2.mp3"))
     };
-
-   
-
-    
 
     public ShooterPlant(float x, float y) {
         super(x, y);
@@ -31,12 +27,12 @@ public abstract class ShooterPlant extends Plant {
     public void update(float delta) {
         imageIndex += delta;
         attackTimer += delta;
-        
+
         // Update existing projectiles
         for (int i = projectiles.size - 1; i >= 0; i--) {
             Projectile proj = projectiles.get(i);
             proj.update(delta);
-            
+
             // Remove finished projectiles
             if (proj.isFinished()) {
                 proj.dispose();
@@ -53,7 +49,7 @@ public abstract class ShooterPlant extends Plant {
     @Override
     public void render(SpriteBatch batch) {
         super.render(batch);
-        
+
         // Render projectiles
         for (Projectile proj : projectiles) {
             proj.render(batch);
@@ -61,7 +57,7 @@ public abstract class ShooterPlant extends Plant {
     }
 
     public void tryAttack(Array<Zombie> zombies, int row) {
-        this.currentRow = row;  // Store current row
+        this.currentRow = row; // Store current row
         if (attackTimer >= attackCooldown) {
             // Look for zombies in range and same row
             boolean foundTarget = false;
@@ -69,12 +65,12 @@ public abstract class ShooterPlant extends Plant {
                 if (zombie.getRow() == row && !zombie.isSquashed()) {
                     float distance = zombie.getX() - this.x;
                     if (distance > 0 && distance <= range) {
-                        foundTarget = true;                        
+                        foundTarget = true;
                         break;
                     }
                 }
             }
-            
+
             if (foundTarget && !isAttacking) {
                 startAttack();
                 attackTimer = 0;
@@ -103,7 +99,6 @@ public abstract class ShooterPlant extends Plant {
             sound.dispose();
         }
 
-        
     }
 
     protected abstract Projectile createProjectile();

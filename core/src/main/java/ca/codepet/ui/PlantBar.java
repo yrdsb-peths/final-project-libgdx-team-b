@@ -61,8 +61,8 @@ public class PlantBar {
             float x = CARD_START_X + (selectedCards.size * CARD_SPACING);
             float y = Gdx.graphics.getHeight() - 90;
             card.setPosition(x, y);
-            card.updateOriginalPosition(x, y);  // Store original position when adding
-            card.setAffordable(sunBalance >= card.getCost());  // Set initial affordability
+            card.updateOriginalPosition(x, y); // Store original position when adding
+            card.setAffordable(sunBalance >= card.getCost()); // Set initial affordability
             selectedCards.add(card);
             return true;
         }
@@ -83,7 +83,7 @@ public class PlantBar {
     public boolean canAffordCard(PlantCard card) {
         return !gameStarted || sunBalance >= card.getCost();
     }
-    
+
     public PlantCard checkCardDragStart(float x, float y) {
         for (PlantCard card : selectedCards) {
             if (card.contains(x, y) && !card.isOnCooldown() && canAffordCard(card)) {
@@ -108,7 +108,7 @@ public class PlantBar {
             float x = CARD_START_X + (index * CARD_SPACING);
             float y = Gdx.graphics.getHeight() - 90;
             card.setPosition(x, y);
-            card.updateOriginalPosition(x, y);  // Update the original position
+            card.updateOriginalPosition(x, y); // Update the original position
         }
     }
 
@@ -149,9 +149,9 @@ public class PlantBar {
         for (PlantCard card : selectedCards) {
             card.updateCooldown(Gdx.graphics.getDeltaTime());
             if (gameStarted) {
-                card.setAffordable(sunBalance >= card.getCost());  // Only check affordability after game starts
+                card.setAffordable(sunBalance >= card.getCost()); // Only check affordability after game starts
             } else {
-                card.setAffordable(true);  // Always affordable during picking phase
+                card.setAffordable(true); // Always affordable during picking phase
             }
         }
 
@@ -161,7 +161,7 @@ public class PlantBar {
                 card.render(batch);
             }
         }
-        
+
         // Draw dragged card last to appear on top
         for (PlantCard card : selectedCards) {
             if (card.isDragging()) {

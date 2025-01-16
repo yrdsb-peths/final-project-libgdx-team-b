@@ -1,12 +1,8 @@
 package ca.codepet.Zombies;
 
-import java.util.Random;
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
@@ -14,13 +10,13 @@ import ca.codepet.Plants.Plant;
 import ca.codepet.worlds.DayWorld;
 
 public class BasicZombie extends Zombie {
-    static int WALK_FRAMES = 7;  // Based on the atlas file which has 7 frames (tile000 to tile006)
+    static int WALK_FRAMES = 7; // Based on the atlas file which has 7 frames (tile000 to tile006)
     static int ATTACK_FRAMES = 7;
     static int FRAMES_DEATH = 9;
 
     public BasicZombie(DayWorld theWorld) {
         super(theWorld, new Texture("zombies/basicZombie/BasicZombieWalk.png"), 100, 10, 2.0f);
-        
+
         // Load walk animation
         TextureAtlas walkAtlas = new TextureAtlas(Gdx.files.internal("zombies/basicZombie/BasicZombieWalk.atlas"));
         AtlasRegion[] walk = new AtlasRegion[WALK_FRAMES];
@@ -49,13 +45,13 @@ public class BasicZombie extends Zombie {
         }
         // Slow down death animation and make it non-looping
         Animation<AtlasRegion> deathanim = new Animation<>(0.2f, death);
-        deathanim.setPlayMode(Animation.PlayMode.NORMAL);  // Make it play only once
+        deathanim.setPlayMode(Animation.PlayMode.NORMAL); // Make it play only once
         animations.put("death", deathanim);
-        
+
         // Set custom size for death animation frames
-        deathWidth = 51*3;  // Match original width from atlas
-        deathHeight = 40*3; // Match original height from atlas
-        
+        deathWidth = 51 * 3; // Match original width from atlas
+        deathHeight = 40 * 3; // Match original height from atlas
+
         currentAnimation = "walk";
     }
 

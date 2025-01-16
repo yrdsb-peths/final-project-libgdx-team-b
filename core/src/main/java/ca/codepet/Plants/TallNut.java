@@ -10,12 +10,12 @@ public class TallNut extends Plant {
     private static final int DEFAULT_HEALTH = 400;
     private static final int STAGE2_HEALTH = 300;
     private static final int STAGE3_HEALTH = 200;
-    
+
     public TallNut(float x, float y) {
         super(x, y);
         health = DEFAULT_HEALTH;
         setScale(2.3f);
-        
+
         // Load stage 1 animation (full health)
         TextureAtlas stage1Atlas = new TextureAtlas(Gdx.files.internal("plants/tall-nut-1.atlas"));
         AtlasRegion[] stage1 = new AtlasRegion[FRAMES];
@@ -39,10 +39,10 @@ public class TallNut extends Plant {
             stage3[i] = stage3Atlas.findRegion("120244-" + (i + 27));
         }
         animations.put("stage3", new Animation<>(0.2f, stage3));
-        
+
         setAnimation("stage1");
     }
-    
+
     @Override
     public void update(float delta) {
         // Update animation based on health
@@ -54,7 +54,7 @@ public class TallNut extends Plant {
         } else {
             newStage = "stage3";
         }
-        
+
         setAnimation(newStage);
         imageIndex += delta;
     }
