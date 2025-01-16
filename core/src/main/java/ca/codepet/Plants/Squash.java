@@ -83,7 +83,7 @@ public class Squash extends Plant {
             Array<Zombie> zombies = getWorld().getZombies();
             
             for (Zombie zombie : zombies) {
-                if (zombie.getRow() == row && !zombie.isSquashed() && !zombie.isDying() 
+                if (zombie.getRow() == row && !zombie.isSquashed() && !zombie.isDead() 
                     && Math.abs(zombie.getX() - x) < ATTACK_RANGE) {
 
                     if(!isHmmPlayed) {
@@ -115,7 +115,7 @@ public class Squash extends Plant {
                 // Keep maximum height while moving
                 jumpHeight = JUMP_HEIGHT;
                 // Move towards zombie if we have a target
-                if (targetZombie != null && !targetZombie.isDying()) {
+                if (targetZombie != null && !targetZombie.isDead()) {
                     float targetX = targetZombie.getX() + 20; // Offset to hit center of zombie
                     x += (targetX - x) * delta * 12;
                 }
@@ -139,7 +139,7 @@ public class Squash extends Plant {
 
         // Deal damage to any zombies in range
         for (Zombie zombie : zombies) {
-            if (zombie.getRow() == row && !zombie.isSquashed() && !zombie.isDying() 
+            if (zombie.getRow() == row && !zombie.isSquashed() && !zombie.isDead() 
                 && Math.abs(zombie.getX() - x) < SQUASH_RANGE) {
                 zombie.damage(SQUASH_DAMAGE);
             }

@@ -95,7 +95,7 @@ public class Threepeater extends ShooterPlant {
                 int targetRow = row + i;
                 if (targetRow >= 0 && targetRow < getWorld().getLawnHeight()) {
                     for (Zombie zombie : zombies) {
-                        if (zombie.getRow() == targetRow && !zombie.isDying() && !zombie.isSquashed() && zombie.getX() > x) {
+                        if (zombie.getRow() == targetRow && !zombie.isDead() && !zombie.isSquashed() && zombie.getX() > x) {
                             zombieFound = true;
                             break;
                         }

@@ -16,7 +16,7 @@ public class Spikeweed extends Plant implements Collidable {
 
     private static final float DEFAULT_ATTACK_COOLDOWN = 1f; 
     private static final int DEFAULT_DAMAGE = 10;
-    private static final int COLLIDE_MARGIN = 16;
+    private static final int COLLIDE_MARGIN = 4;
 
     protected float attackTimer = 0;
     protected boolean startAttack = false;

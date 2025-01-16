@@ -335,7 +335,7 @@ public abstract class Zombie implements Collidable {
     public int getCol() {
         return col;
     }
-    
+
     public int getXOffset() {
         if (isDying) {
             return deathXOffset;
@@ -402,9 +402,4 @@ public abstract class Zombie implements Collidable {
     public boolean isDeathAnimationComplete() {
         return isDeathAnimationComplete;
     }
-
-    public boolean isDying() {
-        return isDying;
-    }
-
 }

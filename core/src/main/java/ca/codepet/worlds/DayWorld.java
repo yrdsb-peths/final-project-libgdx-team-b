@@ -485,13 +485,13 @@ public class DayWorld implements Screen {
             batch.setColor(1f, 1f, 1f, 1f);
 
             // Only mark for removal if death animation is complete
-            if (zombie.isDying() && zombie.isDeathAnimationComplete()) {
+            if (zombie.isDead() && zombie.isDeathAnimationComplete()) {
                 zombiesToRemove.add(zombie);
                 continue;
             }
 
             // Only move or attack if not dying or squashed
-            if (!zombie.isSquashed() && !zombie.isDying()) {
+            if (!zombie.isSquashed() && !zombie.isDead()) {
                 // Check if zombie reached the house
                 if (zombie.hasReachedHouse() && !zombie.isSquashed()) {
                     Lawnmower lawnmower = null;
@@ -807,6 +807,8 @@ public class DayWorld implements Screen {
                         }
                     } else if (p instanceof Spikeweed) { // Spikeweed collision
                         for (Zombie zombie : zombies) {
+                            if (zombie.isDead() || zombie.isSquashed())
+                                continue;
                             Spikeweed spikeweed = (Spikeweed) p;
                             spikeweed.setRow(y);
                             if (checkCollision(spikeweed, zombie)) {
