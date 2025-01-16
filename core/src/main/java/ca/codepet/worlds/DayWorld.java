@@ -98,7 +98,11 @@ public class DayWorld implements Screen {
     private final Sound shovelSound = Gdx.audio.newSound(Gdx.files.internal("sounds/shovel.ogg"));
     private final Sound sunPickupSound = Gdx.audio.newSound(Gdx.files.internal("sounds/sunPickup.mp3"));
     private final Sound buttonClickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/buttonClick.ogg"));
-    private final Sound plantDeathSound = Gdx.audio.newSound(Gdx.files.internal("sounds/plantDie.mp3"));
+    private final Sound[] plantDeathSounds = new Sound[] { 
+        Gdx.audio.newSound(Gdx.files.internal("sounds/plantDie.mp3")),
+        Gdx.audio.newSound(Gdx.files.internal("sounds/plantDie2.ogg"))
+    };
+
     private Sound[] plantSpawnSound;
 
     private final Sound backgroundMusic = Gdx.audio.newSound(Gdx.files.internal("sounds/dayMusic.mp3"));
@@ -429,8 +433,7 @@ public class DayWorld implements Screen {
                         if(zombie.canAttack()) {
                             zombie.attack(plant);
                             if(plant.isDead()) {
-                                plantDeathSound.play(0.7f);
-                                System.out.println("dfd");
+                                plantDeathSounds[rand.nextInt(plantDeathSounds.length)].play(0.7f);
                                 plant.dispose();
                                 plants[row][col] = null;
                             }
@@ -641,11 +644,14 @@ public class DayWorld implements Screen {
             sound.dispose();
         }
 
+        for(Sound sound : plantDeathSounds) {
+            sound.dispose();
+        }
+
         sunPickupSound.dispose();
         backgroundMusic.stop();
         backgroundMusic.dispose();
         buttonClickSound.dispose();
-        plantDeathSound.dispose();
 
         if (gameOverTexture != null) {
             gameOverTexture.dispose();

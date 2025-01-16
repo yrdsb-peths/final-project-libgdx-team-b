@@ -86,8 +86,7 @@ public abstract class Zombie implements Collidable {
         chompSounds = new Sound[] {
                 Gdx.audio.newSound(Gdx.files.internal("sounds/chomp.ogg")),
                 Gdx.audio.newSound(Gdx.files.internal("sounds/chomp2.ogg")),
-                Gdx.audio.newSound(Gdx.files.internal("sounds/chomp3.ogg")),
-                Gdx.audio.newSound(Gdx.files.internal("sounds/chomp4.ogg"))
+                Gdx.audio.newSound(Gdx.files.internal("sounds/chomp3.ogg"))
         };
 
         // Load multiple groan sounds
