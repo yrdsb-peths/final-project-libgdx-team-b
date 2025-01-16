@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
-import ca.codepet.Projectile;
 import ca.codepet.ShooterPlant;
 
 public class Repeater extends ShooterPlant {

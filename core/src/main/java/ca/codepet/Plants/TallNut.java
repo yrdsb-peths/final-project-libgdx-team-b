@@ -5,8 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
-import ca.codepet.Plant;
-
 public class TallNut extends Plant {
     private static final int FRAMES = 4;
     private static final int DEFAULT_HEALTH = 400;

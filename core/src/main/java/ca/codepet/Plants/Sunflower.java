@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
-import ca.codepet.Plant;
 import ca.codepet.characters.Sun;
 import ca.codepet.worlds.DayWorld;
 

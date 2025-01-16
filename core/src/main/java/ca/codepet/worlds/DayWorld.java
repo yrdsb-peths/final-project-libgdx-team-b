@@ -13,12 +13,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 
-import ca.codepet.Plant;
-import ca.codepet.Projectile;
 import ca.codepet.ShooterPlant;
 import ca.codepet.WaveManager;
 import ca.codepet.Plants.Peashooter;
+import ca.codepet.Plants.Plant;
 import ca.codepet.Plants.PotatoMine;
+import ca.codepet.Plants.Projectile;
 import ca.codepet.Plants.Repeater;
 import ca.codepet.Plants.Sunflower;
 import ca.codepet.Plants.TallNut;

@@ -12,7 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.utils.ObjectMap;
 
 import ca.codepet.Collidable;
-import ca.codepet.Plant;
+import ca.codepet.Plants.Plant;
 import ca.codepet.worlds.DayWorld;
 
 // info

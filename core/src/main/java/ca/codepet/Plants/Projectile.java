@@ -1,4 +1,4 @@
-package ca.codepet;
+package ca.codepet.Plants;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.utils.ObjectMap;
+
+import ca.codepet.Collidable;
+
 import com.badlogic.gdx.math.Rectangle;
 
 import java.util.Random;
