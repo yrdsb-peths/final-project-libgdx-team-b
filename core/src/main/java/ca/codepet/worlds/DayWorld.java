@@ -52,8 +52,11 @@ public class DayWorld implements Screen {
 
     private static final float SUN_SPAWN_RATE = 1f; // seconds
     private static final float END_GAME_TIMER = 5f; // seconds
+    private static final float GAME_OVER_DELAY = 5f; // seconds
 
     private boolean isGameOver = false;
+    private float gameOverDelayTimer = 0f;
+    private boolean gameOverPending = false;
 
     private float sunSpawnTimer = 0f;
     private float endGameTimer = 0f;
@@ -160,6 +163,14 @@ public class DayWorld implements Screen {
 
     @Override
     public void render(float delta) {
+        if (gameOverPending) {
+            gameOverDelayTimer += delta;
+            if (gameOverDelayTimer >= GAME_OVER_DELAY) {
+                isGameOver = true;
+                gameOverPending = false;
+            }
+        }
+
         if (isGameOver) {
             gameOver(delta);
         } else {
@@ -391,9 +402,25 @@ public class DayWorld implements Screen {
 
     private void renderZombie(float delta) {
         Array<Zombie> zombiesToRemove = new Array<>();
-
+      
         for (Zombie zombie : zombies) {
-            // Update before checking for removal
+            // Check if zombie reached the house
+            if (zombie.hasReachedHouse() && !zombie.isSquashed()) {
+                Lawnmower lawnmower = null;
+                for (Lawnmower lm : lawnmowers) {
+                    if (lm.getRow() == zombie.getRow()) {
+                        lawnmower = lm;
+                        break;
+                    }
+                }
+                
+                if (lawnmower == null) {
+                    gameOverPending = true;
+                } else {
+                    lawnmower.activate();
+                }
+            }
+
             zombie.update(delta);
 
             // Render the zombie no matter what state it's in
