@@ -101,6 +101,7 @@ public class PotatoMine extends Plant {
         }
 
         if (isArmed) { // Only advance animation after arming
+            health = 10000; // once armed, becomes instant use plant, therefore unkillable
             imageIndex += delta;
         }
     }
