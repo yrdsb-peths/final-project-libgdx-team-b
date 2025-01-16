@@ -1,0 +1,9 @@
+snowpea-attack.png
+size:128,32
+repeat:none
+snowpea_shoot1
+bounds:36,0,36,32
+snowpea_shoot2
+bounds:0,0,36,32
+snowpea_shoot3
+bounds:72,0,36,32

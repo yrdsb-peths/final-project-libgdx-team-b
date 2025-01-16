@@ -1,7 +1,7 @@
 package ca.codepet;
 
 public interface Collidable {
-    int getX();
-    int getWidth();
+    float getX();
+    float getWidth();
     int getRow();
 }

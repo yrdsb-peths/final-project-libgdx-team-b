@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
@@ -20,6 +21,7 @@ import ca.codepet.WaveManager;
 import ca.codepet.Plants.Peashooter;
 import ca.codepet.Plants.PotatoMine;
 import ca.codepet.Plants.Repeater;
+import ca.codepet.Plants.SnowPea;
 import ca.codepet.Plants.Sunflower;
 import ca.codepet.Plants.TallNut;
 import ca.codepet.Plants.Walnut;
@@ -207,24 +209,35 @@ public class DayWorld implements Screen {
             draggedCard = plantBar.checkCardDragStart(mouseX, mouseY);
             if (draggedCard != null && plantBar.canAffordCard(draggedCard)) {
                 // Create actual plant and ghost plant
-                if (draggedCard.getPlantType().equals("Peashooter")) {
-                    draggedPlant = new Peashooter(mouseX, mouseY);
-                    ghostPlant = new Peashooter(0, 0);
-                } else if (draggedCard.getPlantType().equals("Sunflower")) {
-                    draggedPlant = new Sunflower(mouseX, mouseY, this);
-                    ghostPlant = new Sunflower(0, 0, this);
-                } else if (draggedCard.getPlantType().equals("PotatoMine")) {
-                    draggedPlant = new PotatoMine(mouseX, mouseY);
-                    ghostPlant = new PotatoMine(0, 0);
-                } else if (draggedCard.getPlantType().equals("Walnut")) {
-                    draggedPlant = new Walnut(mouseX, mouseY);
-                    ghostPlant = new Walnut(0, 0);
-                } else if (draggedCard.getPlantType().equals("TallNut")) {
-                    draggedPlant = new TallNut(mouseX, mouseY);
-                    ghostPlant = new TallNut(0, 0);
-                } else if (draggedCard.getPlantType().equals("Repeater")) {
-                    draggedPlant = new Repeater(mouseX, mouseY);
-                    ghostPlant = new Repeater(0, 0);
+                switch (draggedCard.getPlantType()) {
+                    case "Peashooter":
+                        draggedPlant = new Peashooter(mouseX, mouseY);
+                        ghostPlant = new Peashooter(0, 0);
+                    break;
+                    case "Sunflower":
+                        draggedPlant = new Sunflower(mouseX, mouseY, this);
+                        ghostPlant = new Sunflower(0, 0, this);
+                    break;
+                    case "PotatoMine":
+                        draggedPlant = new PotatoMine(mouseX, mouseY);
+                        ghostPlant = new PotatoMine(0, 0);
+                    break;
+                    case "Walnut":
+                        draggedPlant = new Walnut(mouseX, mouseY);
+                        ghostPlant = new Walnut(0, 0);
+                    break;
+                    case "TallNut":
+                        draggedPlant = new TallNut(mouseX, mouseY);
+                        ghostPlant = new TallNut(0, 0);
+                    break;
+                    case "Repeater":
+                        draggedPlant = new Repeater(mouseX, mouseY);
+                        ghostPlant = new Repeater(0, 0);
+                    break;
+                    case "SnowPea":
+                        draggedPlant = new SnowPea(mouseX, mouseY);
+                        ghostPlant = new SnowPea(0, 0);
+                    break;
                 }
             } else {
                 draggedCard = null;
@@ -391,6 +404,8 @@ public class DayWorld implements Screen {
             }
 
             // Render zombie
+            if (zombie.getSlowTimer() > 0f)
+                batch.setColor(0f, 0f, 1f,1f);
             batch.draw(zombie.getTextureRegion(), 
                       zombie.getX() + zombie.getXOffset(), 
                       (LAWN_HEIGHT - zombie.getRow()) * LAWN_TILEHEIGHT - (zombie.getHeight() - LAWN_TILEHEIGHT)/2 + zombie.getYOffset(),
@@ -401,6 +416,7 @@ public class DayWorld implements Screen {
                       1,
                       zombie.getScaleY(),
                       zombie.getRotation());
+            batch.setColor(1f, 1f, 1f, 1f);
 
             // Only move or attack if not squashed
             if(!zombie.isSquashed()) {
@@ -660,7 +676,7 @@ public class DayWorld implements Screen {
                             for (Zombie zombie : zombies) {
                                 if (!zombie.isSquashed() && !proj.isHit() && checkCollision(proj, zombie)) {
                                     zombie.damage(proj.getDamage());
-                                    proj.hit();
+                                    proj.hit(zombie);
                                     break;
                                 }
                             }

@@ -11,12 +11,12 @@ public class Lawnmower implements Collidable {
     private Texture texture;
     private TextureRegion textureRegion;
     private int row;
-    private int x, y;
+    private float x, y;
 
     private final Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/lawnmower.ogg"));
 
-    int width = 80;
-    int height = 80;
+    float width = 80;
+    float height = 80;
 
     int offSetY = 60;
 
@@ -57,19 +57,19 @@ public class Lawnmower implements Collidable {
         return texture;
     }
 
-    public int getWidth() {
+    public float getWidth() {
         return width;
     }
 
-    public int getHeight() {
+    public float getHeight() {
         return height;
     }
 
-    public int getX() {
+    public float getX() {
         return x;
     }
 
-    public int getY() {
+    public float getY() {
         return y;
     }
 
