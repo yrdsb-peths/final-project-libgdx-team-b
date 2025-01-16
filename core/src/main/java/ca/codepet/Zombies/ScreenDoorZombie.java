@@ -14,9 +14,9 @@ public class ScreenDoorZombie extends Zombie {
     static int ATTACK_FRAMES = 7;
     static int FRAMES_DEATH = 9;
 
-    static int STAGE_1_HP = 1370; // Screendoor fresh
-    static int STAGE_2_HP = 990; // Screendoor damaged
-    static int STAGE_3_HP = 630; // Screendoor very damaged
+    static int STAGE_1_HP = 380; // Screendoor fresh
+    static int STAGE_2_HP = 360; // Screendoor damaged
+    static int STAGE_3_HP = 360; // Screendoor very damaged
     static int STAGE_4_HP = 270; // Basic zombie form
 
     static int TOTAL_HP = STAGE_1_HP + STAGE_2_HP + STAGE_3_HP + STAGE_4_HP;
