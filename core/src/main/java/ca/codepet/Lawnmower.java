@@ -28,7 +28,7 @@ public class Lawnmower implements Collidable {
 
         textureRegion = new TextureRegion(texture);
 
-        x = 0;
+        x = -15;
         y = (world.getLawnHeight() - row - 1) * world.getLawnTileHeight() + offSetY;
     }
 

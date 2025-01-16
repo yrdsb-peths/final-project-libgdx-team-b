@@ -1,0 +1,61 @@
+threepeater-idle.png
+size: 116, 109
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tile000
+  rotate: false
+  xy: 38, 71
+  size: 33, 37
+  orig: 33, 37
+  offset: 0, 0
+  index: -1
+tile001
+  rotate: false
+  xy: 1, 1
+  size: 35, 37
+  orig: 35, 37
+  offset: 0, 0
+  index: -1
+tile002
+  rotate: false
+  xy: 78, 1
+  size: 37, 35
+  orig: 37, 35
+  offset: 0, 0
+  index: -1
+tile003
+  rotate: false
+  xy: 38, 1
+  size: 38, 33
+  orig: 38, 33
+  offset: 0, 0
+  index: -1
+tile004
+  rotate: false
+  xy: 73, 75
+  size: 36, 33
+  orig: 36, 33
+  offset: 0, 0
+  index: -1
+tile005
+  rotate: false
+  xy: 38, 36
+  size: 38, 33
+  orig: 38, 33
+  offset: 0, 0
+  index: -1
+tile006
+  rotate: false
+  xy: 78, 38
+  size: 37, 35
+  orig: 37, 35
+  offset: 0, 0
+  index: -1
+tile007
+  rotate: false
+  xy: 1, 40
+  size: 35, 37
+  orig: 35, 37
+  offset: 0, 0
+  index: -1

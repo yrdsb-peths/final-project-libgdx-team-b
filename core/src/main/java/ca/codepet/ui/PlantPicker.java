@@ -54,7 +54,7 @@ public class PlantPicker {
         int col = 0;
 
         // Peashooter card
-        TextureAtlas peashooterAtlas = new TextureAtlas(Gdx.files.internal("plants/peashooter-idle.atlas"));
+        TextureAtlas peashooterAtlas = new TextureAtlas(Gdx.files.internal("plants/peashooter/peashooter-idle.atlas"));
         float x = CARD_START_X + (col * (50 + CARD_SPACING));
         float y = CARD_START_Y - (row * (70 + CARD_SPACING));
         PlantCard peashooterCard = new PlantCard(
@@ -69,7 +69,7 @@ public class PlantPicker {
 
         // Sunflower card
         col++;
-        TextureAtlas sunflowerAtlas = new TextureAtlas(Gdx.files.internal("plants/Sunflower.atlas"));
+        TextureAtlas sunflowerAtlas = new TextureAtlas(Gdx.files.internal("plants/sunflower/Sunflower.atlas"));
         x = CARD_START_X + (col * (50 + CARD_SPACING));
         PlantCard sunflowerCard = new PlantCard(
                 sunflowerAtlas.findRegion("sunflower_idle1"),
@@ -83,7 +83,7 @@ public class PlantPicker {
 
         // PotatoMine card
         col++;
-        TextureAtlas potatoAtlas = new TextureAtlas(Gdx.files.internal("plants/potato-idle.atlas"));
+        TextureAtlas potatoAtlas = new TextureAtlas(Gdx.files.internal("plants/potato/potato-idle.atlas"));
         x = CARD_START_X + (col * (50 + CARD_SPACING));
         PlantCard potatoCard = new PlantCard(
                 potatoAtlas.findRegion("tile000"),
@@ -97,7 +97,7 @@ public class PlantPicker {
 
         // Add Walnut card
         col++;
-        TextureAtlas walnutAtlas = new TextureAtlas(Gdx.files.internal("plants/walnut-idle-1.atlas"));
+        TextureAtlas walnutAtlas = new TextureAtlas(Gdx.files.internal("plants/walnut/walnut-idle-1.atlas"));
         x = CARD_START_X + (col * (50 + CARD_SPACING));
         PlantCard walnutCard = new PlantCard(
                 walnutAtlas.findRegion("tile000"),
@@ -111,7 +111,7 @@ public class PlantPicker {
 
         // Add TallNut card
         col++;
-        TextureAtlas tallnutAtlas = new TextureAtlas(Gdx.files.internal("plants/tall-nut-1.atlas"));
+        TextureAtlas tallnutAtlas = new TextureAtlas(Gdx.files.internal("plants/tall-nut/tall-nut-1.atlas"));
         x = CARD_START_X + (col * (50 + CARD_SPACING));
         PlantCard tallnutCard = new PlantCard(
                 tallnutAtlas.findRegion("120244-0"),
@@ -125,7 +125,7 @@ public class PlantPicker {
 
         // Add Repeater card
         col++;
-        TextureAtlas repeaterAtlas = new TextureAtlas(Gdx.files.internal("plants/repeater-idle.atlas"));
+        TextureAtlas repeaterAtlas = new TextureAtlas(Gdx.files.internal("plants/repeater/repeater-idle.atlas"));
         x = CARD_START_X + (col * (50 + CARD_SPACING));
         PlantCard repeaterCard = new PlantCard(
                 repeaterAtlas.findRegion("tile000"),
@@ -141,7 +141,7 @@ public class PlantPicker {
         // Add SnowPea card
         row++;
         col = 0;
-        TextureAtlas snowPeaAtlas = new TextureAtlas(Gdx.files.internal("plants/snowpea-idle.atlas"));
+        TextureAtlas snowPeaAtlas = new TextureAtlas(Gdx.files.internal("plants/snowpea/snowpea-idle.atlas"));
         x = CARD_START_X + (col * (50 + CARD_SPACING));
         y = CARD_START_Y - (row * (70 + CARD_SPACING));
         PlantCard snowPeaCard = new PlantCard(
@@ -169,6 +169,38 @@ public class PlantPicker {
                 1.4f // Added scale parameter to make the icon larger
         );
         plantCards.add(spikeweedCard);
+      
+        // Add Squash card after SnowPea
+        col++;
+        TextureAtlas squashAtlas = new TextureAtlas(Gdx.files.internal("plants/squash/squash-idle.atlas"));
+        x = CARD_START_X + (col * (50 + CARD_SPACING));
+        y = CARD_START_Y - (row * (70 + CARD_SPACING));
+        PlantCard squashCard = new PlantCard(
+                squashAtlas.findRegion("tile000"),
+                50,
+                3f, // SHOULD BE 30
+                "Squash",
+                x,
+                y,
+                1.4f
+        );
+        plantCards.add(squashCard);
+
+        // Add Threepeater card
+        col++;
+        TextureAtlas threepeaterAtlas = new TextureAtlas(Gdx.files.internal("plants/threepeater/threepeater-idle.atlas"));
+        x = CARD_START_X + (col * (50 + CARD_SPACING));
+        y = CARD_START_Y - (row * (70 + CARD_SPACING));
+        PlantCard threepeaterCard = new PlantCard(
+                threepeaterAtlas.findRegion("tile000"),
+                325,
+                7.5f,
+                "Threepeater",
+                x,
+                y,
+                1.4f
+        );
+        plantCards.add(threepeaterCard);
     }
 
     public void render() {

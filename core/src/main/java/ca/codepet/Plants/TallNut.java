@@ -19,7 +19,7 @@ public class TallNut extends Plant {
         setScale(2.3f);
 
         // Load stage 1 animation (full health)
-        TextureAtlas stage1Atlas = new TextureAtlas(Gdx.files.internal("plants/tall-nut-1.atlas"));
+        TextureAtlas stage1Atlas = new TextureAtlas(Gdx.files.internal("plants/tall-nut/tall-nut-1.atlas"));
         AtlasRegion[] stage1 = new AtlasRegion[FRAMES];
         for (int i = 0; i < FRAMES; i++) {
             stage1[i] = stage1Atlas.findRegion("120244-" + i);
@@ -27,7 +27,7 @@ public class TallNut extends Plant {
         animations.put("stage1", new Animation<>(0.2f, stage1));
 
         // Load stage 2 animation (medium damage)
-        TextureAtlas stage2Atlas = new TextureAtlas(Gdx.files.internal("plants/tall-nut-2.atlas"));
+        TextureAtlas stage2Atlas = new TextureAtlas(Gdx.files.internal("plants/tall-nut/tall-nut-2.atlas"));
         AtlasRegion[] stage2 = new AtlasRegion[FRAMES];
         for (int i = 0; i < FRAMES; i++) {
             stage2[i] = stage2Atlas.findRegion("120244-" + (i + 18));
@@ -35,7 +35,7 @@ public class TallNut extends Plant {
         animations.put("stage2", new Animation<>(0.2f, stage2));
 
         // Load stage 3 animation (heavy damage)
-        TextureAtlas stage3Atlas = new TextureAtlas(Gdx.files.internal("plants/tall-nut-3.atlas"));
+        TextureAtlas stage3Atlas = new TextureAtlas(Gdx.files.internal("plants/tall-nut/tall-nut-3.atlas"));
         AtlasRegion[] stage3 = new AtlasRegion[FRAMES];
         for (int i = 0; i < FRAMES; i++) {
             stage3[i] = stage3Atlas.findRegion("120244-" + (i + 27));

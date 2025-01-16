@@ -17,7 +17,7 @@ public class Repeater extends ShooterPlant {
     public static final String PROJECTILE_ATLAS = "projectiles/pea.atlas";
     public static final float PROJECTILE_SCALE = 3f;
     private boolean firedSecondShot = false;
-    private float secondShotDelay = 0.1f; // Reduced delay between shots
+    private float secondShotDelay = 0.15f; // Reduced delay between shots
     private float secondShotTimer = 0;
 
     public Repeater(DayWorld world, float x, float y) {
@@ -25,7 +25,7 @@ public class Repeater extends ShooterPlant {
 
         setScale(2.2f);
 
-        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("plants/repeater-idle.atlas"));
+        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("plants/repeater/repeater-idle.atlas"));
         AtlasRegion[] idle = new AtlasRegion[IDLE_FRAMES];
         for (int i = 0; i < IDLE_FRAMES; i++) {
             idle[i] = atlas.findRegion("tile00" + i);
@@ -34,7 +34,7 @@ public class Repeater extends ShooterPlant {
         idleanim.setPlayMode(Animation.PlayMode.LOOP);
         animations.put("idle", idleanim);
 
-        TextureAtlas attackAtlas = new TextureAtlas(Gdx.files.internal("plants/repeater-attack.atlas"));
+        TextureAtlas attackAtlas = new TextureAtlas(Gdx.files.internal("plants/repeater/repeater-attack.atlas"));
         AtlasRegion[] attack = new AtlasRegion[ATTACK_FRAMES];
         for (int i = 0; i < ATTACK_FRAMES; i++) {
             attack[i] = attackAtlas.findRegion("tile00" + i);
