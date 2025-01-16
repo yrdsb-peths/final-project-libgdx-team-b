@@ -8,7 +8,7 @@ import ca.codepet.worlds.DayWorld;
 
 public class WaveManager {
     private static final float INITIAL_WAVE_DELAY = 35f;
-    private static final float MIN_WAVE_DELAY = 30f;
+    private static final float MIN_WAVE_DELAY = 25f;
     private static final float WAVE_DELAY_DECREASE = 0.5f;
     private static final float ANNOUNCEMENT_DURATION = 2f;
 
@@ -81,7 +81,7 @@ public class WaveManager {
         int coneheadZombies = currentWave / 2;
         int screenDoorZombies = Math.max(0, (currentWave - 4) / 2); // Introduce after wave 4
 
-        newWaveSound.play();
+        newWaveSound.play(0.5f);
 
         // Add basic zombies
         for (int i = 0; i < baseZombies; i++) {

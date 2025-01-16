@@ -15,26 +15,50 @@ public class BasicZombie extends Zombie {
     static int FRAMES_DEATH = 9;
     static float FRAME_DURATION = 0.7f;
 
-    public BasicZombie(DayWorld theWorld) {
-        super(theWorld, new Texture("zombies/basicZombie/BasicZombieWalk.png"), 190, 100, 1f, 18.8f);
+    static int STAGE_1_HP = 100;
+    static int STAGE_2_HP = 90;
 
-        // Load walk animation
-        TextureAtlas walkAtlas = new TextureAtlas(Gdx.files.internal("zombies/basicZombie/BasicZombieWalk.atlas"));
+    public BasicZombie(DayWorld theWorld) {
+        super(theWorld, new Texture("zombies/basicZombie/basiczombie-idle-1.png"), 190, 100, 1f, 18.8f);
+
+        // Load walk 1 animation
+        TextureAtlas walkAtlas = new TextureAtlas(Gdx.files.internal("zombies/basicZombie/basiczombie-idle-1.atlas"));
         AtlasRegion[] walk = new AtlasRegion[WALK_FRAMES];
         for (int i = 0; i < WALK_FRAMES; i++) {
             walk[i] = walkAtlas.findRegion("tile00" + i);
         }
         Animation<AtlasRegion> walkanim = new Animation<>(FRAME_DURATION, walk);
-        animations.put("walk", walkanim);
+        animations.put("walk1", walkanim);
+
+        // Load walk 2 animation
+        TextureAtlas walkAtlas2 = new TextureAtlas(Gdx.files.internal("zombies/basicZombie/basiczombie-idle-2.atlas"));
+        AtlasRegion[] walk2 = new AtlasRegion[WALK_FRAMES];
+        for (int i = 0; i < WALK_FRAMES; i++) {
+            walk2[i] = walkAtlas2.findRegion("tile00" + i);
+        }
+        Animation<AtlasRegion> walkanim2 = new Animation<>(FRAME_DURATION, walk2);
+        animations.put("walk2", walkanim2);
 
         // Load attack animation
-        TextureAtlas attackAtlas = new TextureAtlas(Gdx.files.internal("zombies/basicZombie/BasicZombieAttack.atlas"));
-        AtlasRegion[] attack = new AtlasRegion[ATTACK_FRAMES];
+        TextureAtlas attackAtlas1 = new TextureAtlas(Gdx.files.internal("zombies/basicZombie/basiczombie-attack-1.atlas"));
+        AtlasRegion[] attack1 = new AtlasRegion[ATTACK_FRAMES];
         for (int i = 0; i < ATTACK_FRAMES; i++) {
-            attack[i] = attackAtlas.findRegion("tile00" + i);
+            attack1[i] = attackAtlas1.findRegion("tile00" + i);
         }
-        Animation<AtlasRegion> attackanim = new Animation<>(FRAME_DURATION, attack);
-        animations.put("attack", attackanim);
+        Animation<AtlasRegion> attackanim1 = new Animation<>(FRAME_DURATION, attack1);
+        animations.put("attack1", attackanim1);
+
+        // Load attack animation
+        TextureAtlas attackAtlas2 = new TextureAtlas(Gdx.files.internal("zombies/basicZombie/basiczombie-attack-2.atlas"));
+        AtlasRegion[] attack2 = new AtlasRegion[ATTACK_FRAMES];
+        for (int i = 0; i < ATTACK_FRAMES; i++) {
+            attack2[i] = attackAtlas2.findRegion("tile00" + i);
+        }
+        Animation<AtlasRegion> attackanim2 = new Animation<>(FRAME_DURATION, attack2);
+        animations.put("attack2", attackanim2);
+
+
+
 
         // Fix death animation with proper size and timing
         TextureAtlas deathAtlas = new TextureAtlas(Gdx.files.internal("zombies/zombie-death.atlas"));
@@ -56,10 +80,24 @@ public class BasicZombie extends Zombie {
         currentAnimation = "walk";
     }
 
+    private void updateAnimation() {
+        if (currentAnimation.equals("death")) {
+            return;
+        }
+
+        String baseAnim = isAttacking ? "attack" : "walk";
+        if (hp > STAGE_1_HP) {
+            currentAnimation = baseAnim + "1";
+        } else {
+            currentAnimation = baseAnim + "2";
+        }   
+    }
+
     @Override
     public void attack(Plant plant) {
         if (plant != null) {
             currentAnimation = "attack";
+            updateAnimation();
             super.attack(plant);
         }
     }
@@ -67,6 +105,7 @@ public class BasicZombie extends Zombie {
     @Override
     public void move(float delta) {
         currentAnimation = "walk";
+        updateAnimation();
         super.move(delta);
     }
 }

@@ -75,6 +75,9 @@ public abstract class Zombie implements Collidable {
     private float squashTimer = 0;
     private float flashTimer = 0;
 
+    public static final float GRASS_STEP_DELAY = 2.0f;
+    private float grassStepTimer = 0;
+
     private boolean isDying = false;
     private float deathTimer = 0f;
     private static final float DEATH_SOUND_DURATION = 1.5f;
@@ -89,6 +92,8 @@ public abstract class Zombie implements Collidable {
     private static final float DEATH_ANIMATION_DURATION = 1.8f; // 9 frames * 0.2s per frame
 
     protected boolean isAttacking;
+
+    private final Sound grassStepSound = Gdx.audio.newSound(Gdx.files.internal("sounds/grassStep.ogg"));
 
 
     public Zombie(DayWorld theWorld, Texture zombieTexture, int hp, int damage, float atkDelay, float moveSpeed) {
@@ -123,6 +128,8 @@ public abstract class Zombie implements Collidable {
                 Gdx.audio.newSound(Gdx.files.internal("sounds/zombieDeath1.ogg")),
                 Gdx.audio.newSound(Gdx.files.internal("sounds/zombieDeath2.ogg"))
         };
+
+        
 
         world = theWorld;
 
@@ -231,6 +238,12 @@ public abstract class Zombie implements Collidable {
             if (groanTimer >= GROAN_INTERVAL) {
                 playGroanSound();
                 groanTimer = 0f;
+            }
+
+            grassStepTimer += delta;
+            if(grassStepTimer > GRASS_STEP_DELAY) {
+                grassStepSound.play(0.1f);
+                grassStepTimer = 0f;
             }
         }
 
