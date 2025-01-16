@@ -13,10 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ConeheadZombie extends Zombie {
-    private Map<String, Animation<AtlasRegion>> animations = new HashMap<>();
-    private String currentAnimation;
-    private boolean isAttacking;
-    private int hp;
     static int WALK_FRAMES = 7;
     static int ATTACK_FRAMES = 7;
     static int FRAMES_DEATH = 9;
@@ -42,7 +38,9 @@ public class ConeheadZombie extends Zombie {
         // Initialize hp
         this.hp = TOTAL_HP;
 
-        
+        // Set initial animation state
+        currentAnimation = "walk1";
+        isAttacking = false;
 
         // Load walk animation
         TextureAtlas walkAtlas = new TextureAtlas(Gdx.files.internal("zombies/coneZombie/conehead-idle-1.atlas"));
@@ -163,5 +161,11 @@ public class ConeheadZombie extends Zombie {
                 (oldHp > STAGE_1_HP && hp <= STAGE_1_HP)) {
             updateAnimation();
         }
+    }
+
+    @Override
+    public void die() {
+        currentAnimation = "death";
+        super.die();
     }
 }
