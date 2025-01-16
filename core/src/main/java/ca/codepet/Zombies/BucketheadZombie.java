@@ -27,7 +27,7 @@ public class BucketheadZombie extends Zombie {
 
         // Adjust scale
         setScaleX(0.95f);
-        setScaleY(0.83f);
+        setScaleY(0.82f);
 
         // Load walk animation 1
         TextureAtlas walkAtlas = new TextureAtlas(

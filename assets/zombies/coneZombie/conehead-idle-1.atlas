@@ -1,54 +1,54 @@
 conehead-idle-1.png
-size: 212, 57
+size: 390, 57
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 tile000
   rotate: false
-  xy: 68, 1
-  size: 29, 54
+  xy: 58, 1
+  size: 54, 54
   orig: 54, 54
-  offset: 12, 0
+  offset: 0, 0
   index: -1
 tile001
   rotate: false
-  xy: 157, 1
-  size: 26, 53
+  xy: 282, 1
+  size: 53, 53
   orig: 53, 53
-  offset: 13, 0
+  offset: 0, 0
   index: -1
 tile002
   rotate: false
-  xy: 185, 1
-  size: 26, 52
+  xy: 337, 1
+  size: 52, 52
   orig: 52, 52
-  offset: 13, 0
+  offset: 0, 0
   index: -1
 tile003
   rotate: false
-  xy: 99, 1
-  size: 28, 54
+  xy: 114, 1
+  size: 54, 54
   orig: 54, 54
-  offset: 13, 0
+  offset: 0, 0
   index: -1
 tile004
   rotate: false
-  xy: 129, 1
-  size: 26, 54
+  xy: 170, 1
+  size: 54, 54
   orig: 54, 54
-  offset: 14, 0
+  offset: 0, 0
   index: -1
 tile005
   rotate: false
   xy: 1, 1
-  size: 32, 55
+  size: 55, 55
   orig: 55, 55
-  offset: 11, 0
+  offset: 0, 0
   index: -1
 tile006
   rotate: false
-  xy: 35, 1
-  size: 31, 54
+  xy: 226, 1
+  size: 54, 54
   orig: 54, 54
-  offset: 11, 0
+  offset: 0, 0
   index: -1

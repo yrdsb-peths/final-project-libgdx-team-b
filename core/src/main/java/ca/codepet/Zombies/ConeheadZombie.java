@@ -27,8 +27,8 @@ public class ConeheadZombie extends Zombie {
         super(theWorld, new Texture("zombies/coneZombie/ConeheadZombie.png"), TOTAL_HP, 50, 2.0f);
 
         // Adjust scale
-        setScaleX(0.55f);
-        setScaleY(0.88f);
+        setScaleX(1f);
+        setScaleY(0.9f);
         
 
         // Load walk animation
