@@ -63,6 +63,11 @@ public abstract class Zombie implements Collidable {
     private boolean isDying = false;
     private boolean isDead = false;
 
+    private static final float DEATH_SCALE_X = 4.0f;
+    private static final float DEATH_SCALE_Y = 4.0f;
+    private float currentScaleX = 1.0f;
+    private float currentScaleY = 1.0f;
+
     public Zombie(DayWorld theWorld, Texture zombieTexture, int hp, int damage, float atkDelay) {
         this.hp = hp;
         this.damage = damage;
@@ -104,10 +109,16 @@ public abstract class Zombie implements Collidable {
     public TextureRegion getTextureRegion() {
         Animation<AtlasRegion> currentAnim = animations.get(currentAnimation);
         if (currentAnim != null) {
-            boolean looping = !currentAnimation.equals("death");  // Don't loop death animation
-            return currentAnim.getKeyFrame(stateTime, looping);
+            if (currentAnimation.equals("death")) {
+                currentScaleX = DEATH_SCALE_X;
+                currentScaleY = DEATH_SCALE_Y;
+                return currentAnim.getKeyFrame(stateTime, false);
+            }
+            currentScaleX = 1.0f;
+            currentScaleY = 1.0f;
+            return currentAnim.getKeyFrame(stateTime, true);
         }
-        return textureRegion; // Fallback to static texture if no animation
+        return textureRegion;
     }
 
     public int getWidth() {
@@ -123,7 +134,7 @@ public abstract class Zombie implements Collidable {
     }
 
     public void move() {
-        if (!isDying) {  // Only move if not dying
+        if (!isDying && !isSquashed) {  // Don't move while dying or squashed
             x -= 0.5;
             int newCol = (int) (x / world.getLawnTileWidth()) - 1;
             col = Math.min(Math.max(newCol, 0), 8);
@@ -140,16 +151,10 @@ public abstract class Zombie implements Collidable {
 
         if (isDying) {
             Animation<AtlasRegion> deathAnim = animations.get("death");
-            if (deathAnim != null) {
-                System.out.println("Death animation frame: " + deathAnim.getKeyFrameIndex(stateTime) + 
-                                 " Time: " + stateTime + 
-                                 " Is finished: " + deathAnim.isAnimationFinished(stateTime));
-                
-                if (deathAnim.isAnimationFinished(stateTime)) {
-                    isDead = true;
-                    world.removeZombie(this);
-                    return;
-                }
+            if (deathAnim != null && stateTime >= deathAnim.getAnimationDuration()) {
+                isDead = true;
+                world.removeZombie(this);
+                return;
             }
         } else if (isSquashed) {
             squashTimer += delta;
@@ -171,11 +176,15 @@ public abstract class Zombie implements Collidable {
     }
 
     public boolean canAttack() {
-        return !isDying && attackTimer >= atkDelay;  // Don't attack while dying
+        if (attackTimer >= atkDelay) {
+            attackTimer = 0;
+            return true;
+        }
+        return false;
     }
 
     public void attack(Plant plant) {
-        if (plant != null) {
+        if (!isDying && plant != null) {  // Don't attack while dying
             plant.damage(damage);
             playChompSound();
         }
@@ -191,12 +200,13 @@ public abstract class Zombie implements Collidable {
     } 
 
     public void damage(int dmg) {
-        hp -= dmg;
-        if (hp <= 0 && !isDying) {
-            isDying = true;
-            currentAnimation = "death";
-            stateTime = 0;
-            // Don't remove zombie here anymore, let animation complete first
+        if (!isDying) {  // Only take damage if not already dying
+            hp -= dmg;
+            if (hp <= 0) {
+                isDying = true;
+                currentAnimation = "death";
+                stateTime = 0;
+            }
         }
     }
 
@@ -257,6 +267,14 @@ public abstract class Zombie implements Collidable {
 
     public Rectangle getBounds() {
         return new Rectangle(x + xOffset, y, width/2, height); // Adjust collision box
+    }
+
+    public float getCurrentScaleX() {
+        return currentScaleX;
+    }
+
+    public float getCurrentScaleY() {
+        return currentScaleY;
     }
 
 }

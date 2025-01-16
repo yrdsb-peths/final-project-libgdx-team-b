@@ -45,7 +45,7 @@ public class BasicZombie extends Zombie {
         for (int i = 1; i <= DEATH_FRAMES; i++) {
             death[i-1] = deathAtlas.findRegion("138563-" + i);
         }
-        Animation<AtlasRegion> deathanim = new Animation<>(0.5f, death); // Increased frame duration to 0.5s
+        Animation<AtlasRegion> deathanim = new Animation<>(0.15f, death); // Faster animation
         animations.put("death", deathanim);
         
         currentAnimation = "walk";
@@ -53,7 +53,7 @@ public class BasicZombie extends Zombie {
 
     @Override
     public void attack(Plant plant) {
-        if (plant != null) {
+        if (!isDying() && plant != null) {  // Only change animation if not dying
             currentAnimation = "attack";
             super.attack(plant);
         }
@@ -61,7 +61,9 @@ public class BasicZombie extends Zombie {
 
     @Override
     public void move() {
-        currentAnimation = "walk";
-        super.move();
+        if (!isDying()) {  // Only change animation if not dying
+            currentAnimation = "walk";
+            super.move();
+        }
     }
 }

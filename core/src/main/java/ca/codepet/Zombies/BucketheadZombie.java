@@ -41,23 +41,25 @@ public class BucketheadZombie extends Zombie {
         for (int i = 1; i <= DEATH_FRAMES; i++) {
             death[i-1] = deathAtlas.findRegion("138563-" + i);
         }
-        Animation<AtlasRegion> deathanim = new Animation<>(0.2f, death);
+        Animation<AtlasRegion> deathanim = new Animation<>(0.15f, death); // Faster animation
         animations.put("death", deathanim);
         
         currentAnimation = "walk";
     }
 
     @Override
-    public void attack(Plant plant) {
-        if (plant != null) {
-            currentAnimation = "attack";
-            super.attack(plant);
+    public void move() {
+        if (!isDying()) {  // Only change animation if not dying
+            currentAnimation = "walk";
+            super.move();
         }
     }
 
     @Override
-    public void move() {
-        currentAnimation = "walk";
-        super.move();
+    public void attack(Plant plant) {
+        if (!isDying() && plant != null) {  // Only change animation if not dying
+            currentAnimation = "attack";
+            super.attack(plant);
+        }
     }
 }
