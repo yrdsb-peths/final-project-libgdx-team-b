@@ -80,7 +80,7 @@ public class WaveManager {
         int bucketheadZombies = currentWave / 3;
         int coneheadZombies = currentWave / 2; // Add coneheads
 
-        newWaveSound.play();
+        newWaveSound.play(0.5f);
 
         // Add basic zombies
         for (int i = 0; i < baseZombies; i++) {
