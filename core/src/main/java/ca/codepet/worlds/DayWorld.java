@@ -21,6 +21,7 @@ import ca.codepet.Plants.Projectile;
 import ca.codepet.Plants.Repeater;
 import ca.codepet.Plants.ShooterPlant;
 import ca.codepet.Plants.SnowPea;
+import ca.codepet.Plants.Spikeweed;
 import ca.codepet.Plants.Squash;
 import ca.codepet.Plants.Sunflower;
 import ca.codepet.Plants.TallNut;
@@ -242,6 +243,9 @@ public class DayWorld implements Screen {
                         draggedPlant = new SnowPea(this, mouseX, mouseY);
                         ghostPlant = new SnowPea(this, 0, 0);
                         break;
+                    case "Spikeweed":
+                        draggedPlant = new Spikeweed(this, mouseX, mouseY);
+                        ghostPlant = new Spikeweed(this, 0, 0);
                     case "Squash":
                         draggedPlant = new Squash(this, mouseX, mouseY);
                         ghostPlant = new Squash(this, 0, 0);
@@ -480,33 +484,45 @@ public class DayWorld implements Screen {
                 // Add bounds checking before accessing plants array
                 int row = zombie.getRow();
                 int col = zombie.getCol();
-                if (row >= 0 && row < LAWN_HEIGHT && col >= 0 && col < LAWN_WIDTH) {
-                    Plant plant = plants[row][col];
-                    if (plant != null) {
-                        // Check if it's a potato mine and handle explosion
-                        if (plant instanceof PotatoMine) {
-                            PotatoMine mine = (PotatoMine) plant;
-                            if (mine.isArmed() && !mine.hasExploded()) {
-                                mine.explode();
-                                zombie.damage(mine.getExplosionDamage());
-                                continue;
+                int attackCol = zombie.getAttackCol();
+                boolean doAttack = false;
+                if (row >= 0 && row < LAWN_HEIGHT) {
+                    if (col >= 0 && col < LAWN_WIDTH) {
+                        Plant plant = plants[row][col];
+                        if (plant != null) {
+                            if (plant instanceof Spikeweed) { // Handle Spikeweed
+                                Spikeweed spikeweed = (Spikeweed) plant;
+                                spikeweed.attack(zombie);
                             }
                         }
-
-                        if (zombie.canAttack()) {
-                            zombie.attack(plant);
-                            if (plant.isDead()) {
-                                plantDeathSounds[rand.nextInt(plantDeathSounds.length)].play(0.7f);
-                                plant.dispose();
-                                plants[row][col] = null;
-                            }
-                        }
-                    } else {
-                        zombie.move(delta);
                     }
-                } else {
-                    zombie.move(delta);
+                    
+                    if (attackCol >= 0 && attackCol < LAWN_WIDTH) {
+                        Plant plant = plants[row][attackCol];
+                        if (plant != null) {
+                            if (plant instanceof PotatoMine) { // Handle explosion
+                                PotatoMine mine = (PotatoMine) plant;
+                                if (mine.isArmed() && !mine.hasExploded()) {
+                                    mine.explode();
+                                    zombie.damage(mine.getExplosionDamage());
+                                } else
+                                    doAttack = true;
+                            } else if (!(plant instanceof Spikeweed)) // Handle Spikeweed
+                                doAttack = true;
+                            
+                            if (doAttack && zombie.canAttack()) {
+                                zombie.attack(plant);
+                                if (plant.isDead()) {
+                                    plantDeathSounds[rand.nextInt(plantDeathSounds.length)].play(0.7f);
+                                    plant.dispose();
+                                    plants[row][attackCol] = null;
+                                }
+                            }
+                        }
+                    }
                 }
+                if (!doAttack)
+                    zombie.move(delta);
             }
         }
 

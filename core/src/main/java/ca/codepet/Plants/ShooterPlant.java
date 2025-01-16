@@ -13,6 +13,7 @@ public abstract class ShooterPlant extends Plant {
     protected int range = 800; // Shooting range in pixels
     protected float attackTimer = 0;
     protected float attackCooldown = 1.5f;
+    protected boolean isAttacking = false;
     protected int currentRow;
 
     private final Sound[] shootSounds = {
@@ -56,6 +57,16 @@ public abstract class ShooterPlant extends Plant {
         for (Projectile proj : projectiles) {
             proj.render(batch);
         }
+    }
+
+    public void startAttack() {
+        isAttacking = true;
+        setAnimationUnique("attack");
+    }
+
+    public void stopAttack() {
+        isAttacking = false;
+        setAnimationUnique("idle");
     }
 
     public void tryAttack(Array<Zombie> zombies, int row) {

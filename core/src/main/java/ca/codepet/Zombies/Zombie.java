@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.ObjectMap;
 
@@ -39,12 +40,15 @@ public abstract class Zombie implements Collidable {
     private static final float INITIAL_GROAN_DELAY = 0.5f;
 
     private int row;
-    private int col = 8;
+    private int attackCol = 8;
+    private int col = 9;
 
     private int damage = 30;
 
     private float atkDelay; // 1 second between attacks
     private float attackTimer = 0.0f;
+
+    private float moveSpeed = 15f;
 
     private float width = 135;
     private float height = 160;
@@ -88,10 +92,11 @@ public abstract class Zombie implements Collidable {
     protected boolean isAttacking;
 
 
-    public Zombie(DayWorld theWorld, Texture zombieTexture, int hp, int damage, float atkDelay) {
+    public Zombie(DayWorld theWorld, Texture zombieTexture, int hp, int damage, float atkDelay, float moveSpeed) {
         this.hp = hp;
         this.damage = damage;
         this.atkDelay = atkDelay;
+        this.moveSpeed = moveSpeed;
 
         this.zombieTexture = zombieTexture;
 
@@ -138,6 +143,10 @@ public abstract class Zombie implements Collidable {
         return isDying;
     }
 
+    public void setSpeed(float speed) {
+         moveSpeed = speed;
+    }
+
     public TextureRegion getTextureRegion() {
         Animation<AtlasRegion> currentAnim = animations.get(currentAnimation);
         if (currentAnim != null) {
@@ -175,13 +184,15 @@ public abstract class Zombie implements Collidable {
     }
 
     public void move(float delta) {
-        float speed = MOVE_SPEED * delta;
+        float speed = moveSpeed * delta;
         if (slowTimer > 0.0f)
             speed /= 2f;
         x -= speed; // Slower movement speed
         // Add bounds checking for column calculation
-        int newCol = (int) (x / world.getLawnTileWidth()) - 1;
-        col = Math.min(Math.max(newCol, 0), 8); // Clamp between 0 and 8
+        int newAttackCol = (int) (x / world.getLawnTileWidth() - 1);
+        int newCol = (int) ((x / world.getLawnTileWidth()) - 0.5);
+        attackCol = MathUtils.clamp(newAttackCol, -1, 8); // Clamp between -1 and 8
+        col = MathUtils.clamp(newCol, -1, 8); // Clamp between -1 and 8
 
     }
 
@@ -313,6 +324,10 @@ public abstract class Zombie implements Collidable {
 
     public int getCol() {
         return col;
+    }
+
+    public int getAttackCol() {
+        return attackCol;
     }
 
     public int getXOffset() {

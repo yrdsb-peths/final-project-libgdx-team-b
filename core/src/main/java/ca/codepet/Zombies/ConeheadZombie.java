@@ -8,15 +8,22 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
 import ca.codepet.Plants.Plant;
 import ca.codepet.worlds.DayWorld;
+import ca.codepet.Zombies.Zombie;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ConeheadZombie extends Zombie {
+    private Map<String, Animation<AtlasRegion>> animations = new HashMap<>();
+    private String currentAnimation;
+    private boolean isAttacking;
+    private int hp;
     static int WALK_FRAMES = 7;
     static int ATTACK_FRAMES = 7;
     static int FRAMES_DEATH = 9;
 
-    static int STAGE_1_HP = 300;
-    static int STAGE_2_HP = 300;
-    static int STAGE_3_HP = 300;
+    static int STAGE_1_HP = 190;
+    static int STAGE_2_HP = 190;
+    static int STAGE_3_HP = 200;
 
     static int TOTAL_HP = STAGE_1_HP + STAGE_2_HP + STAGE_3_HP;
 
@@ -24,11 +31,17 @@ public class ConeheadZombie extends Zombie {
     
 
     public ConeheadZombie(DayWorld theWorld) {
-        super(theWorld, new Texture("zombies/coneZombie/ConeheadZombie.png"), TOTAL_HP, 50, 2.0f);
+        super(theWorld, new Texture("zombies/coneZombie/ConeheadZombie.png"), TOTAL_HP, 50, 2.0f, 15f);
 
         // Adjust scale
+
         setScaleX(1f);
         setScaleY(0.9f);
+
+
+        // Initialize hp
+        this.hp = TOTAL_HP;
+
         
 
         // Load walk animation

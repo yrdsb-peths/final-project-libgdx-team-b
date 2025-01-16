@@ -27,9 +27,6 @@ public abstract class Plant {
     protected Sound[] hitSounds;
     protected Sound[] deathSounds;
     protected Random rand = new Random();
-    protected float attackCooldown = 0;
-    protected float attackTimer = 0;
-    protected boolean isAttacking = false;
 
     public Plant(DayWorld world, float x, float y, int health) {
         this.world = world;
@@ -122,27 +119,5 @@ public abstract class Plant {
 
     public void update(float delta) {
         flash = Math.max(0f, flash - delta);
-    }
-
-    public void startAttack() {
-        isAttacking = true;
-        setAnimationUnique("attack");
-    }
-
-    public void stopAttack() {
-        isAttacking = false;
-        setAnimationUnique("idle");
-    }
-
-    public boolean isAttacking() {
-        return isAttacking;
-    }
-
-    public boolean canAttack() {
-        return attackTimer >= attackCooldown;
-    }
-
-    public void resetAttackTimer() {
-        attackTimer = 0;
     }
 }
