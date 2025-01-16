@@ -48,7 +48,7 @@ public class WaveManager {
     }
 
     private void createWaveZombies() {
-        int baseZombies = 3 + (currentWave / 2);
+        int baseZombies = 2 + (currentWave / 2);
         int bucketheadZombies = currentWave / 3;
         int coneheadZombies = currentWave / 2; // Add coneheads
 
