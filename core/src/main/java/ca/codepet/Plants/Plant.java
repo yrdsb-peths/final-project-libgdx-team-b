@@ -28,10 +28,11 @@ public abstract class Plant {
     protected Sound[] deathSounds;
     protected Random rand = new Random();
 
-    public Plant(DayWorld world, float x, float y) {
+    public Plant(DayWorld world, float x, float y, int health) {
         this.world = world;
         this.x = x;
         this.y = y;
+        this.health = health;
     }
 
     protected void setAnimation(String spr) {

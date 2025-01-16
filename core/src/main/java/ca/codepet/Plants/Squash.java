@@ -16,7 +16,9 @@ import ca.codepet.worlds.DayWorld;
 public class Squash extends Plant {
     static int IDLE_FRAMES = 4;
     static int ATTACK_FRAMES = 4;
-    static int DEFAULT_HEALTH = 10000; // instant use plant, unkillable
+
+    static int DEFAULT_HEALTH = 100000;
+
     static float DEFAULT_ATTACK_COOLDOWN = 0f; // Only attacks once
     static int SQUASH_DAMAGE = 1800;
     static float JUMP_HEIGHT = 80f; // Add constant for consistent jump height
@@ -50,7 +52,7 @@ public class Squash extends Plant {
     };
 
     public Squash(DayWorld world, float x, float y) {
-        super(world, x, y);
+        super(world, x, y, DEFAULT_HEALTH);
         originalY = y;
         setScale(2.5f);
 

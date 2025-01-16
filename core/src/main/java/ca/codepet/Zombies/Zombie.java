@@ -57,6 +57,8 @@ public abstract class Zombie implements Collidable {
 
     protected int deathWidth = 51; // Default death animation width
     protected int deathHeight = 40; // Default death animation height
+    protected int deathXOffset = -80;  // Add death animation offset
+    protected int deathYOffset = -60;  // Add death animation offset
 
     DayWorld world;
 
@@ -79,6 +81,10 @@ public abstract class Zombie implements Collidable {
     private static final float DEATH_SOUND_DURATION = 1.5f;
 
     private boolean isDeathSoundPlaying = false;
+
+
+    private static final float MOVE_SPEED = 15f; 
+
 
     private boolean isDeathAnimationComplete = false;
     private static final float DEATH_ANIMATION_DURATION = 1.8f; // 9 frames * 0.2s per frame
@@ -325,10 +331,16 @@ public abstract class Zombie implements Collidable {
     }
 
     public int getXOffset() {
+        if (isDying) {
+            return deathXOffset;
+        }
         return xOffset;
     }
 
     public int getYOffset() {
+        if (isDying) {
+            return deathYOffset;
+        }
         return yOffset;
     }
 
