@@ -26,7 +26,7 @@ public class ConeheadZombie extends Zombie {
 
         // Adjust scale
         setScaleX(1f);
-        setScaleY(1f);
+        setScaleY(0.9f);
         
 
         // Load walk animation
