@@ -53,6 +53,8 @@ public abstract class Zombie implements Collidable {
 
     protected int deathWidth = 51; // Default death animation width
     protected int deathHeight = 40; // Default death animation height
+    protected int deathXOffset = -80;  // Add death animation offset
+    protected int deathYOffset = -60;  // Add death animation offset
 
     DayWorld world;
 
@@ -314,10 +316,16 @@ public abstract class Zombie implements Collidable {
     }
 
     public int getXOffset() {
+        if (isDying) {
+            return deathXOffset;
+        }
         return xOffset;
     }
 
     public int getYOffset() {
+        if (isDying) {
+            return deathYOffset;
+        }
         return yOffset;
     }
 
