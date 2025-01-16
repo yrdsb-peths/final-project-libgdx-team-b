@@ -455,7 +455,7 @@ public class DayWorld implements Screen {
 
             // Render zombie
             if (zombie.getSlowTimer() > 0f)
-                batch.setColor(0f, 0f, 1f, 1f);
+                batch.setColor(0.6f, 0.6f, 1f, 1f);
             batch.draw(zombie.getTextureRegion(),
                     zombie.getX() + zombie.getXOffset(),
                     (LAWN_HEIGHT - zombie.getRow()) * LAWN_TILEHEIGHT - (zombie.getHeight() - LAWN_TILEHEIGHT) / 2
