@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
 import ca.codepet.Zombies.Zombie;
+import ca.codepet.worlds.DayWorld;
 
 public abstract class ShooterPlant extends Plant {
     protected Array<Projectile> projectiles = new Array<>();
@@ -19,12 +20,13 @@ public abstract class ShooterPlant extends Plant {
             Gdx.audio.newSound(Gdx.files.internal("sounds/shootSound2.mp3"))
     };
 
-    public ShooterPlant(float x, float y) {
-        super(x, y);
+    public ShooterPlant(DayWorld world, float x, float y) {
+        super(world, x, y);
     }
 
     @Override
     public void update(float delta) {
+        super.update(delta);
         imageIndex += delta;
         attackTimer += delta;
 

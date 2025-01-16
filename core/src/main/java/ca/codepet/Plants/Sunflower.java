@@ -14,9 +14,8 @@ public class Sunflower extends Plant {
     private static final float SUN_PRODUCTION_INTERVAL = 10.0f; // Produces sun every 24 seconds
     private DayWorld world;
 
-    public Sunflower(float x, float y, DayWorld world) {
-        super(x, y);
-        this.world = world;
+    public Sunflower(DayWorld world, float x, float y) {
+        super(world, x, y);
         this.scale = 1.1f; // Make sunflower 50% bigger
         TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("plants/Sunflower.atlas"));
         AtlasRegion[] idle = new AtlasRegion[IDLE_FRAMES];
@@ -39,10 +38,11 @@ public class Sunflower extends Plant {
     }
 
     @Override
-    public void update(float deltaTime) {
-        imageIndex += deltaTime;
+    public void update(float delta) {
+        super.update(delta);
+        imageIndex += delta;
 
-        sunProductionTimer += deltaTime;
+        sunProductionTimer += delta;
 
         if (sunProductionTimer >= SUN_PRODUCTION_INTERVAL) {
             produceSun();

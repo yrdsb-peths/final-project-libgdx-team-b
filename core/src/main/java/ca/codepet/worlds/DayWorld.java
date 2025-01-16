@@ -7,7 +7,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 
@@ -99,28 +98,6 @@ public class DayWorld implements Screen {
 
     private float gameOverScale = 0f;
     private Texture gameOverTexture;
-
-    private String flashVertex = "attribute vec4 a_position;\n" +
-            "attribute vec4 a_color;\n" +
-            "attribute vec2 a_texCoord0;\n" +
-            "uniform mat4 u_projTrans;\n" +
-            "varying vec4 v_color;\n" +
-            "varying vec2 v_texCoords;\n" +
-            "void main() {\n" +
-            "v_color = a_color;\n" +
-            "v_texCoords = a_texCoord0;\n" +
-            "gl_Position =  u_projTrans * a_position;\n" +
-            "}";
-    private String flashFragment = "#ifdef GL_ES\n" +
-            "precision mediump float;\n" +
-            "#endif\n" +
-            "varying vec4 v_color;\n" +
-            "varying vec2 v_texCoords;\n" +
-            "uniform sampler2D u_texture;\n" +
-            "void main() {\n" +
-            "gl_FragColor = vec4(1., 1., 1., texture2D(u_texture, v_texCoords).a * v_color.a);\n" +
-            "}";
-    private final ShaderProgram flashShader = new ShaderProgram(flashVertex, flashFragment);
 
     public DayWorld(GameRoot game) {
         this.game = game;
@@ -234,32 +211,32 @@ public class DayWorld implements Screen {
                 // Create actual plant and ghost plant
                 switch (draggedCard.getPlantType()) {
                     case "Peashooter":
-                        draggedPlant = new Peashooter(mouseX, mouseY);
-                        ghostPlant = new Peashooter(0, 0);
+                        draggedPlant = new Peashooter(this, mouseX, mouseY);
+                        ghostPlant = new Peashooter(this, 0, 0);
                         break;
                     case "Sunflower":
-                        draggedPlant = new Sunflower(mouseX, mouseY, this);
-                        ghostPlant = new Sunflower(0, 0, this);
+                        draggedPlant = new Sunflower(this, mouseX, mouseY);
+                        ghostPlant = new Sunflower(this, 0, 0);
                         break;
                     case "PotatoMine":
-                        draggedPlant = new PotatoMine(mouseX, mouseY);
-                        ghostPlant = new PotatoMine(0, 0);
+                        draggedPlant = new PotatoMine(this, mouseX, mouseY);
+                        ghostPlant = new PotatoMine(this, 0, 0);
                         break;
                     case "Walnut":
-                        draggedPlant = new Walnut(mouseX, mouseY);
-                        ghostPlant = new Walnut(0, 0);
+                        draggedPlant = new Walnut(this, mouseX, mouseY);
+                        ghostPlant = new Walnut(this, 0, 0);
                         break;
                     case "TallNut":
-                        draggedPlant = new TallNut(mouseX, mouseY);
-                        ghostPlant = new TallNut(0, 0);
+                        draggedPlant = new TallNut(this, mouseX, mouseY);
+                        ghostPlant = new TallNut(this, 0, 0);
                         break;
                     case "Repeater":
-                        draggedPlant = new Repeater(mouseX, mouseY);
-                        ghostPlant = new Repeater(0, 0);
+                        draggedPlant = new Repeater(this, mouseX, mouseY);
+                        ghostPlant = new Repeater(this, 0, 0);
                         break;
                     case "SnowPea":
-                        draggedPlant = new SnowPea(mouseX, mouseY);
-                        ghostPlant = new SnowPea(0, 0);
+                        draggedPlant = new SnowPea(this, mouseX, mouseY);
+                        ghostPlant = new SnowPea(this, 0, 0);
                         break;
                 }
             } else {
@@ -443,7 +420,7 @@ public class DayWorld implements Screen {
                     1,
                     zombie.getScaleY(),
                     zombie.getRotation());
-            batch.setShader(flashShader);
+            batch.setShader(game.getFlashShader());
             batch.setColor(1f, 1f, 1f, zombie.getFlashTimer() / 0.2f);
             batch.draw(zombie.getTextureRegion(),
                     zombie.getX() + zombie.getXOffset(),
@@ -681,6 +658,10 @@ public class DayWorld implements Screen {
 
     public int getLawnTileWidth() {
         return LAWN_TILEWIDTH;
+    }
+
+    public GameRoot getGame() {
+        return game;
     }
 
     @Override

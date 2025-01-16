@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
+import ca.codepet.worlds.DayWorld;
+
 public class Repeater extends ShooterPlant {
     static int IDLE_FRAMES = 5;
     static int ATTACK_FRAMES = 2;
@@ -18,8 +20,8 @@ public class Repeater extends ShooterPlant {
     private float secondShotDelay = 0.1f; // Reduced delay between shots
     private float secondShotTimer = 0;
 
-    public Repeater(float x, float y) {
-        super(x, y);
+    public Repeater(DayWorld world, float x, float y) {
+        super(world, x, y);
 
         setScale(2.2f);
 
