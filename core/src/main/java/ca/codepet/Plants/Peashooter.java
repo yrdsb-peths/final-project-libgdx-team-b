@@ -54,7 +54,6 @@ public class Peashooter extends ShooterPlant {
         try {
             // Pass the row number to the projectile
             Projectile proj = new Projectile(x + 30, y + 15, DEFAULT_DAMAGE, PROJECTILE_ATLAS, PROJECTILE_SCALE, currentRow);
-            System.out.println("Created peashooter projectile in row: " + currentRow);
             return proj;
         } catch (Exception e) {
             System.out.println("Error creating projectile: " + e.getMessage());
