@@ -20,7 +20,7 @@ public class Spikeweed extends Plant {
     protected boolean isAttacking = false;
     
     public Spikeweed(DayWorld world, float x, float y) {
-        super(world, x, y);
+        super(world, x, y, DEFAULT_HEALTH);
         health = DEFAULT_HEALTH;
         setScale(2f);
 
