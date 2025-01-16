@@ -14,13 +14,13 @@ public class ConeheadZombie extends Zombie {
     static int ATTACK_FRAMES = 7;
     static int FRAMES_DEATH = 9;
 
-    static int STAGE_0_HP = 100;
     static int STAGE_1_HP = 130;
     static int STAGE_2_HP = 130;
     static int STAGE_3_HP = 110;
     static int STAGE_4_HP = 270;
+    static int STAGE_5_HP = 90;
 
-    static int TOTAL_HP = STAGE_1_HP + STAGE_2_HP + STAGE_3_HP + STAGE_4_HP;
+    static int TOTAL_HP = STAGE_1_HP + STAGE_2_HP + STAGE_3_HP + STAGE_4_HP + STAGE_5_HP;
 
     static float FRAME_DURATION = 0.7f;
     
@@ -162,13 +162,13 @@ public class ConeheadZombie extends Zombie {
 
 
         String baseAnim = isAttacking ? "attack" : "walk";
-        if (hp > STAGE_1_HP + STAGE_2_HP + STAGE_3_HP) {
+        if (hp > STAGE_1_HP + STAGE_2_HP + STAGE_3_HP + STAGE_4_HP) {
             currentAnimation = baseAnim + "1";
-        } else if (hp > STAGE_1_HP + STAGE_2_HP) {
+        } else if (hp > STAGE_1_HP + STAGE_2_HP + STAGE_3_HP) {
             currentAnimation = baseAnim + "2";
-        } else if (hp > STAGE_1_HP + STAGE_0_HP) {
+        } else if (hp > STAGE_1_HP + STAGE_2_HP) {
             currentAnimation = baseAnim + "3";
-        } else if (hp >  STAGE_0_HP){
+        } else if (hp > STAGE_1_HP) {
             currentAnimation = baseAnim + "4";
         } else {
             currentAnimation = baseAnim + "5";

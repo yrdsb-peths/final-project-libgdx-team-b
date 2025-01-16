@@ -18,8 +18,9 @@ public class ScreenDoorZombie extends Zombie {
     static int STAGE_2_HP = 360; // Screendoor damaged
     static int STAGE_3_HP = 360; // Screendoor very damaged
     static int STAGE_4_HP = 270; // Basic zombie form
+    static int STAGE_5_HP = 90; // Basic zombie form
 
-    static int TOTAL_HP = STAGE_1_HP + STAGE_2_HP + STAGE_3_HP + STAGE_4_HP;
+    static int TOTAL_HP = STAGE_1_HP + STAGE_2_HP + STAGE_3_HP + STAGE_4_HP + STAGE_5_HP;
 
     static float FRAME_DURATION = 0.7f;
 
@@ -34,13 +35,16 @@ public class ScreenDoorZombie extends Zombie {
         loadWalkAnimation(1, "zombies/screenDoorZombie/screendoor-idle-1.atlas");
         loadWalkAnimation(2, "zombies/screenDoorZombie/screendoor-idle-2.atlas");
         loadWalkAnimation(3, "zombies/screenDoorZombie/screendoor-idle-3.atlas");
-        loadWalkAnimation(4, "zombies/basicZombie/BasicZombieWalk.atlas");
+        loadWalkAnimation(4, "zombies/basicZombie/basiczombie-idle-1.atlas");
+        loadWalkAnimation(5, "zombies/basicZombie/basiczombie-idle-2.atlas");
+
 
         // Load attack animations for each stage
         loadAttackAnimation(1, "zombies/screendoorZombie/screendoor-attack-1.atlas");
         loadAttackAnimation(2, "zombies/screendoorZombie/screendoor-attack-2.atlas");
         loadAttackAnimation(3, "zombies/screendoorZombie/screendoor-attack-3.atlas");
-        loadAttackAnimation(4, "zombies/basicZombie/BasicZombieAttack.atlas");
+        loadAttackAnimation(4, "zombies/basicZombie/basiczombie-attack-1.atlas");
+        loadAttackAnimation(5, "zombies/basicZombie/basiczombie-attack-2.atlas");
 
         // Load death animation
         TextureAtlas deathAtlas = new TextureAtlas(Gdx.files.internal("zombies/zombie-death.atlas"));
@@ -85,14 +89,16 @@ public class ScreenDoorZombie extends Zombie {
         }
 
         String baseAnim = isAttacking ? "attack" : "walk";
-        if (hp > STAGE_1_HP + STAGE_2_HP + STAGE_3_HP) {
+        if (hp > STAGE_1_HP + STAGE_2_HP + STAGE_3_HP + STAGE_4_HP) {
             currentAnimation = baseAnim + "1";
-        } else if (hp > STAGE_1_HP + STAGE_2_HP) {
+        } else if (hp > STAGE_1_HP + STAGE_2_HP + STAGE_3_HP) {
             currentAnimation = baseAnim + "2";
-        } else if (hp > STAGE_1_HP) {
+        } else if (hp > STAGE_1_HP + STAGE_2_HP) {
             currentAnimation = baseAnim + "3";
-        } else {
+        } else if (hp > STAGE_1_HP) {
             currentAnimation = baseAnim + "4";
+        } else {
+            currentAnimation = baseAnim + "5";
         }
     }
 

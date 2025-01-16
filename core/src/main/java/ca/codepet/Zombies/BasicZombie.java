@@ -21,6 +21,10 @@ public class BasicZombie extends Zombie {
     public BasicZombie(DayWorld theWorld) {
         super(theWorld, new Texture("zombies/basicZombie/basiczombie-idle-1.png"), 190, 100, 1f, 18.8f);
 
+        // Adjust scale
+        setScaleX(0.95f);
+        setScaleY(0.82f);
+
         // Load walk 1 animation
         TextureAtlas walkAtlas = new TextureAtlas(Gdx.files.internal("zombies/basicZombie/basiczombie-idle-1.atlas"));
         AtlasRegion[] walk = new AtlasRegion[WALK_FRAMES];
