@@ -17,7 +17,6 @@ public class TallNut extends Plant {
 
     public TallNut(DayWorld world, float x, float y) {
         super(world, x, y, TOTAL_HP);
-        health = DEFAULT_HEALTH;
         setScale(2.3f);
 
         // Load stage 1 animation (full health)

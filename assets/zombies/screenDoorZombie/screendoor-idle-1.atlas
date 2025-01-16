@@ -1,0 +1,54 @@
+screendoor-idle-1.png
+size: 343, 50
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tile000
+  rotate: false
+  xy: 248, 1
+  size: 46, 46
+  orig: 46, 46
+  offset: 0, 0
+  index: -1
+tile001
+  rotate: false
+  xy: 1, 1
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+tile002
+  rotate: false
+  xy: 101, 1
+  size: 47, 47
+  orig: 47, 47
+  offset: 0, 0
+  index: -1
+tile003
+  rotate: false
+  xy: 150, 1
+  size: 47, 47
+  orig: 47, 47
+  offset: 0, 0
+  index: -1
+tile004
+  rotate: false
+  xy: 51, 1
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+tile005
+  rotate: false
+  xy: 199, 1
+  size: 47, 47
+  orig: 47, 47
+  offset: 0, 0
+  index: -1
+tile006
+  rotate: false
+  xy: 296, 1
+  size: 46, 46
+  orig: 46, 46
+  offset: 0, 0
+  index: -1

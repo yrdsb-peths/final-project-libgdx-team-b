@@ -2,6 +2,7 @@ package ca.codepet.Plants;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
@@ -11,6 +12,8 @@ import ca.codepet.worlds.DayWorld;
 public class Sunflower extends Plant {
     static int IDLE_FRAMES = 6;
     private float sunProductionTimer = INITIAL_SUN_PRODUCTION_INTERVAL;
+    private float sunFlashTimer = 0f;
+    private boolean sunFlash = false;
     private static final float INITIAL_SUN_PRODUCTION_INTERVAL = 8f;
     private static final float AFTER_SUN_PRODUCTION_INTERVAL = 24f;
 
@@ -42,7 +45,15 @@ public class Sunflower extends Plant {
         super.update(delta);
         imageIndex += delta;
 
-        sunProductionTimer = Math.max(0, sunProductionTimer - delta);
+        sunProductionTimer = Math.max(0f, sunProductionTimer - delta);
+        sunFlashTimer = Math.max(0f, sunFlashTimer - delta);
+        if (sunFlashTimer <= 0f)
+            sunFlash = false;
+
+        if (sunProductionTimer <= 1f && !sunFlash) {
+            sunFlash = true;
+            sunFlashTimer = 2.5f;
+        }
 
         if (sunProductionTimer <= 0) {
             produceSun();
@@ -63,5 +74,23 @@ public class Sunflower extends Plant {
             Sun sun = new Sun(x + offsetX, y + offsetY);
             getWorld().addSun(sun);
         }
+    }
+
+    @Override
+    public void render(SpriteBatch batch) {
+        super.render(batch);
+        AtlasRegion tex = getTexture();
+        if (tex == null || health <= 0 || sunFlashTimer <= 0)
+            return; // Add this check
+
+        float pX = x + tex.offsetX - (tex.originalWidth * scale) / 2;
+        float pY = y + tex.offsetY - (tex.originalHeight * scale) / 2;
+
+        float oldAlpha = batch.getColor().a;
+        batch.setShader(getWorld().getGame().getFlashShader());
+        batch.setColor(1f, 1f, 1f, 0.25f);
+        batch.draw(tex, pX, pY, tex.originalWidth * scale, tex.originalHeight * scale); // Modified to use scale
+        batch.setShader(null);
+        batch.setColor(batch.getColor().r, batch.getColor().g, batch.getColor().b, oldAlpha);
     }
 }
