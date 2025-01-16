@@ -17,6 +17,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.utils.Array;
 
+
 public class Projectile implements Collidable {
     protected float x, y;
     protected float speed = 300;
@@ -30,12 +31,16 @@ public class Projectile implements Collidable {
     private AtlasRegion flyingFrame;
     private int row;
 
+    public String plantType = "shooter";
+
     private Random rand = new Random();
 
     private final Sound[] hitSounds = {
             Gdx.audio.newSound(Gdx.files.internal("sounds/zombieHit.mp3")),
             Gdx.audio.newSound(Gdx.files.internal("sounds/zombieHit2.mp3"))
     };
+
+    private final Sound snowPeaSound = Gdx.audio.newSound(Gdx.files.internal("sounds/snow_pea_sparkles.ogg"));
 
     public Projectile(float x, float y, int damage, String atlasPath, float scale, int row) {
         this.x = x;
@@ -101,7 +106,11 @@ public class Projectile implements Collidable {
     public void hit(Zombie zombie) {
         if (animations.containsKey("splat")) {
 
-            hitSounds[rand.nextInt(hitSounds.length)].play(0.6f);
+            if(plantType.equals("snowPea")) {
+                snowPeaSound.play(0.6f);
+            } else {
+                hitSounds[rand.nextInt(hitSounds.length)].play(0.6f);
+            }
 
             isHit = true;
             currentAnimation = "splat";
