@@ -1,0 +1,75 @@
+zombie-death.png
+size: 510, 40
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tile000
+  rotate: false
+  xy: 0, 0
+  size: 51, 40
+  orig: 51, 40
+  offset: 0, 0
+  index: -1
+tile001
+  rotate: false
+  xy: 51, 0
+  size: 51, 40
+  orig: 51, 40
+  offset: 0, 0
+  index: -1
+tile002
+  rotate: false
+  xy: 102, 0
+  size: 51, 40
+  orig: 51, 40
+  offset: 0, 0
+  index: -1
+tile003
+  rotate: false
+  xy: 153, 0
+  size: 51, 40
+  orig: 51, 40
+  offset: 0, 0
+  index: -1
+tile004
+  rotate: false
+  xy: 204, 0
+  size: 51, 40
+  orig: 51, 40
+  offset: 0, 0
+  index: -1
+tile005
+  rotate: false
+  xy: 255, 0
+  size: 51, 40
+  orig: 51, 40
+  offset: 0, 0
+  index: -1
+tile006
+  rotate: false
+  xy: 306, 0
+  size: 51, 40
+  orig: 51, 40
+  offset: 0, 0
+  index: -1
+tile007
+  rotate: false
+  xy: 357, 0
+  size: 51, 40
+  orig: 51, 40
+  offset: 0, 0
+  index: -1
+tile008
+  rotate: false
+  xy: 408, 0
+  size: 51, 40
+  orig: 51, 40
+  offset: 0, 0
+  index: -1
+tile009
+  rotate: false
+  xy: 459, 0
+  size: 1, 40
+  orig: 1, 40
+  offset: 0, 0
+  index: -1
