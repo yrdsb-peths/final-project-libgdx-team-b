@@ -24,7 +24,7 @@ import ca.codepet.worlds.DayWorld;
 public abstract class Zombie implements Collidable {
 
     private int hp;
-    private int x = Gdx.graphics.getWidth();
+    private float x = Gdx.graphics.getWidth();
     private int y;
 
     Random rand = new Random();
@@ -66,10 +66,12 @@ public abstract class Zombie implements Collidable {
 
     private boolean isDying = false;
     private float deathTimer = 0f;
-    private static final float DEATH_SOUND_DURATION = 1.5f; // Adjust based on your sound length
+    private static final float DEATH_SOUND_DURATION = 1.5f; 
 
     private boolean isDeathSoundPlaying = false;
     private long deathSoundId;
+
+    private static final float MOVE_SPEED = 30f; 
 
     public Zombie(DayWorld theWorld, Texture zombieTexture, int hp, int damage, float atkDelay) {
         this.hp = hp;
@@ -135,11 +137,11 @@ public abstract class Zombie implements Collidable {
     }
 
     public int getX() {
-        return x;
+        return (int) x;
     }
 
-    public void move() {
-        x -= 0.5; // Slower movement speed
+    public void move(float delta) {
+        x -= MOVE_SPEED * delta;
         // Add bounds checking for column calculation
         int newCol = (int) (x / world.getLawnTileWidth()) - 1;
         col = Math.min(Math.max(newCol, 0), 8); // Clamp between 0 and 8
