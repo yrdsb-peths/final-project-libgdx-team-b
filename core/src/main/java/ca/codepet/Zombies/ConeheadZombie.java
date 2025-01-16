@@ -21,9 +21,9 @@ public class ConeheadZombie extends Zombie {
     static int ATTACK_FRAMES = 7;
     static int FRAMES_DEATH = 9;
 
-    static int STAGE_1_HP = 190;
-    static int STAGE_2_HP = 190;
-    static int STAGE_3_HP = 200;
+    static int STAGE_1_HP = 570;
+    static int STAGE_2_HP = 380;
+    static int STAGE_3_HP = 190;
 
     static int TOTAL_HP = STAGE_1_HP + STAGE_2_HP + STAGE_3_HP;
 
@@ -31,7 +31,7 @@ public class ConeheadZombie extends Zombie {
     
 
     public ConeheadZombie(DayWorld theWorld) {
-        super(theWorld, new Texture("zombies/coneZombie/ConeheadZombie.png"), TOTAL_HP, 50, 2.0f, 15f);
+        super(theWorld, new Texture("zombies/coneZombie/ConeheadZombie.png"), TOTAL_HP, 100, 1f, 4.7f);
 
         // Adjust scale
 

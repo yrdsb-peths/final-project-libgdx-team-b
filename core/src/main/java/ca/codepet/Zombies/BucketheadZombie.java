@@ -14,16 +14,16 @@ public class BucketheadZombie extends Zombie {
     static int ATTACK_FRAMES = 7;
     static int FRAMES_DEATH = 9;
 
-    static int STAGE_1_HP = 550;
-    static int STAGE_2_HP = 550;
-    static int STAGE_3_HP = 200;
+    static int STAGE_1_HP = 1290;
+    static int STAGE_2_HP = 1100;
+    static int STAGE_3_HP = 190;
 
     static int TOTAL_HP = STAGE_1_HP + STAGE_2_HP + STAGE_3_HP;
 
     static float FRAME_DURATION = 0.7f;
 
     public BucketheadZombie(DayWorld theWorld) {
-        super(theWorld, new Texture("zombies/bucketheadZombie/BucketHeadZombie.png"), TOTAL_HP, 50, 2.0f, 15f);
+        super(theWorld, new Texture("zombies/bucketheadZombie/BucketHeadZombie.png"), TOTAL_HP, 100, 1f, 4.7f);
 
         // Adjust scale
         setScaleX(0.95f);

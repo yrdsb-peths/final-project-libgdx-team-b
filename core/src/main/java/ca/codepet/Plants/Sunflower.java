@@ -11,7 +11,7 @@ import ca.codepet.worlds.DayWorld;
 public class Sunflower extends Plant {
     static int IDLE_FRAMES = 6;
     private float sunProductionTimer = 0;
-    private static final float SUN_PRODUCTION_INTERVAL = 10.0f; // Produces sun every 24 seconds
+    private static final float SUN_PRODUCTION_INTERVAL = 24f; // Produces sun every 24 seconds
     private DayWorld world;
 
     public Sunflower(DayWorld world, float x, float y) {
