@@ -1,5 +1,7 @@
 package ca.codepet;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.utils.Array;
 import ca.codepet.Zombies.*;
 import ca.codepet.worlds.DayWorld;
@@ -21,6 +23,8 @@ public class WaveManager {
     private int zombiesSpawned = 0;
     private float announcementTimer;
     private boolean announcing;
+
+    private Sound newWaveSound = Gdx.audio.newSound(Gdx.files.internal("sounds/newWave.mp3"));
 
     public WaveManager(DayWorld world) {
         this.world = world;
@@ -72,6 +76,8 @@ public class WaveManager {
     }
 
     private void createWaveZombies() {
+        newWaveSound.play();
+
         int baseZombies = 3 + currentWave;
         int coneheadZombies = currentWave / 2;
         int bucketheadZombies = (currentWave - 2) / 2; // Start appearing at wave 3
