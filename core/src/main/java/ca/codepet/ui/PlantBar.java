@@ -21,7 +21,7 @@ public class PlantBar {
     private static final float CARD_START_X = 90;
     private static final float CARD_SPACING = 70;
 
-    private int sunDisplay = 0;
+    private int sunBalance = 0;
     private boolean gameStarted = false;
 
     public PlantBar(int sun) {
@@ -37,7 +37,7 @@ public class PlantBar {
         font = generator.generateFont(parameter);
         // dispose generator
 
-        sunDisplay = sun;
+        sunBalance = sun;
         selectedCards = new Array<>();
     }
 
@@ -45,15 +45,14 @@ public class PlantBar {
         gameStarted = true;
         // Update initial affordability when game starts
         for (PlantCard card : selectedCards) {
-            card.setAffordable(sunDisplay >= card.getCost());
+            card.setAffordable(sunBalance >= card.getCost());
         }
     }
 
-    public void setSunDisplay(int sun) {
-        sunDisplay = sun;
+    public void updateSunDisplay() {
         // Update affordability of all cards
         for (PlantCard card : selectedCards) {
-            card.setAffordable(card.getCost() <= sun);
+            card.setAffordable(card.getCost() <= sunBalance);
         }
     }
 
@@ -63,7 +62,7 @@ public class PlantBar {
             float y = Gdx.graphics.getHeight() - 90;
             card.setPosition(x, y);
             card.updateOriginalPosition(x, y);  // Store original position when adding
-            card.setAffordable(sunDisplay >= card.getCost());  // Set initial affordability
+            card.setAffordable(sunBalance >= card.getCost());  // Set initial affordability
             selectedCards.add(card);
             return true;
         }
@@ -82,7 +81,7 @@ public class PlantBar {
     }
 
     public boolean canAffordCard(PlantCard card) {
-        return !gameStarted || sunDisplay >= card.getCost();
+        return !gameStarted || sunBalance >= card.getCost();
     }
     
     public PlantCard checkCardDragStart(float x, float y) {
@@ -113,13 +112,15 @@ public class PlantBar {
         }
     }
 
+    public void addSun(int amount) {
+        sunBalance += amount;
+        updateSunDisplay();
+    }
+
     public boolean deductSun(int amount) {
-        if (sunDisplay >= amount) {
-            sunDisplay -= amount;
-            // Update affordability of all cards after deduction
-            for (PlantCard card : selectedCards) {
-                card.setAffordable(card.getCost() <= sunDisplay);
-            }
+        if (sunBalance >= amount) {
+            sunBalance -= amount;
+            updateSunDisplay();
             return true;
         }
         return false;
@@ -136,7 +137,7 @@ public class PlantBar {
         batch.draw(barTexture, 0, barY, newWidth, newHeight);
 
         // Draw sun count
-        String sunText = String.valueOf(sunDisplay);
+        String sunText = String.valueOf(sunBalance);
         float centerX = 45; // Original x position
         GlyphLayout layout = new GlyphLayout(font, sunText); // To measure the text
         float textWidth = layout.width;
@@ -148,7 +149,7 @@ public class PlantBar {
         for (PlantCard card : selectedCards) {
             card.updateCooldown(Gdx.graphics.getDeltaTime());
             if (gameStarted) {
-                card.setAffordable(sunDisplay >= card.getCost());  // Only check affordability after game starts
+                card.setAffordable(sunBalance >= card.getCost());  // Only check affordability after game starts
             } else {
                 card.setAffordable(true);  // Always affordable during picking phase
             }

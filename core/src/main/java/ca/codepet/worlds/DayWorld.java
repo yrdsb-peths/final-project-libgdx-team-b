@@ -527,8 +527,7 @@ public class DayWorld implements Screen {
                 sunPickupSound.play(0.5f);
 
                 // Add 25 balance
-                sunBalance += 25;
-                plantBar.setSunDisplay(sunBalance);
+                plantBar.addSun(25);
                 // Remove sun from array and dispose
                 suns.removeIndex(i);
                 sun.dispose();
