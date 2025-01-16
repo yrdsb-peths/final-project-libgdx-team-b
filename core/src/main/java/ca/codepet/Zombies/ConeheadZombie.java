@@ -22,6 +22,11 @@ public class ConeheadZombie extends Zombie {
     public ConeheadZombie(DayWorld theWorld) {
         super(theWorld, new Texture("zombies/coneZombie/ConeheadZombie.png"), TOTAL_HP, 50, 2.0f);
 
+        // Adjust scale
+        setScaleX(0.5f);
+        setScaleY(0.8f);
+        
+
         // Load walk animation
         TextureAtlas walkAtlas = new TextureAtlas(Gdx.files.internal("zombies/coneZombie/conehead-idle-1.atlas"));
         AtlasRegion[] walk = new AtlasRegion[WALK_FRAMES];

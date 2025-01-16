@@ -39,9 +39,7 @@ public class BasicZombie extends Zombie {
         TextureAtlas deathAtlas = new TextureAtlas(Gdx.files.internal("zombies/zombie-death.atlas"));
         AtlasRegion[] death = new AtlasRegion[FRAMES_DEATH];
         for (int i = 0; i < FRAMES_DEATH; i++) {
-            // Use proper formatting to match atlas frame names (tile000 through tile008)
-            String frameName = String.format("tile%03d", i);
-            death[i] = deathAtlas.findRegion(frameName);
+            death[i] = deathAtlas.findRegion("tile00" + i);
         }
         // Slow down death animation and make it non-looping
         Animation<AtlasRegion> deathanim = new Animation<>(0.2f, death);

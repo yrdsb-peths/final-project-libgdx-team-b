@@ -17,6 +17,10 @@ public class BucketheadZombie extends Zombie {
     public BucketheadZombie(DayWorld theWorld) {
         super(theWorld, new Texture("zombies/bucketheadZombie/BucketHeadZombie.png"), 300, 50, 2.0f);
 
+        // Adjust scale
+        setScaleX(0.9f);
+        setScaleY(0.9f);
+
         // Load walk animation
         TextureAtlas walkAtlas = new TextureAtlas(
                 Gdx.files.internal("zombies/bucketheadZombie/BucketheadZombieWalk.atlas"));
