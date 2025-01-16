@@ -5,14 +5,16 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
+import ca.codepet.worlds.DayWorld;
+
 public class TallNut extends Plant {
     private static final int FRAMES = 4;
     private static final int DEFAULT_HEALTH = 400;
     private static final int STAGE2_HEALTH = 300;
     private static final int STAGE3_HEALTH = 200;
 
-    public TallNut(float x, float y) {
-        super(x, y);
+    public TallNut(DayWorld world, float x, float y) {
+        super(world, x, y);
         health = DEFAULT_HEALTH;
         setScale(2.3f);
 
@@ -45,6 +47,7 @@ public class TallNut extends Plant {
 
     @Override
     public void update(float delta) {
+        super.update(delta);
         // Update animation based on health
         String newStage;
         if (health > STAGE2_HEALTH) {

@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
+import ca.codepet.worlds.DayWorld;
+
 public class Peashooter extends ShooterPlant {
     static int IDLE_FRAMES = 5;
     static int ATTACK_FRAMES = 3;
@@ -14,8 +16,8 @@ public class Peashooter extends ShooterPlant {
     public static final String PROJECTILE_ATLAS = "projectiles/pea.atlas";
     public static final float PROJECTILE_SCALE = 3f;
 
-    public Peashooter(float x, float y) {
-        super(x, y);
+    public Peashooter(DayWorld world, float x, float y) {
+        super(world, x, y);
 
         setScale(2.2f);
 

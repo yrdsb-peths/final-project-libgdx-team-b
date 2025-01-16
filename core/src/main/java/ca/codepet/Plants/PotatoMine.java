@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
+import ca.codepet.worlds.DayWorld;
+
 public class PotatoMine extends Plant {
     private static final int POPUP_FRAMES = 3;
     private static final int IDLE_FRAMES = 5;
@@ -22,8 +24,8 @@ public class PotatoMine extends Plant {
 
     private final Sound explodeSound = Gdx.audio.newSound(Gdx.files.internal("sounds/potato_mine.ogg"));
 
-    public PotatoMine(float x, float y) {
-        super(x, y);
+    public PotatoMine(DayWorld world, float x, float y) {
+        super(world, x, y);
         health = DEFAULT_HEALTH;
         setScale(2.7f); // Add this line to scale the potato mine
 
@@ -66,6 +68,7 @@ public class PotatoMine extends Plant {
 
     @Override
     public void update(float delta) {
+        super.update(delta);
         if (hasExploded) {
             if (animations.get("explode").isAnimationFinished(imageIndex)) {
                 health = 0; // Mark for removal

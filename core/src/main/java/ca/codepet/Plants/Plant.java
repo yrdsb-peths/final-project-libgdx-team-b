@@ -2,6 +2,9 @@ package ca.codepet.Plants;
 
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.ObjectMap.Entry;
+
+import ca.codepet.worlds.DayWorld;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -11,6 +14,7 @@ import com.badlogic.gdx.audio.Sound;
 import java.util.Random;
 
 public abstract class Plant {
+    private DayWorld world;
     protected float x, y;
     protected int health = 100;
     protected Rectangle rect = new Rectangle(0, 0, 32, 32);
@@ -18,6 +22,7 @@ public abstract class Plant {
     protected String currentAnimation = null;
     protected float imageIndex = 0f;
     protected float alpha = 1.0f;
+    protected float flash = 0f;
     protected float scale = 1f; // Add this line
     protected Sound[] hitSounds;
     protected Sound[] deathSounds;
@@ -26,7 +31,8 @@ public abstract class Plant {
     protected float attackTimer = 0;
     protected boolean isAttacking = false;
 
-    public Plant(float x, float y) {
+    public Plant(DayWorld world, float x, float y) {
+        this.world = world;
         this.x = x;
         this.y = y;
     }
@@ -41,6 +47,10 @@ public abstract class Plant {
         setAnimation(spr);
     }
 
+    public DayWorld getWorld() {
+        return world;
+    }
+
     public AtlasRegion getTexture() {
         return animations.get(currentAnimation).getKeyFrame(imageIndex, true);
     }
@@ -50,6 +60,7 @@ public abstract class Plant {
     }
 
     public boolean damage(int dmg) {
+        flash = 0.2f;
         health -= dmg;
         if (health <= 0) {
             // playDeathSound();
@@ -100,10 +111,17 @@ public abstract class Plant {
         float oldAlpha = batch.getColor().a;
         batch.setColor(batch.getColor().r, batch.getColor().g, batch.getColor().b, alpha);
         batch.draw(tex, pX, pY, tex.originalWidth * scale, tex.originalHeight * scale); // Modified to use scale
+
+        batch.setShader(world.getGame().getFlashShader());
+        batch.setColor(1f, 1f, 1f, flash / 0.2f * alpha);
+        batch.draw(tex, pX, pY, tex.originalWidth * scale, tex.originalHeight * scale); // Modified to use scale
+        batch.setShader(null);
         batch.setColor(batch.getColor().r, batch.getColor().g, batch.getColor().b, oldAlpha);
     }
 
-    public abstract void update(float delta);
+    public void update(float delta) {
+        flash = Math.max(0f, flash - delta);
+    }
 
     public void startAttack() {
         isAttacking = true;

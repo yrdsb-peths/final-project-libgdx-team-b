@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
-import ca.codepet.SnowProjectile;
+import ca.codepet.worlds.DayWorld;
 
 public class SnowPea extends ShooterPlant {
     static int IDLE_FRAMES = 8;
@@ -16,8 +16,8 @@ public class SnowPea extends ShooterPlant {
     public static final String PROJECTILE_ATLAS = "projectiles/snowpeaproj.atlas";
     public static final float PROJECTILE_SCALE = 3f;
 
-    public SnowPea(float x, float y) {
-        super(x, y);
+    public SnowPea(DayWorld world, float x, float y) {
+        super(world, x, y);
 
         setScale(2.2f);
 
