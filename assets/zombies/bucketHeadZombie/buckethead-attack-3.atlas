@@ -1,0 +1,54 @@
+buckethead-attack-3.png
+size: 191, 52
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tile000
+  rotate: false
+  xy: 1, 1
+  size: 31, 50
+  orig: 31, 50
+  offset: 0, 0
+  index: -1
+tile001
+  rotate: false
+  xy: 67, 1
+  size: 30, 49
+  orig: 30, 49
+  offset: 0, 0
+  index: -1
+tile002
+  rotate: false
+  xy: 99, 1
+  size: 30, 49
+  orig: 30, 49
+  offset: 0, 0
+  index: -1
+tile003
+  rotate: false
+  xy: 34, 1
+  size: 31, 50
+  orig: 31, 50
+  offset: 0, 0
+  index: -1
+tile004
+  rotate: false
+  xy: 131, 1
+  size: 29, 49
+  orig: 29, 49
+  offset: 0, 0
+  index: -1
+tile005
+  rotate: false
+  xy: 162, 1
+  size: 28, 49
+  orig: 28, 49
+  offset: 0, 0
+  index: -1
+tile006
+  rotate: false
+  xy: 34, 1
+  size: 31, 50
+  orig: 31, 50
+  offset: 0, 0
+  index: -1
