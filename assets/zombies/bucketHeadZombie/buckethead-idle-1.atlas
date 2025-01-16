@@ -1,54 +1,54 @@
 buckethead-idle-1.png
-size: 210, 53
+size: 362, 53
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 tile000
   rotate: false
-  xy: 68, 1
-  size: 29, 50
-  orig: 29, 50
+  xy: 54, 1
+  size: 50, 50
+  orig: 50, 50
   offset: 0, 0
   index: -1
 tile001
   rotate: false
-  xy: 157, 1
-  size: 25, 49
-  orig: 25, 49
+  xy: 262, 1
+  size: 49, 49
+  orig: 49, 49
   offset: 0, 0
   index: -1
 tile002
   rotate: false
-  xy: 184, 1
-  size: 25, 48
-  orig: 25, 48
+  xy: 313, 1
+  size: 48, 48
+  orig: 48, 48
   offset: 0, 0
   index: -1
 tile003
   rotate: false
-  xy: 99, 1
-  size: 29, 50
-  orig: 29, 50
+  xy: 106, 1
+  size: 50, 50
+  orig: 50, 50
   offset: 0, 0
   index: -1
 tile004
   rotate: false
-  xy: 130, 1
-  size: 25, 50
-  orig: 25, 50
+  xy: 158, 1
+  size: 50, 50
+  orig: 50, 50
   offset: 0, 0
   index: -1
 tile005
   rotate: false
   xy: 1, 1
-  size: 32, 51
-  orig: 32, 51
+  size: 51, 51
+  orig: 51, 51
   offset: 0, 0
   index: -1
 tile006
   rotate: false
-  xy: 35, 1
-  size: 31, 50
-  orig: 31, 50
+  xy: 210, 1
+  size: 50, 50
+  orig: 50, 50
   offset: 0, 0
   index: -1
