@@ -19,6 +19,8 @@ public class ConeheadZombie extends Zombie {
 
     static int TOTAL_HP = STAGE_1_HP + STAGE_2_HP + STAGE_3_HP;
 
+    static float FRAME_DURATION = 0.7f;
+
     public ConeheadZombie(DayWorld theWorld) {
         super(theWorld, new Texture("zombies/coneZombie/ConeheadZombie.png"), TOTAL_HP, 50, 2.0f);
 
@@ -28,7 +30,7 @@ public class ConeheadZombie extends Zombie {
         for (int i = 0; i < WALK_FRAMES; i++) {
             walk[i] = walkAtlas.findRegion("tile00" + i);
         }
-        Animation<AtlasRegion> walkanim = new Animation<>(0.2f, walk);
+        Animation<AtlasRegion> walkanim = new Animation<>(FRAME_DURATION, walk);
         animations.put("walk1", walkanim);
 
         // load walk animation 2
@@ -37,7 +39,7 @@ public class ConeheadZombie extends Zombie {
         for (int i = 0; i < WALK_FRAMES; i++) {
             walk2[i] = walkAtlas2.findRegion("tile00" + i);
         }
-        Animation<AtlasRegion> walkanim2 = new Animation<>(0.2f, walk2);
+        Animation<AtlasRegion> walkanim2 = new Animation<>(FRAME_DURATION, walk2);
         animations.put("walk2", walkanim2);
 
         // load walk animation 3
@@ -46,7 +48,7 @@ public class ConeheadZombie extends Zombie {
         for (int i = 0; i < WALK_FRAMES; i++) {
             walk3[i] = walkAtlas3.findRegion("tile00" + i);
         }
-        Animation<AtlasRegion> walkanim3 = new Animation<>(0.2f, walk3);
+        Animation<AtlasRegion> walkanim3 = new Animation<>(FRAME_DURATION, walk3);
         animations.put("walk3", walkanim3);
 
         // Load attack animation
@@ -55,7 +57,7 @@ public class ConeheadZombie extends Zombie {
         for (int i = 0; i < ATTACK_FRAMES; i++) {
             attack[i] = attackAtlas.findRegion("tile00" + i);
         }
-        Animation<AtlasRegion> attackanim = new Animation<>(0.2f, attack);
+        Animation<AtlasRegion> attackanim = new Animation<>(FRAME_DURATION, attack);
         animations.put("attack1", attackanim);
 
         // Load attack animation 2
@@ -64,7 +66,7 @@ public class ConeheadZombie extends Zombie {
         for (int i = 0; i < ATTACK_FRAMES; i++) {
             attack2[i] = attackAtlas2.findRegion("tile00" + i);
         }
-        Animation<AtlasRegion> attackanim2 = new Animation<>(0.2f, attack2);
+        Animation<AtlasRegion> attackanim2 = new Animation<>(FRAME_DURATION, attack2);
         animations.put("attack2", attackanim2);
 
         // Load attack animation 3
@@ -73,7 +75,7 @@ public class ConeheadZombie extends Zombie {
         for (int i = 0; i < ATTACK_FRAMES; i++) {
             attack3[i] = attackAtlas3.findRegion("tile00" + i);
         }
-        Animation<AtlasRegion> attackanim3 = new Animation<>(0.2f, attack3);
+        Animation<AtlasRegion> attackanim3 = new Animation<>(FRAME_DURATION, attack3);
         animations.put("attack3", attackanim3);
 
         currentAnimation = "walk";
