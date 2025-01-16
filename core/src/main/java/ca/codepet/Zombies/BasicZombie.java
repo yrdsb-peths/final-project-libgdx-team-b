@@ -16,7 +16,7 @@ public class BasicZombie extends Zombie {
     static float FRAME_DURATION = 0.7f;
 
     public BasicZombie(DayWorld theWorld) {
-        super(theWorld, new Texture("zombies/basicZombie/BasicZombieWalk.png"), 190, 100, 1f, 9.4f);
+        super(theWorld, new Texture("zombies/basicZombie/BasicZombieWalk.png"), 190, 100, 1f, 18.8f);
 
         // Load walk animation
         TextureAtlas walkAtlas = new TextureAtlas(Gdx.files.internal("zombies/basicZombie/BasicZombieWalk.atlas"));
