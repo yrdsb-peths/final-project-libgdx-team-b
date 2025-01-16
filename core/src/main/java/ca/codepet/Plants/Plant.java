@@ -2,7 +2,7 @@ package ca.codepet.Plants;
 
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.ObjectMap.Entry;
-
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -91,7 +91,13 @@ public abstract class Plant {
 
     public void dispose() {
         for (Entry<String, Animation<AtlasRegion>> entry : animations.entries()) {
-            entry.value.getKeyFrames()[0].getTexture().dispose();
+            for (AtlasRegion atlas : entry.value.getKeyFrames()) {
+                if (atlas != null) {
+                    Texture tex = atlas.getTexture();
+                    if (tex != null)
+                        tex.dispose();
+                }
+            }
         }
         // for(Sound sound : hitSounds) {
         //     sound.dispose();

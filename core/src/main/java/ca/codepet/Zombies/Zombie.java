@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
@@ -25,7 +26,7 @@ public abstract class Zombie implements Collidable {
 
     private int hp;
     private float x = Gdx.graphics.getWidth();
-    private int y;
+    private float y;
 
     Random rand = new Random();
     private Texture zombieTexture;
@@ -46,8 +47,10 @@ public abstract class Zombie implements Collidable {
     private float atkDelay; // 1 second between attacks
     private float attackTimer = 0.0f;
 
-    private int width = 135;
-    private int height = 160;
+    private float width = 135;
+    private float height = 160;
+
+    private float slowTimer = 0.0f;
 
     DayWorld world;
 
@@ -128,20 +131,23 @@ public abstract class Zombie implements Collidable {
         return textureRegion; // Fallback to static texture if no animation
     }
 
-    public int getWidth() {
+    public float getWidth() {
         return width;
     }
 
-    public int getHeight() {
+    public float getHeight() {
         return height;
     }
 
-    public int getX() {
-        return (int) x;
+    public float getX() {
+        return x;
     }
 
     public void move(float delta) {
-        x -= MOVE_SPEED * delta;
+        float speed = 0.5f;
+        if (slowTimer > 0.0f)
+            speed /= 2f;
+        x -= speed; // Slower movement speed
         // Add bounds checking for column calculation
         int newCol = (int) (x / world.getLawnTileWidth()) - 1;
         col = Math.min(Math.max(newCol, 0), 8); // Clamp between 0 and 8
@@ -153,6 +159,13 @@ public abstract class Zombie implements Collidable {
     }
 
     public void update(float delta) {
+        slowTimer = Math.max(0, slowTimer - delta);
+        float modDelta = delta;
+        if (slowTimer > 0f)
+            modDelta /= 2f;
+        attackTimer += modDelta;
+        stateTime += modDelta; // Update animation state time
+        
         flashTimer = Math.max(0, flashTimer - delta);
         attackTimer += delta;
         stateTime += delta; // Update animation state time
@@ -230,6 +243,10 @@ public abstract class Zombie implements Collidable {
         }
     } 
 
+    public void doSlow() {
+        slowTimer = 10f;
+    }
+
     public void damage(int dmg) {
         hp -= dmg;
         flashTimer = 0.2f;
@@ -291,6 +308,10 @@ public abstract class Zombie implements Collidable {
 
     public float getSquashTimer() {
         return squashTimer;
+    }
+
+    public float getSlowTimer() {
+        return slowTimer;
     }
 
     public float getFlashTimer() {

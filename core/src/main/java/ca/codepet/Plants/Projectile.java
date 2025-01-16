@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.utils.ObjectMap;
 
+import ca.codepet.Zombies.Zombie;
 import ca.codepet.Collidable;
 
 import com.badlogic.gdx.math.Rectangle;
@@ -98,7 +99,7 @@ public class Projectile implements Collidable {
         }
     }
 
-    public void hit() {
+    public void hit(Zombie zombie) {
         if (animations.containsKey("splat")) {
 
             
@@ -138,13 +139,13 @@ public class Projectile implements Collidable {
     }
 
     @Override
-    public int getX() {
+    public float getX() {
         return (int)x;
     }
 
     @Override
-    public int getWidth() {
-        return (int)(10 * scale);
+    public float getWidth() {
+        return 10 * scale;
     }
 
     @Override
