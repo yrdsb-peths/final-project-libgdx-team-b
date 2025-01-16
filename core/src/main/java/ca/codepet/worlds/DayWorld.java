@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 
@@ -109,6 +110,28 @@ public class DayWorld implements Screen {
 
     private float gameOverScale = 0f;
     private Texture gameOverTexture;
+
+    private String flashVertex =    "attribute vec4 a_position;\n" +
+                                    "attribute vec4 a_color;\n" +
+                                    "attribute vec2 a_texCoord0;\n" +
+                                    "uniform mat4 u_projTrans;\n" +
+                                    "varying vec4 v_color;\n" +
+                                    "varying vec2 v_texCoords;\n" +
+                                    "void main() {\n" +
+                                        "v_color = a_color;\n" +
+                                        "v_texCoords = a_texCoord0;\n" +
+                                        "gl_Position =  u_projTrans * a_position;\n" +
+                                    "}";
+    private String flashFragment = "#ifdef GL_ES\n" +
+                                    "precision mediump float;\n" +
+                                    "#endif\n" +
+                                    "varying vec4 v_color;\n" +
+                                    "varying vec2 v_texCoords;\n" +
+                                    "uniform sampler2D u_texture;\n" +
+                                    "void main() {\n" +
+                                        "gl_FragColor = vec4(1., 1., 1., texture2D(u_texture, v_texCoords).a * v_color.a);\n" +
+                                    "}";
+    private final ShaderProgram flashShader = new ShaderProgram(flashVertex, flashFragment); 
 
     public DayWorld(GameRoot game) {
         this.game = game;
@@ -401,6 +424,18 @@ public class DayWorld implements Screen {
 
             // Render zombie
             batch.draw(zombie.getTextureRegion(), 
+                    zombie.getX() + zombie.getXOffset(), 
+                    (LAWN_HEIGHT - zombie.getRow()) * LAWN_TILEHEIGHT - (zombie.getHeight() - LAWN_TILEHEIGHT)/2 + zombie.getYOffset(),
+                    zombie.getWidth()/2,
+                    zombie.getHeight()/2,
+                    zombie.getWidth(),
+                    zombie.getHeight(),
+                    1,
+                    zombie.getScaleY(),
+                    zombie.getRotation());
+                    batch.setShader(flashShader);
+            batch.setColor(1f, 1f, 1f, zombie.getFlashTimer() / 0.2f);
+            batch.draw(zombie.getTextureRegion(), 
                       zombie.getX() + zombie.getXOffset(), 
                       (LAWN_HEIGHT - zombie.getRow()) * LAWN_TILEHEIGHT - (zombie.getHeight() - LAWN_TILEHEIGHT)/2 + zombie.getYOffset(),
                       zombie.getWidth()/2,
@@ -410,6 +445,8 @@ public class DayWorld implements Screen {
                       1,
                       zombie.getScaleY(),
                       zombie.getRotation());
+            batch.setShader(null);
+            batch.setColor(1f, 1f, 1f, 1f);
 
             // Only move or attack if not squashed
             if(!zombie.isSquashed()) {
