@@ -9,6 +9,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 
 import ca.codepet.Collidable;
 import ca.codepet.GameRoot;
@@ -52,7 +55,7 @@ public class DayWorld implements Screen {
     final private int LAWN_TILEX = 56;
     final private int LAWN_TILEY = 416;
 
-    private static final float SUN_SPAWN_RATE = 1f; // seconds
+    private static final float SUN_SPAWN_RATE = 7f; // seconds
     private static final float END_GAME_TIMER = 5f; // seconds
     private static final float GAME_OVER_DELAY = 5f; // seconds
     private static final float ZOMBIE_DISPOSE_DELAY = 7f;
@@ -104,6 +107,8 @@ public class DayWorld implements Screen {
     private float gameOverScale = 0f;
     private Texture gameOverTexture;
 
+    private BitmapFont waveFont;
+
     public DayWorld(GameRoot game) {
         this.game = game;
     }
@@ -141,6 +146,15 @@ public class DayWorld implements Screen {
         backgroundMusic.loop(0.2f);
 
         gameOverTexture = new Texture("images/gameOver.png");
+
+        // Create wave font
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(
+            Gdx.files.internal("fonts/HouseofTerror-Regular.ttf"));
+        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+        parameter.size = 72;
+        parameter.color = com.badlogic.gdx.graphics.Color.RED; // Add this line
+        waveFont = generator.generateFont(parameter);
+        generator.dispose();
     }
 
     @Override
@@ -246,6 +260,7 @@ public class DayWorld implements Screen {
                     case "Spikeweed":
                         draggedPlant = new Spikeweed(this, mouseX, mouseY);
                         ghostPlant = new Spikeweed(this, 0, 0);
+                        break;
                     case "Squash":
                         draggedPlant = new Squash(this, mouseX, mouseY);
                         ghostPlant = new Squash(this, 0, 0);
@@ -346,6 +361,18 @@ public class DayWorld implements Screen {
         renderZombie(delta);
 
         renderSun(delta);
+
+        // Draw wave announcement in its own batch
+        if (waveManager.isAnnouncing()) {
+            batch.begin();
+            String waveText = "Wave " + waveManager.getCurrentWave();
+            float textWidth = waveFont.getXHeight() * waveText.length(); 
+            waveFont.setColor(1, 0, 0, 1); // Ensure red color (R,G,B,A)
+            waveFont.draw(batch, waveText,
+                (Gdx.graphics.getWidth() - textWidth) / 2,
+                Gdx.graphics.getHeight() / 2);
+            batch.end();
+        }
     }
 
     private void renderLawnmower() {
@@ -744,6 +771,8 @@ public class DayWorld implements Screen {
         if (gameOverTexture != null) {
             gameOverTexture.dispose();
         }
+
+        waveFont.dispose();
     }
 
     private void updatePlants(float delta) {
