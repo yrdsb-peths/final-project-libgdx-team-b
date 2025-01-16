@@ -376,31 +376,10 @@ public class DayWorld implements Screen {
         Array<Zombie> zombiesToRemove = new Array<>();
       
         for(Zombie zombie : zombies) {
-            // Check if zombie reached the house
-            if(zombie.hasReachedHouse() && !zombie.isSquashed()) {
-                Lawnmower lawnmower = null;
-                for(Lawnmower lm : lawnmowers) {
-                    if(lm.getRow() == zombie.getRow()) {
-                        lawnmower = lm;
-                        break;
-                    }
-                }
-                
-                if(lawnmower == null) {
-                    isGameOver = true;
-                } else {
-                    lawnmower.activate();
-                }
-            }
-
+            // Update before checking for removal
             zombie.update(delta);
             
-            if(zombie.isSquashed() && zombie.getSquashTimer() >= Zombie.SQUASH_DURATION) {
-                zombiesToRemove.add(zombie);
-                continue;
-            }
-
-            // Render zombie
+            // Render the zombie no matter what state it's in
             batch.draw(zombie.getTextureRegion(), 
                       zombie.getX() + zombie.getXOffset(), 
                       (LAWN_HEIGHT - zombie.getRow()) * LAWN_TILEHEIGHT - (zombie.getHeight() - LAWN_TILEHEIGHT)/2 + zombie.getYOffset(),
@@ -412,8 +391,31 @@ public class DayWorld implements Screen {
                       zombie.getScaleY(),
                       zombie.getRotation());
 
-            // Only move or attack if not squashed
-            if(!zombie.isSquashed()) {
+            // Only mark for removal if death animation is complete
+            if(zombie.isDying() && zombie.isDeathAnimationComplete()) {
+                zombiesToRemove.add(zombie);
+                continue;
+            }
+
+            // Only move or attack if not dying or squashed
+            if(!zombie.isSquashed() && !zombie.isDying()) {
+                // Check if zombie reached the house
+                if(zombie.hasReachedHouse() && !zombie.isSquashed()) {
+                    Lawnmower lawnmower = null;
+                    for(Lawnmower lm : lawnmowers) {
+                        if(lm.getRow() == zombie.getRow()) {
+                            lawnmower = lm;
+                            break;
+                        }
+                    }
+                    
+                    if(lawnmower == null) {
+                        isGameOver = true;
+                    } else {
+                        lawnmower.activate();
+                    }
+                }
+
                 // Add bounds checking before accessing plants array
                 int row = zombie.getRow();
                 int col = zombie.getCol();
@@ -447,13 +449,12 @@ public class DayWorld implements Screen {
             }
         }
 
-        // Remove zombies after the iteration
+        // Remove zombies after rendering everything
         for(Zombie zombie : zombiesToRemove) {
             removeZombie(zombie);
         }
         
         batch.end();
-
     }
 
     public void renderSun(float delta) {

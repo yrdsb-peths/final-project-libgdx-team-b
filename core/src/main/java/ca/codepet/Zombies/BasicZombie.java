@@ -16,6 +16,7 @@ import ca.codepet.worlds.DayWorld;
 public class BasicZombie extends Zombie {
     static int WALK_FRAMES = 7;  // Based on the atlas file which has 7 frames (tile000 to tile006)
     static int ATTACK_FRAMES = 7;
+    static int FRAMES_DEATH = 9;
 
     public BasicZombie(DayWorld theWorld) {
         super(theWorld, new Texture("images/zombie.png"), 100, 10, 2.0f);
@@ -37,6 +38,23 @@ public class BasicZombie extends Zombie {
         }
         Animation<AtlasRegion> attackanim = new Animation<>(0.2f, attack);
         animations.put("attack", attackanim);
+
+        // Fix death animation with proper size and timing
+        TextureAtlas deathAtlas = new TextureAtlas(Gdx.files.internal("zombies/zombie-death.atlas"));
+        AtlasRegion[] death = new AtlasRegion[FRAMES_DEATH];
+        for (int i = 0; i < FRAMES_DEATH; i++) {
+            // Use proper formatting to match atlas frame names (tile000 through tile008)
+            String frameName = String.format("tile%03d", i);
+            death[i] = deathAtlas.findRegion(frameName);
+        }
+        // Slow down death animation and make it non-looping
+        Animation<AtlasRegion> deathanim = new Animation<>(0.2f, death);
+        deathanim.setPlayMode(Animation.PlayMode.NORMAL);  // Make it play only once
+        animations.put("death", deathanim);
+        
+        // Set custom size for death animation frames
+        deathWidth = 51*3;  // Match original width from atlas
+        deathHeight = 40*3; // Match original height from atlas
         
         currentAnimation = "walk";
     }
@@ -54,4 +72,11 @@ public class BasicZombie extends Zombie {
         currentAnimation = "walk";
         super.move(delta);
     }
+
+    @Override
+    public void die() {
+        currentAnimation = "death";
+        super.die();
+    }
+
 }

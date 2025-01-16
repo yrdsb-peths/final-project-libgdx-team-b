@@ -49,6 +49,9 @@ public abstract class Zombie implements Collidable {
     private int width = 135;
     private int height = 160;
 
+    protected int deathWidth = 51;  // Default death animation width
+    protected int deathHeight = 40; // Default death animation height
+
     DayWorld world;
 
     protected ObjectMap<String, Animation<AtlasRegion>> animations;
@@ -72,6 +75,9 @@ public abstract class Zombie implements Collidable {
     private long deathSoundId;
 
     private static final float MOVE_SPEED = 30f; 
+
+    private boolean isDeathAnimationComplete = false;
+    private static final float DEATH_ANIMATION_DURATION = 1.8f; // 9 frames * 0.2s per frame
 
     public Zombie(DayWorld theWorld, Texture zombieTexture, int hp, int damage, float atkDelay) {
         this.hp = hp;
@@ -122,16 +128,24 @@ public abstract class Zombie implements Collidable {
     public TextureRegion getTextureRegion() {
         Animation<AtlasRegion> currentAnim = animations.get(currentAnimation);
         if (currentAnim != null) {
-            return currentAnim.getKeyFrame(stateTime, true);
+            // Make death animation non-looping
+            boolean shouldLoop = !currentAnimation.equals("death");
+            return currentAnim.getKeyFrame(stateTime, shouldLoop);
         }
         return textureRegion; // Fallback to static texture if no animation
     }
 
     public int getWidth() {
+        if (isDying) {
+            return deathWidth;
+        }
         return width;
     }
 
     public int getHeight() {
+        if (isDying) {
+            return deathHeight;
+        }
         return height;
     }
 
@@ -154,6 +168,14 @@ public abstract class Zombie implements Collidable {
     public void update(float delta) {
         attackTimer += delta;
         stateTime += delta; // Update animation state time
+
+        // Handle death animation and timing
+        if (isDying) {
+            Animation<AtlasRegion> deathAnim = animations.get("death");
+            if (deathAnim != null && deathAnim.isAnimationFinished(stateTime)) {
+                isDeathAnimationComplete = true;
+            }
+        }
 
         // Add spawn groan
         if (!hasGroanedOnSpawn) {
@@ -186,6 +208,9 @@ public abstract class Zombie implements Collidable {
 
         if (isDying) {
             deathTimer += delta;
+            if (deathTimer >= DEATH_ANIMATION_DURATION) {
+                isDeathAnimationComplete = true;
+            }
             if (deathTimer >= DEATH_SOUND_DURATION) {
                 world.removeZombie(this);
             }
@@ -217,6 +242,16 @@ public abstract class Zombie implements Collidable {
         }
     }
 
+    public void die() {
+        if (!isDying) {
+            isDying = true;
+            currentAnimation = "death";
+            stateTime = 0; // Reset animation time when starting death animation
+            deathTimer = 0; // Reset death timer
+            deathSounds[rand.nextInt(deathSounds.length)].play(0.5f);
+        }
+    }
+
     public void playChompSound() {
         // Play random chomp sound
         chompSounds[rand.nextInt(chompSounds.length)].play(0.4f);
@@ -231,8 +266,7 @@ public abstract class Zombie implements Collidable {
     public void damage(int dmg) {
         hp -= dmg;
         if (hp <= 0 && !isDying) {
-            isDying = true;
-            deathSounds[rand.nextInt(deathSounds.length)].play(0.5f);
+            die();
         }
     }
 
@@ -293,4 +327,13 @@ public abstract class Zombie implements Collidable {
     public Rectangle getBounds() {
         return new Rectangle(x + xOffset, y, width/2, height); // Adjust collision box
     }
+
+    public boolean isDeathAnimationComplete() {
+        return isDeathAnimationComplete;
+    }
+
+    public boolean isDying() {
+        return isDying;
+    }
+
 }

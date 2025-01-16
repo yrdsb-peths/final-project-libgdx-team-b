@@ -1,61 +1,75 @@
 zombie-death.png
-size: 63, 97
+size: 510, 40
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-138563-1
+tile000
   rotate: false
-  xy: 39, 1
-  size: 23, 27
-  orig: 23, 27
+  xy: 0, 0
+  size: 51, 40
+  orig: 51, 40
   offset: 0, 0
   index: -1
-138563-2
+tile001
   rotate: false
-  xy: 39, 30
-  size: 23, 26
-  orig: 23, 26
+  xy: 51, 0
+  size: 51, 40
+  orig: 51, 40
   offset: 0, 0
   index: -1
-138563-3
+tile002
   rotate: false
-  xy: 1, 41
-  size: 24, 28
-  orig: 24, 28
+  xy: 102, 0
+  size: 51, 40
+  orig: 51, 40
   offset: 0, 0
   index: -1
-138563-4
-  rotate: true
-  xy: 1, 71
-  size: 24, 28
-  orig: 24, 28
+tile003
+  rotate: false
+  xy: 153, 0
+  size: 51, 40
+  orig: 51, 40
   offset: 0, 0
   index: -1
-138563-5
+tile004
   rotate: false
-  xy: 31, 58
-  size: 31, 18
-  orig: 31, 18
+  xy: 204, 0
+  size: 51, 40
+  orig: 51, 40
   offset: 0, 0
   index: -1
-138563-6
+tile005
   rotate: false
-  xy: 31, 78
-  size: 31, 18
-  orig: 31, 18
+  xy: 255, 0
+  size: 51, 40
+  orig: 51, 40
   offset: 0, 0
   index: -1
-138563-7
+tile006
   rotate: false
-  xy: 1, 1
-  size: 36, 18
-  orig: 36, 18
+  xy: 306, 0
+  size: 51, 40
+  orig: 51, 40
   offset: 0, 0
   index: -1
-138563-8
+tile007
   rotate: false
-  xy: 1, 21
-  size: 36, 18
-  orig: 36, 18
+  xy: 357, 0
+  size: 51, 40
+  orig: 51, 40
+  offset: 0, 0
+  index: -1
+tile008
+  rotate: false
+  xy: 408, 0
+  size: 51, 40
+  orig: 51, 40
+  offset: 0, 0
+  index: -1
+tile009
+  rotate: false
+  xy: 459, 0
+  size: 1, 40
+  orig: 1, 40
   offset: 0, 0
   index: -1
