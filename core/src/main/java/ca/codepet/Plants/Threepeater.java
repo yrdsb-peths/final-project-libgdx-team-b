@@ -23,9 +23,9 @@ public class Threepeater extends ShooterPlant {
     private float shotTimer = 0;
 
     public Threepeater(DayWorld world, float x, float y) {
-        super(world, x, y);
+        super(world, x, y + 50);
 
-        setScale(2.2f);
+        setScale(3f);
         attackCooldown = DEFAULT_ATTACK_COOLDOWN;
 
         TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("plants/threepeater/threepeater-idle.atlas"));

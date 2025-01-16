@@ -35,7 +35,7 @@ public abstract class Zombie implements Collidable {
     private Sound[] groanSounds;
     private Sound[] deathSounds;
     private float groanTimer = 0f;
-    private static final float GROAN_INTERVAL = 5f; // Groan every 5 seconds
+    private static final float GROAN_INTERVAL = 9f; 
     private boolean hasGroanedOnSpawn = false;
     private static final float INITIAL_GROAN_DELAY = 0.5f;
 
@@ -79,7 +79,7 @@ public abstract class Zombie implements Collidable {
     private boolean isDeathSoundPlaying = false;
 
 
-    private static final float MOVE_SPEED = 10f; 
+    private static final float MOVE_SPEED = 15f; 
 
 
     private boolean isDeathAnimationComplete = false;
@@ -293,7 +293,7 @@ public abstract class Zombie implements Collidable {
 
     private void playGroanSound() {
         if (!isSquashed && !isDying) {
-            groanSounds[rand.nextInt(groanSounds.length)].play(0.4f);
+            groanSounds[rand.nextInt(groanSounds.length)].play(0.2f);
         }
     }
 
