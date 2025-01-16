@@ -23,7 +23,7 @@ public class SnowPea extends ShooterPlant {
 
         attackCooldown = DEFAULT_ATTACK_COOLDOWN;
 
-        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("plants/snowpea-idle.atlas"));
+        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("plants/snowpea/snowpea-idle.atlas"));
 
         // Load idle animation (looping)
         AtlasRegion[] idle = new AtlasRegion[IDLE_FRAMES];
@@ -36,7 +36,7 @@ public class SnowPea extends ShooterPlant {
         animations.put("idle", idleanim);
 
         // Attack animation (non-looping)
-        TextureAtlas attackAtlas = new TextureAtlas(Gdx.files.internal("plants/snowpea-attack.atlas"));
+        TextureAtlas attackAtlas = new TextureAtlas(Gdx.files.internal("plants/snowpea/snowpea-attack.atlas"));
         AtlasRegion[] attack = new AtlasRegion[ATTACK_FRAMES];
         for (int i = 0; i < ATTACK_FRAMES; i++) {
             attack[i] = attackAtlas.findRegion("snowpea_shoot" + (i + 1));
