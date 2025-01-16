@@ -32,6 +32,7 @@ public class Squash extends Plant {
     private Zombie targetZombie = null;
     private float noticeTimer = 0f;
     private boolean hasNoticed = false;
+    private boolean isAttacking = false;
 
     private boolean isHmmPlayed = false;
 
@@ -98,7 +99,8 @@ public class Squash extends Plant {
             if (hasNoticed) {
                 noticeTimer += delta;
                 if (noticeTimer >= NOTICE_DELAY) {
-                    startAttack();
+                    isAttacking = true;
+                    setAnimationUnique("attack");
                 }
             }
         }
