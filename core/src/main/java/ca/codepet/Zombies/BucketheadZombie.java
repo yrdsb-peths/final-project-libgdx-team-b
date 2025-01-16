@@ -24,7 +24,7 @@ public class BucketheadZombie extends Zombie {
     static float FRAME_DURATION = 0.7f;
 
     public BucketheadZombie(DayWorld theWorld) {
-        super(theWorld, new Texture("zombies/bucketheadZombie/BucketHeadZombie.png"), TOTAL_HP, 100, 1f, 9.4f);
+        super(theWorld, new Texture("zombies/bucketheadZombie/BucketHeadZombie.png"), TOTAL_HP, 100, 1f, 18.8f);
 
         // Adjust scale
         setScaleX(0.95f);

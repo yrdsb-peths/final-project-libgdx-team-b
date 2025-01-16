@@ -33,7 +33,7 @@ public class Lawnmower implements Collidable {
     }
 
     public void activate() {
-        sound.play(0.2f);
+        sound.play(0.1f);
         isActivated = true;
     }
 
