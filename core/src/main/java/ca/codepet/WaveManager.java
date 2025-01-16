@@ -78,7 +78,8 @@ public class WaveManager {
     private void createWaveZombies() {
         int baseZombies = 2 + (currentWave / 2);
         int bucketheadZombies = currentWave / 3;
-        int coneheadZombies = currentWave / 2; // Add coneheads
+        int coneheadZombies = currentWave / 2;
+        int screenDoorZombies = Math.max(0, (currentWave - 4) / 2); // Introduce after wave 4
 
         newWaveSound.play();
 
@@ -95,6 +96,11 @@ public class WaveManager {
         // Add buckethead zombies
         for (int i = 0; i < bucketheadZombies; i++) {
             waveZombies.add(new BucketheadZombie(world));
+        }
+
+        // Add screen door zombies
+        for (int i = 0; i < screenDoorZombies; i++) {
+            waveZombies.add(new ScreenDoorZombie(world));
         }
     }
 
