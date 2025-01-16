@@ -511,24 +511,10 @@ public class DayWorld implements Screen {
                 // Add bounds checking before accessing plants array
                 int row = zombie.getRow();
                 int col = zombie.getCol();
-                int attackCol = zombie.getAttackCol();
                 boolean doAttack = false;
                 if (row >= 0 && row < LAWN_HEIGHT) {
                     if (col >= 0 && col < LAWN_WIDTH) {
                         Plant plant = plants[row][col];
-                        if (plant != null) {
-                            if (plant instanceof Spikeweed) { // Handle Spikeweed
-                                Spikeweed spikeweed = (Spikeweed) plant;
-                                spikeweed.attack(zombie);
-                                if (zombie.isDead()) {
-                                    continue;
-                                }
-                            }
-                        }
-                    }
-                    
-                    if (attackCol >= 0 && attackCol < LAWN_WIDTH) {
-                        Plant plant = plants[row][attackCol];
                         if (plant != null) {
                             if (plant instanceof PotatoMine) { // Handle explosion
                                 PotatoMine mine = (PotatoMine) plant;
@@ -538,7 +524,7 @@ public class DayWorld implements Screen {
                                     continue;
                                 } else
                                     doAttack = true;
-                            } else if (!(plant instanceof Spikeweed)) // Handle Spikeweed
+                            } else if (!(plant instanceof Spikeweed))
                                 doAttack = true;
                             
                             if (doAttack && zombie.canAttack()) {
@@ -546,7 +532,7 @@ public class DayWorld implements Screen {
                                 if (plant.isDead()) {
                                     plantDeathSounds[rand.nextInt(plantDeathSounds.length)].play(0.7f);
                                     plant.dispose();
-                                    plants[row][attackCol] = null;
+                                    plants[row][col] = null;
                                 }
                             }
                         }
@@ -817,6 +803,14 @@ public class DayWorld implements Screen {
                                 proj.dispose();
                                 projectiles.removeIndex(i);
                             }
+                        }
+                    } else if (p instanceof Spikeweed) { // Spikeweed collision
+                        for (Zombie zombie : zombies) {
+                            Spikeweed spikeweed = (Spikeweed) p;
+                            spikeweed.setRow(y);
+                            if (checkCollision(spikeweed, zombie)) {
+                                spikeweed.attack(zombie);
+                            } 
                         }
                     }
                 }

@@ -40,7 +40,6 @@ public abstract class Zombie implements Collidable {
     private static final float INITIAL_GROAN_DELAY = 0.5f;
 
     private int row;
-    private int attackCol = 8;
     private int col = 9;
 
     private int damage = 30;
@@ -189,9 +188,7 @@ public abstract class Zombie implements Collidable {
             speed /= 2f;
         x -= speed; // Slower movement speed
         // Add bounds checking for column calculation
-        int newAttackCol = (int) (x / world.getLawnTileWidth() - 1);
         int newCol = (int) ((x / world.getLawnTileWidth()) - 0.5);
-        attackCol = MathUtils.clamp(newAttackCol, -1, 8); // Clamp between -1 and 8
         col = MathUtils.clamp(newCol, -1, 8); // Clamp between -1 and 8
 
     }
@@ -325,11 +322,7 @@ public abstract class Zombie implements Collidable {
     public int getCol() {
         return col;
     }
-
-    public int getAttackCol() {
-        return attackCol;
-    }
-
+    
     public int getXOffset() {
         if (isDying) {
             return deathXOffset;
