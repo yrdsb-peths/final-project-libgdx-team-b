@@ -14,8 +14,8 @@ public abstract class ShooterPlant extends Plant {
     protected int currentRow;
 
     private final Sound[] shootSounds = {
-        Gdx.audio.newSound(Gdx.files.internal("sounds/shootSound.ogg")),
-        Gdx.audio.newSound(Gdx.files.internal("sounds/shootSound2.ogg"))
+        Gdx.audio.newSound(Gdx.files.internal("sounds/shootSound.mp3")),
+        Gdx.audio.newSound(Gdx.files.internal("sounds/shootSound2.mp3"))
     };
 
     
