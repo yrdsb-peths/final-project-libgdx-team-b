@@ -1,0 +1,54 @@
+screendoor-attack-2.png
+size: 337, 49
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tile000
+  rotate: false
+  xy: 99, 1
+  size: 46, 46
+  orig: 46, 46
+  offset: 0, 0
+  index: -1
+tile001
+  rotate: false
+  xy: 147, 1
+  size: 46, 46
+  orig: 46, 46
+  offset: 0, 0
+  index: -1
+tile002
+  rotate: false
+  xy: 291, 1
+  size: 45, 45
+  orig: 45, 45
+  offset: 0, 0
+  index: -1
+tile003
+  rotate: false
+  xy: 1, 1
+  size: 47, 47
+  orig: 47, 47
+  offset: 0, 0
+  index: -1
+tile004
+  rotate: false
+  xy: 195, 1
+  size: 46, 46
+  orig: 46, 46
+  offset: 0, 0
+  index: -1
+tile005
+  rotate: false
+  xy: 243, 1
+  size: 46, 46
+  orig: 46, 46
+  offset: 0, 0
+  index: -1
+tile006
+  rotate: false
+  xy: 50, 1
+  size: 47, 47
+  orig: 47, 47
+  offset: 0, 0
+  index: -1
