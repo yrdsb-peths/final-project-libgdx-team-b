@@ -96,10 +96,14 @@ public class DayWorld implements Screen {
 
     private final Sound loseSound = Gdx.audio.newSound(Gdx.files.internal("sounds/loseMusic.ogg"));
     private final Sound shovelSound = Gdx.audio.newSound(Gdx.files.internal("sounds/shovel.ogg"));
-    private Sound sunPickupSound = Gdx.audio.newSound(Gdx.files.internal("sounds/sunPickup.mp3"));
+    private final Sound sunPickupSound = Gdx.audio.newSound(Gdx.files.internal("sounds/sunPickup.mp3"));
     private final Sound buttonClickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/buttonClick.ogg"));
+    private final Sound[] plantDeathSounds = new Sound[] { 
+        Gdx.audio.newSound(Gdx.files.internal("sounds/plantDie.mp3")),
+        Gdx.audio.newSound(Gdx.files.internal("sounds/plantDie2.ogg"))
+    };
 
-    protected Sound[] plantSpawnSound;
+    private Sound[] plantSpawnSound;
 
     private final Sound backgroundMusic = Gdx.audio.newSound(Gdx.files.internal("sounds/dayMusic.mp3"));
     private long backgroundMusicId;
@@ -109,8 +113,8 @@ public class DayWorld implements Screen {
 
     public DayWorld(GameRoot game) {
         this.game = game;
-
     }
+
     @Override
     public void show() {
 
@@ -157,6 +161,7 @@ public class DayWorld implements Screen {
 
     public void renderGame(float delta) {
         
+
         // Draw the background texture
         batch.begin();
         batch.draw(backgroundTexture, -200, 0);
@@ -166,6 +171,8 @@ public class DayWorld implements Screen {
         plantBar.render();
 
         renderShovel();
+
+        renderLawnmower();
 
         if (!gameStarted) {
             // Render plant picker if game hasn't started
@@ -312,12 +319,14 @@ public class DayWorld implements Screen {
         shovel.render();
 
 
-        renderLawnmower();
-        renderSun(delta);
         renderZombie(delta);
+        
+        renderSun(delta);
     }
 
     private void renderLawnmower() {
+        batch.begin();
+
         Array<Lawnmower> lawnmowersToRemove = new Array<>();
 
         for(Lawnmower lawnmower : lawnmowers) {
@@ -359,6 +368,8 @@ public class DayWorld implements Screen {
             lawnmower.dispose();
             lawnmowers.removeValue(lawnmower, true);
         }
+
+        batch.end();
     }
 
     private void renderZombie(float delta) {
@@ -377,7 +388,6 @@ public class DayWorld implements Screen {
                 
                 if(lawnmower == null) {
                     isGameOver = true;
-                    System.out.println("Game Over");
                 } else {
                     lawnmower.activate();
                 }
@@ -409,7 +419,6 @@ public class DayWorld implements Screen {
                 int col = zombie.getCol();
                 if(row >= 0 && row < LAWN_HEIGHT && col >= 0 && col < LAWN_WIDTH) {
                     Plant plant = plants[row][col];
-                    System.out.println(col);
                     if(plant != null) {
                         // Check if it's a potato mine and handle explosion
                         if(plant instanceof PotatoMine) {
@@ -424,14 +433,16 @@ public class DayWorld implements Screen {
                         if(zombie.canAttack()) {
                             zombie.attack(plant);
                             if(plant.isDead()) {
+                                plantDeathSounds[rand.nextInt(plantDeathSounds.length)].play(0.7f);
+                                plant.dispose();
                                 plants[row][col] = null;
                             }
                         }
                     } else {
-                        zombie.move();
+                        zombie.move(delta);
                     }
                 } else {
-                    zombie.move();
+                    zombie.move(delta);
                 }
             }
         }
@@ -446,6 +457,8 @@ public class DayWorld implements Screen {
     }
 
     public void renderSun(float delta) {
+        batch.begin();
+
         // Render all suns and check for collection
         // Loop through suns
         for (int i = 0; i < suns.size; i++) {
@@ -483,6 +496,8 @@ public class DayWorld implements Screen {
             // Create new sun and add to array
             suns.add(new Sun());
         }
+
+        batch.end();
     }
 
     public void renderShovel() {
@@ -626,6 +641,10 @@ public class DayWorld implements Screen {
 
         
         for(Sound sound : plantSpawnSound) {
+            sound.dispose();
+        }
+
+        for(Sound sound : plantDeathSounds) {
             sound.dispose();
         }
 

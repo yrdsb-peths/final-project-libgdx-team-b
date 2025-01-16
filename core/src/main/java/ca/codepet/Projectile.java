@@ -7,7 +7,11 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.math.Rectangle;
+
+import java.util.Random;
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.utils.Array;
 
 public class Projectile implements Collidable {
@@ -22,6 +26,13 @@ public class Projectile implements Collidable {
     protected float scale = 2f;
     private AtlasRegion flyingFrame;
     private int row;
+
+    private Random rand = new Random();
+
+    private final Sound[] hitSounds = {
+        Gdx.audio.newSound(Gdx.files.internal("sounds/zombieHit.mp3")),
+        Gdx.audio.newSound(Gdx.files.internal("sounds/zombieHit2.mp3"))
+    };
 
     public Projectile(float x, float y, int damage, String atlasPath, float scale, int row) {
         this.x = x;
@@ -86,6 +97,10 @@ public class Projectile implements Collidable {
 
     public void hit() {
         if (animations.containsKey("splat")) {
+
+            
+            hitSounds[rand.nextInt(hitSounds.length)].play(0.6f);
+
             isHit = true;
             currentAnimation = "splat";
             stateTime = 0;
@@ -112,6 +127,10 @@ public class Projectile implements Collidable {
     public void dispose() {
         for (Animation<AtlasRegion> anim : animations.values()) {
             anim.getKeyFrame(0).getTexture().dispose();
+        }
+
+        for (Sound sound : hitSounds) {
+            sound.dispose();
         }
     }
 

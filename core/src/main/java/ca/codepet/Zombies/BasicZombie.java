@@ -50,8 +50,8 @@ public class BasicZombie extends Zombie {
     }
 
     @Override
-    public void move() {
+    public void move(float delta) {
         currentAnimation = "walk";
-        super.move();
+        super.move(delta);
     }
 }
