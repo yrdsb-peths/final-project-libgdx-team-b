@@ -85,6 +85,7 @@ public abstract class Zombie implements Collidable {
   
     protected boolean isAttacking;
 
+
     public Zombie(DayWorld theWorld, Texture zombieTexture, int hp, int damage, float atkDelay) {
         this.hp = hp;
         this.damage = damage;
@@ -129,6 +130,10 @@ public abstract class Zombie implements Collidable {
 
     public Texture getTexture() {
         return zombieTexture;
+    }
+
+    public boolean isDead() {
+        return isDying;
     }
 
     public TextureRegion getTextureRegion() {

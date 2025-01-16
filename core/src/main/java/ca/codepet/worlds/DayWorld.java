@@ -767,7 +767,7 @@ public class DayWorld implements Screen {
                             
                             // Use Collidable interface for collision detection
                             for (Zombie zombie : zombies) {
-                                if (!zombie.isSquashed() && !proj.isHit() && checkCollision(proj, zombie)) {
+                                if (!zombie.isSquashed() && !proj.isHit() && checkCollision(proj, zombie) && !zombie.isDead()) {
                                     zombie.damage(proj.getDamage());
                                     proj.hit(zombie);
                                     break;
