@@ -60,8 +60,11 @@ public class DayWorld implements Screen {
 
     private static final float SUN_SPAWN_RATE = 1f; // seconds
     private static final float END_GAME_TIMER = 5f; // seconds
+    private static final float GAME_OVER_DELAY = 5f; // seconds
 
     private boolean isGameOver = false;
+    private float gameOverDelayTimer = 0f;
+    private boolean gameOverPending = false;
 
     private float sunSpawnTimer = 0f;
     private float endGameTimer = 0f;
@@ -174,6 +177,14 @@ public class DayWorld implements Screen {
 
     @Override
     public void render(float delta) {
+        if (gameOverPending) {
+            gameOverDelayTimer += delta;
+            if (gameOverDelayTimer >= GAME_OVER_DELAY) {
+                isGameOver = true;
+                gameOverPending = false;
+            }
+        }
+
         if(isGameOver) {
             gameOver(delta);
         } else {
@@ -409,7 +420,7 @@ public class DayWorld implements Screen {
                 }
                 
                 if(lawnmower == null) {
-                    isGameOver = true;
+                    gameOverPending = true;
                 } else {
                     lawnmower.activate();
                 }
