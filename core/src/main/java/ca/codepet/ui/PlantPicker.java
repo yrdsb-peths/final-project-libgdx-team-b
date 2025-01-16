@@ -88,7 +88,7 @@ public class PlantPicker {
         PlantCard potatoCard = new PlantCard(
                 potatoAtlas.findRegion("tile000"),
                 25,
-                10f,
+                30f,
                 "PotatoMine",
                 x,
                 y,
@@ -102,7 +102,7 @@ public class PlantPicker {
         PlantCard walnutCard = new PlantCard(
                 walnutAtlas.findRegion("tile000"),
                 50,
-                10f,
+                30f,
                 "Walnut",
                 x,
                 y,
@@ -116,7 +116,7 @@ public class PlantPicker {
         PlantCard tallnutCard = new PlantCard(
                 tallnutAtlas.findRegion("120244-0"),
                 125,
-                15f,
+                30f,
                 "TallNut",
                 x,
                 y,
@@ -178,7 +178,7 @@ public class PlantPicker {
         PlantCard squashCard = new PlantCard(
                 squashAtlas.findRegion("tile000"),
                 50,
-                3f, // SHOULD BE 30
+                30f,
                 "Squash",
                 x,
                 y,
