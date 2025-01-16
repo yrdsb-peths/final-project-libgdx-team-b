@@ -15,7 +15,7 @@ public class Repeater extends ShooterPlant {
     public static final String PROJECTILE_ATLAS = "projectiles/pea.atlas";
     public static final float PROJECTILE_SCALE = 3f;
     private boolean firedSecondShot = false;
-    private float secondShotDelay = 0.1f; // Reduced delay between shots
+    private float secondShotDelay = 0.15f; // Reduced delay between shots
     private float secondShotTimer = 0;
 
     public Repeater(float x, float y) {
