@@ -49,7 +49,7 @@ public class BasicZombie extends Zombie {
             death[i] = deathAtlas.findRegion(frameName);
         }
         // Slow down death animation and make it non-looping
-        Animation<AtlasRegion> deathanim = new Animation<>(FRAME_DURATION, death);
+        Animation<AtlasRegion> deathanim = new Animation<>(0.4f, death);
         deathanim.setPlayMode(Animation.PlayMode.NORMAL);  // Make it play only once
         animations.put("death", deathanim);
         

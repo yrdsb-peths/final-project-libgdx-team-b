@@ -229,7 +229,7 @@ public abstract class Zombie implements Collidable {
                 isDeathAnimationComplete = true;
             }
             if (deathTimer >= DEATH_SOUND_DURATION) {
-                world.removeZombie(this);
+                world.removeZombie(this, delta);
             }
         }
 
