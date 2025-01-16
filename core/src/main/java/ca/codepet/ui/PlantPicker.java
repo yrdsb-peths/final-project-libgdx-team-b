@@ -163,7 +163,7 @@ public class PlantPicker {
         PlantCard squashCard = new PlantCard(
                 squashAtlas.findRegion("tile000"),
                 50,
-                3f,
+                3f, // SHOULD BE 30
                 "Squash",
                 x,
                 y,
