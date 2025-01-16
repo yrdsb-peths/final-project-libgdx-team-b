@@ -154,6 +154,21 @@ public class PlantPicker {
                 1.4f // Added scale parameter to make the icon larger
         );
         plantCards.add(snowPeaCard);
+
+        col++;
+        TextureAtlas spikeweedAtlas = new TextureAtlas(Gdx.files.internal("plants/spikeweed.atlas"));
+        x = CARD_START_X + (col * (50 + CARD_SPACING));
+        y = CARD_START_Y - (row * (70 + CARD_SPACING));
+        PlantCard spikeweedCard = new PlantCard(
+                spikeweedAtlas.findRegion("spikeweed_idle", 0),
+                100,
+                7.5f,
+                "Spikeweed",
+                x,
+                y,
+                1.4f // Added scale parameter to make the icon larger
+        );
+        plantCards.add(spikeweedCard);
     }
 
     public void render() {
