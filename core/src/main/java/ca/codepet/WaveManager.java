@@ -8,7 +8,7 @@ import ca.codepet.worlds.DayWorld;
 
 public class WaveManager {
     private static final float INITIAL_WAVE_DELAY = 35f;
-    private static final float MIN_WAVE_DELAY = 30f;
+    private static final float MIN_WAVE_DELAY = 25f;
     private static final float WAVE_DELAY_DECREASE = 0.5f;
     private static final float ANNOUNCEMENT_DURATION = 2f;
 
