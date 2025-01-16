@@ -17,7 +17,7 @@ public class PlantBar {
     private BitmapFont font;
 
     private Array<PlantCard> selectedCards;
-    private static final int MAX_CARDS = 6;
+    private static final int MAX_CARDS = 7;
     private static final float CARD_START_X = 90;
     private static final float CARD_SPACING = 70;
 
