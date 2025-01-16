@@ -246,6 +246,7 @@ public class DayWorld implements Screen {
                     case "Spikeweed":
                         draggedPlant = new Spikeweed(this, mouseX, mouseY);
                         ghostPlant = new Spikeweed(this, 0, 0);
+                        break;
                     case "Squash":
                         draggedPlant = new Squash(this, mouseX, mouseY);
                         ghostPlant = new Squash(this, 0, 0);
