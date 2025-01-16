@@ -9,9 +9,9 @@ import ca.codepet.worlds.DayWorld;
 
 public class TallNut extends Plant {
     private static final int FRAMES = 4;
-    private static final int DEFAULT_HEALTH = 400;
-    private static final int STAGE2_HEALTH = 300;
-    private static final int STAGE3_HEALTH = 200;
+    private static final int DEFAULT_HEALTH = 2400;
+    private static final int STAGE2_HEALTH = 2400;
+    private static final int STAGE3_HEALTH = 2400;
 
     private static final int TOTAL_HP = DEFAULT_HEALTH + STAGE2_HEALTH + STAGE3_HEALTH;
 

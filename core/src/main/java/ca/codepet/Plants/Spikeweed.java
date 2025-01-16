@@ -27,13 +27,13 @@ public class Spikeweed extends Plant {
         TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("plants/spikeweed.atlas"));
         // Load idle animation
         Array<AtlasRegion> idle = atlas.findRegions("spikeweed_idle");
-        Animation<AtlasRegion> idleAnim = new Animation<>(0.2f, idle);
+        Animation<AtlasRegion> idleAnim = new Animation<>(0.5f, idle);
         idleAnim.setPlayMode(PlayMode.LOOP);
         animations.put("idle", idleAnim);
 
         // Load attack animation
         Array<AtlasRegion> attack = atlas.findRegions("spikeweed_attack");
-        Animation<AtlasRegion> attackAnim = new Animation<>(0.2f, attack);
+        Animation<AtlasRegion> attackAnim = new Animation<>(0.5f, attack);
         attackAnim.setPlayMode(PlayMode.NORMAL);
         animations.put("attack", attackAnim);
 

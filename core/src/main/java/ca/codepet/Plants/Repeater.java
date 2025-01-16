@@ -10,8 +10,8 @@ import ca.codepet.worlds.DayWorld;
 public class Repeater extends ShooterPlant {
     static int IDLE_FRAMES = 5;
     static int ATTACK_FRAMES = 2;
-    static int DEFAULT_HEALTH = 100;
-    static float DEFAULT_ATTACK_COOLDOWN = 2.0f; // Increased to account for double shot
+    static int DEFAULT_HEALTH = 300;
+    static float DEFAULT_ATTACK_COOLDOWN = 1.5f;
     static int DEFAULT_DAMAGE = 20;
 
     public static final String PROJECTILE_ATLAS = "projectiles/pea.atlas";
