@@ -24,6 +24,7 @@ import ca.codepet.Plants.SnowPea;
 import ca.codepet.Plants.Squash;
 import ca.codepet.Plants.Sunflower;
 import ca.codepet.Plants.TallNut;
+import ca.codepet.Plants.Threepeater;
 import ca.codepet.Plants.Walnut;
 import ca.codepet.Zombies.Zombie;
 import ca.codepet.characters.PlantCard;
@@ -242,6 +243,10 @@ public class DayWorld implements Screen {
                     case "Squash":
                         draggedPlant = new Squash(this, mouseX, mouseY);
                         ghostPlant = new Squash(this, 0, 0);
+                        break;
+                    case "Threepeater":
+                        draggedPlant = new Threepeater(this, mouseX, mouseY);
+                        ghostPlant = new Threepeater(this, 0, 0);
                         break;
                 }
             } else {
