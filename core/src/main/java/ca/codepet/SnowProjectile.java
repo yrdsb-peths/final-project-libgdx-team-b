@@ -1,5 +1,6 @@
 package ca.codepet;
 
+import ca.codepet.Plants.Projectile;
 import ca.codepet.Zombies.Zombie;
 
 public class SnowProjectile extends Projectile {

@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
 import ca.codepet.SnowProjectile;
-import ca.codepet.ShooterPlant;
+import ca.codepet.Plants.ShooterPlant;
 
 public class SnowPea extends ShooterPlant {
     static int IDLE_FRAMES = 8;
