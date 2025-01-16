@@ -55,7 +55,7 @@ public class DayWorld implements Screen {
     final private int LAWN_TILEX = 56;
     final private int LAWN_TILEY = 416;
 
-    private static final float SUN_SPAWN_RATE = 7f; // seconds
+    private static final float SUN_SPAWN_RATE = 5f; // seconds
     private static final float END_GAME_TIMER = 5f; // seconds
     private static final float GAME_OVER_DELAY = 5f; // seconds
     private static final float ZOMBIE_DISPOSE_DELAY = 7f;
