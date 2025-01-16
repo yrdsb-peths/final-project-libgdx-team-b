@@ -532,6 +532,7 @@ public class DayWorld implements Screen {
                                 if (mine.isArmed() && !mine.hasExploded()) {
                                     mine.explode();
                                     zombie.damage(mine.getExplosionDamage());
+                                    continue;
                                 } else
                                     doAttack = true;
                             } else if (!(plant instanceof Spikeweed)) // Handle Spikeweed
@@ -683,7 +684,7 @@ public class DayWorld implements Screen {
     }
 
     private boolean checkCollision(Collidable left, Collidable right) {
-        return (left.getRow() == right.getRow()) && (left.getX() + left.getWidth()) > right.getX();
+        return (left.getRow() == right.getRow()) && (left.getX() + left.getWidth()) > right.getX() && left.getX() < (right.getX() + right.getWidth());
     }
 
     public void addSun(Sun sun) {

@@ -10,14 +10,14 @@ import ca.codepet.worlds.DayWorld;
 public class SnowPea extends ShooterPlant {
     static int IDLE_FRAMES = 8;
     static int ATTACK_FRAMES = 3;
-    static int DEFAULT_HEALTH = 300;
+    static int DEFAULT_HEALTH = 600;
     static float DEFAULT_ATTACK_COOLDOWN = 1.5f;
     static int DEFAULT_DAMAGE = 20;
     public static final String PROJECTILE_ATLAS = "projectiles/snowpeaproj.atlas";
     public static final float PROJECTILE_SCALE = 3f;
 
     public SnowPea(DayWorld world, float x, float y) {
-        super(world, x, y);
+        super(world, x, y, DEFAULT_HEALTH);
 
         setScale(2.2f);
 

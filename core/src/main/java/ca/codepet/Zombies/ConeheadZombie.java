@@ -8,20 +8,18 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
 import ca.codepet.Plants.Plant;
 import ca.codepet.worlds.DayWorld;
-import ca.codepet.Zombies.Zombie;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ConeheadZombie extends Zombie {
     static int WALK_FRAMES = 7;
     static int ATTACK_FRAMES = 7;
     static int FRAMES_DEATH = 9;
 
-    static int STAGE_1_HP = 570;
-    static int STAGE_2_HP = 380;
-    static int STAGE_3_HP = 190;
+    static int STAGE_1_HP = 130;
+    static int STAGE_2_HP = 130;
+    static int STAGE_3_HP = 110;
+    static int STAGE_4_HP = 270;
 
-    static int TOTAL_HP = STAGE_1_HP + STAGE_2_HP + STAGE_3_HP;
+    static int TOTAL_HP = STAGE_1_HP + STAGE_2_HP + STAGE_3_HP + STAGE_4_HP;
 
     static float FRAME_DURATION = 0.7f;
     
@@ -69,6 +67,16 @@ public class ConeheadZombie extends Zombie {
         Animation<AtlasRegion> walkanim3 = new Animation<>(FRAME_DURATION, walk3);
         animations.put("walk3", walkanim3);
 
+        // Load walk animation 4
+        TextureAtlas walkAtlas4 = new TextureAtlas(Gdx.files.internal("zombies/basicZombie/BasicZombieWalk.atlas"));
+        AtlasRegion[] walk4 = new AtlasRegion[WALK_FRAMES];
+        for (int i = 0; i < WALK_FRAMES; i++) {
+            walk4[i] = walkAtlas4.findRegion("tile00" + i);
+        }
+        Animation<AtlasRegion> walkanim4 = new Animation<>(FRAME_DURATION, walk);
+        animations.put("walk4", walkanim4);
+
+
         // Load attack animation
         TextureAtlas attackAtlas = new TextureAtlas(Gdx.files.internal("zombies/coneZombie/conehead-attack-1.atlas"));
         AtlasRegion[] attack = new AtlasRegion[ATTACK_FRAMES];
@@ -95,6 +103,15 @@ public class ConeheadZombie extends Zombie {
         }
         Animation<AtlasRegion> attackanim3 = new Animation<>(FRAME_DURATION, attack3);
         animations.put("attack3", attackanim3);
+
+        // Load attack animation 4
+        TextureAtlas attackAtlas4 = new TextureAtlas(Gdx.files.internal("zombies/basicZombie/BasicZombieAttack.atlas"));
+        AtlasRegion[] attack4 = new AtlasRegion[ATTACK_FRAMES];
+        for (int i = 0; i < ATTACK_FRAMES; i++) {
+            attack4[i] = attackAtlas4.findRegion("tile00" + i);
+        }
+        Animation<AtlasRegion> attackanim4 = new Animation<>(FRAME_DURATION, attack4);
+        animations.put("attack4", attackanim4);
 
         // Fix death animation with proper size and timing
         TextureAtlas deathAtlas = new TextureAtlas(Gdx.files.internal("zombies/zombie-death.atlas"));
@@ -126,12 +143,14 @@ public class ConeheadZombie extends Zombie {
 
 
         String baseAnim = isAttacking ? "attack" : "walk";
-        if (hp > STAGE_1_HP + STAGE_2_HP) {
+        if (hp > STAGE_1_HP + STAGE_2_HP + STAGE_3_HP) {
             currentAnimation = baseAnim + "1";
-        } else if (hp > STAGE_1_HP) {
+        } else if (hp > STAGE_1_HP + STAGE_2_HP) {
             currentAnimation = baseAnim + "2";
-        } else {
+        } else if (hp > STAGE_1_HP) {
             currentAnimation = baseAnim + "3";
+        } else {
+            currentAnimation = baseAnim + "4";
         }
     }
 

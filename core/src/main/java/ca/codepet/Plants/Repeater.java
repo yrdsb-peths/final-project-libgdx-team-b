@@ -10,7 +10,7 @@ import ca.codepet.worlds.DayWorld;
 public class Repeater extends ShooterPlant {
     static int IDLE_FRAMES = 5;
     static int ATTACK_FRAMES = 2;
-    static int DEFAULT_HEALTH = 300;
+    static int DEFAULT_HEALTH = 600;
     static float DEFAULT_ATTACK_COOLDOWN = 1.5f;
     static int DEFAULT_DAMAGE = 20;
 
@@ -21,7 +21,7 @@ public class Repeater extends ShooterPlant {
     private float secondShotTimer = 0;
 
     public Repeater(DayWorld world, float x, float y) {
-        super(world, x, y);
+        super(world, x, y, DEFAULT_HEALTH);
 
         setScale(2.2f);
 

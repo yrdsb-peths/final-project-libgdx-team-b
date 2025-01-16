@@ -11,7 +11,7 @@ import ca.codepet.Zombies.Zombie;
 import ca.codepet.worlds.DayWorld;
 
 public class Spikeweed extends Plant {
-    private static final int DEFAULT_HEALTH = 300;
+    private static final int DEFAULT_HEALTH = 600;
 
     private static final float DEFAULT_ATTACK_COOLDOWN = 1f; 
     private static final int DEFAULT_DAMAGE = 10;

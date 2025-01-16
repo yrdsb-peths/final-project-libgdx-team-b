@@ -10,12 +10,12 @@ import ca.codepet.worlds.DayWorld;
 
 public class Sunflower extends Plant {
     static int IDLE_FRAMES = 6;
-    private float sunProductionTimer = 0;
-    private static final float SUN_PRODUCTION_INTERVAL = 24f; // Produces sun every 24 seconds
-    private DayWorld world;
+    private float sunProductionTimer = INITIAL_SUN_PRODUCTION_INTERVAL;
+    private static final float INITIAL_SUN_PRODUCTION_INTERVAL = 8f;
+    private static final float AFTER_SUN_PRODUCTION_INTERVAL = 24f;
 
     public Sunflower(DayWorld world, float x, float y) {
-        super(world, x, y, 300);
+        super(world, x, y, 600);
         this.scale = 1.1f; // Make sunflower 50% bigger
         TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("plants/sunflower/Sunflower.atlas"));
         AtlasRegion[] idle = new AtlasRegion[IDLE_FRAMES];
@@ -42,16 +42,16 @@ public class Sunflower extends Plant {
         super.update(delta);
         imageIndex += delta;
 
-        sunProductionTimer += delta;
+        sunProductionTimer = Math.max(0, sunProductionTimer - delta);
 
-        if (sunProductionTimer >= SUN_PRODUCTION_INTERVAL) {
+        if (sunProductionTimer <= 0) {
             produceSun();
-            sunProductionTimer = 0;
+            sunProductionTimer = AFTER_SUN_PRODUCTION_INTERVAL;
         }
     }
 
     private void produceSun() {
-        if (world != null) {
+        if (getWorld() != null) {
             // Generate random angle in radians
             float angle = (float) (Math.random() * 2 * Math.PI);
             // Generate random radius between 0 and 50
@@ -61,7 +61,7 @@ public class Sunflower extends Plant {
             float offsetY = radius * (float) Math.sin(angle);
 
             Sun sun = new Sun(x + offsetX, y + offsetY);
-            world.addSun(sun);
+            getWorld().addSun(sun);
         }
     }
 }
