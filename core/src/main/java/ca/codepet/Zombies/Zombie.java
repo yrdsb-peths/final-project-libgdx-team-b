@@ -60,6 +60,9 @@ public abstract class Zombie implements Collidable {
     public static final float SQUASH_DURATION = 0.5f;
     private float squashTimer = 0;
 
+    private boolean isDying = false;
+    private boolean isDead = false;
+
     public Zombie(DayWorld theWorld, Texture zombieTexture, int hp, int damage, float atkDelay) {
         this.hp = hp;
         this.damage = damage;
@@ -101,7 +104,8 @@ public abstract class Zombie implements Collidable {
     public TextureRegion getTextureRegion() {
         Animation<AtlasRegion> currentAnim = animations.get(currentAnimation);
         if (currentAnim != null) {
-            return currentAnim.getKeyFrame(stateTime, true);
+            boolean looping = !currentAnimation.equals("death");  // Don't loop death animation
+            return currentAnim.getKeyFrame(stateTime, looping);
         }
         return textureRegion; // Fallback to static texture if no animation
     }
@@ -119,10 +123,11 @@ public abstract class Zombie implements Collidable {
     }
 
     public void move() {
-        x -= 0.5; // Slower movement speed
-        // Add bounds checking for column calculation
-        int newCol = (int) (x / world.getLawnTileWidth()) - 1;
-        col = Math.min(Math.max(newCol, 0), 8); // Clamp between 0 and 8
+        if (!isDying) {  // Only move if not dying
+            x -= 0.5;
+            int newCol = (int) (x / world.getLawnTileWidth()) - 1;
+            col = Math.min(Math.max(newCol, 0), 8);
+        }
     }
 
     public boolean hasReachedHouse() {
@@ -131,9 +136,22 @@ public abstract class Zombie implements Collidable {
 
     public void update(float delta) {
         attackTimer += delta;
-        stateTime += delta; // Update animation state time
+        stateTime += delta;
 
-        if (isSquashed) {
+        if (isDying) {
+            Animation<AtlasRegion> deathAnim = animations.get("death");
+            if (deathAnim != null) {
+                System.out.println("Death animation frame: " + deathAnim.getKeyFrameIndex(stateTime) + 
+                                 " Time: " + stateTime + 
+                                 " Is finished: " + deathAnim.isAnimationFinished(stateTime));
+                
+                if (deathAnim.isAnimationFinished(stateTime)) {
+                    isDead = true;
+                    world.removeZombie(this);
+                    return;
+                }
+            }
+        } else if (isSquashed) {
             squashTimer += delta;
             rotation = Math.min(90, squashTimer * (90 / SQUASH_DURATION));
             scaleY = Math.max(0.3f, 1 - (squashTimer / SQUASH_DURATION));
@@ -144,14 +162,16 @@ public abstract class Zombie implements Collidable {
                 groanTimer = 0f;
             }
         }
+
+        groanTimer += delta;
+        if (groanTimer >= GROAN_INTERVAL) {
+            playGroanSound();
+            groanTimer = 0f;
+        }
     }
 
     public boolean canAttack() {
-        if (attackTimer >= atkDelay) {
-            attackTimer = 0;
-            return true;
-        }
-        return false;
+        return !isDying && attackTimer >= atkDelay;  // Don't attack while dying
     }
 
     public void attack(Plant plant) {
@@ -172,9 +192,20 @@ public abstract class Zombie implements Collidable {
 
     public void damage(int dmg) {
         hp -= dmg;
-        if (hp <= 0) {
-            world.removeZombie(this);
+        if (hp <= 0 && !isDying) {
+            isDying = true;
+            currentAnimation = "death";
+            stateTime = 0;
+            // Don't remove zombie here anymore, let animation complete first
         }
+    }
+
+    public boolean isDying() {
+        return isDying;
+    }
+
+    public boolean isDead() {
+        return isDead;
     }
 
     public int getRow() {
@@ -227,4 +258,5 @@ public abstract class Zombie implements Collidable {
     public Rectangle getBounds() {
         return new Rectangle(x + xOffset, y, width/2, height); // Adjust collision box
     }
+
 }

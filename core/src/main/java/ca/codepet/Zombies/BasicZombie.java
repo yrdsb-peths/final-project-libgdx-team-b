@@ -16,6 +16,7 @@ import ca.codepet.worlds.DayWorld;
 public class BasicZombie extends Zombie {
     static int WALK_FRAMES = 7;  // Based on the atlas file which has 7 frames (tile000 to tile006)
     static int ATTACK_FRAMES = 7;
+    static int DEATH_FRAMES = 8;
 
     public BasicZombie(DayWorld theWorld) {
         super(theWorld, new Texture("images/zombie.png"), 100, 10, 2.0f);
@@ -37,6 +38,15 @@ public class BasicZombie extends Zombie {
         }
         Animation<AtlasRegion> attackanim = new Animation<>(0.2f, attack);
         animations.put("attack", attackanim);
+
+        // Load death animation
+        TextureAtlas deathAtlas = new TextureAtlas(Gdx.files.internal("zombies/zombie-death.atlas"));
+        AtlasRegion[] death = new AtlasRegion[DEATH_FRAMES];
+        for (int i = 1; i <= DEATH_FRAMES; i++) {
+            death[i-1] = deathAtlas.findRegion("138563-" + i);
+        }
+        Animation<AtlasRegion> deathanim = new Animation<>(0.5f, death); // Increased frame duration to 0.5s
+        animations.put("death", deathanim);
         
         currentAnimation = "walk";
     }

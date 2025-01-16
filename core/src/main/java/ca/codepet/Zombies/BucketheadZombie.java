@@ -12,6 +12,7 @@ import ca.codepet.worlds.DayWorld;
 public class BucketheadZombie extends Zombie {
     static int WALK_FRAMES = 7;
     static int ATTACK_FRAMES = 7;
+    static int DEATH_FRAMES = 8;
 
     public BucketheadZombie(DayWorld theWorld) {
         super(theWorld, new Texture("images/bucketHeadZombie.png"), 300, 50, 2.0f);
@@ -33,6 +34,15 @@ public class BucketheadZombie extends Zombie {
         }
         Animation<AtlasRegion> attackanim = new Animation<>(0.2f, attack);
         animations.put("attack", attackanim);
+
+        // Load death animation
+        TextureAtlas deathAtlas = new TextureAtlas(Gdx.files.internal("zombies/zombie-death.atlas"));
+        AtlasRegion[] death = new AtlasRegion[DEATH_FRAMES];
+        for (int i = 1; i <= DEATH_FRAMES; i++) {
+            death[i-1] = deathAtlas.findRegion("138563-" + i);
+        }
+        Animation<AtlasRegion> deathanim = new Animation<>(0.2f, death);
+        animations.put("death", deathanim);
         
         currentAnimation = "walk";
     }
