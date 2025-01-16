@@ -1,0 +1,19 @@
+threepeater-attack.png
+size: 79, 36
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tile008
+  rotate: true
+  xy: 41, 1
+  size: 34, 37
+  orig: 34, 37
+  offset: 0, 0
+  index: -1
+tile009
+  rotate: false
+  xy: 1, 1
+  size: 38, 34
+  orig: 38, 34
+  offset: 0, 0
+  index: -1
