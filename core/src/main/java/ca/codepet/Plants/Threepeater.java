@@ -18,6 +18,10 @@ public class Threepeater extends ShooterPlant {
     public static final String PROJECTILE_ATLAS = "projectiles/pea.atlas";
     public static final float PROJECTILE_SCALE = 3f;
 
+    private boolean firedShot = false;
+    private float shotDelay = 0.1f;
+    private float shotTimer = 0;
+
     public Threepeater(DayWorld world, float x, float y) {
         super(world, x, y);
 
@@ -53,15 +57,45 @@ public class Threepeater extends ShooterPlant {
     }
 
     @Override
+    public void update(float delta) {
+        super.update(delta);
+        if (isAttacking && !firedShot) {
+            shotTimer += delta;
+            if (shotTimer >= shotDelay) {
+                // Create three projectiles, one for each row, using the plant's current row as center
+                for (int i = -1; i <= 1; i++) {
+                    int targetRow = currentRow + i;
+                    if (targetRow >= 0 && targetRow < getWorld().getLawnHeight()) {
+                        float rowOffset = i * getWorld().getLawnTileHeight();
+                        Projectile proj = new Projectile(
+                            x + 30, 
+                            y + rowOffset, // Adjust Y position based on row offset
+                            DEFAULT_DAMAGE, 
+                            PROJECTILE_ATLAS, 
+                            PROJECTILE_SCALE, 
+                            targetRow    // Important: use the correct target row for each projectile
+                        );
+                        projectiles.add(proj);
+                    }
+                }
+                firedShot = true;
+            }
+        }
+    }
+
+    @Override
     public void tryAttack(Array<Zombie> zombies, int row) {
         if (attackTimer >= attackCooldown) {
+            // Store the current row before checking for zombies
+            currentRow = row;
+            
             // Check all three rows for zombies (above, current, and below)
             boolean zombieFound = false;
             for (int i = -1; i <= 1; i++) {
                 int targetRow = row + i;
                 if (targetRow >= 0 && targetRow < getWorld().getLawnHeight()) {
                     for (Zombie zombie : zombies) {
-                        if (zombie.getRow() == targetRow && !zombie.isDying() && !zombie.isSquashed()) {
+                        if (zombie.getRow() == targetRow && !zombie.isDying() && !zombie.isSquashed() && zombie.getX() > x) {
                             zombieFound = true;
                             break;
                         }
@@ -70,18 +104,24 @@ public class Threepeater extends ShooterPlant {
             }
 
             if (zombieFound) {
-                // Create three projectiles, one for each row
-                for (int i = -1; i <= 1; i++) {
-                    int targetRow = row + i;
-                    if (targetRow >= 0 && targetRow < getWorld().getLawnHeight()) {
-                        Projectile proj = new Projectile(x + 30, y + 15 + (i * getWorld().getLawnTileHeight()),
-                                DEFAULT_DAMAGE, PROJECTILE_ATLAS, PROJECTILE_SCALE, targetRow);
-                        projectiles.add(proj);
-                    }
-                }
-                setAnimation("attack");
+                startAttack();
                 attackTimer = 0;
             }
         }
+    }
+
+    @Override
+    public void startAttack() {
+        super.startAttack();
+        setAnimation("attack");
+        firedShot = false;
+        shotTimer = 0;
+    }
+
+    @Override
+    public void stopAttack() {
+        super.stopAttack();
+        firedShot = false;
+        shotTimer = 0;
     }
 }
