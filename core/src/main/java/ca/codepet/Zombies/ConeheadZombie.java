@@ -73,7 +73,7 @@ public class ConeheadZombie extends Zombie {
         for (int i = 0; i < WALK_FRAMES; i++) {
             walk4[i] = walkAtlas4.findRegion("tile00" + i);
         }
-        Animation<AtlasRegion> walkanim4 = new Animation<>(FRAME_DURATION, walk);
+        Animation<AtlasRegion> walkanim4 = new Animation<>(FRAME_DURATION, walk4);
         animations.put("walk4", walkanim4);
 
 
