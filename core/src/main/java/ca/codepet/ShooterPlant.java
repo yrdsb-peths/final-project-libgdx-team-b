@@ -1,5 +1,7 @@
 package ca.codepet;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import ca.codepet.Zombies.Zombie;
@@ -10,6 +12,13 @@ public abstract class ShooterPlant extends Plant {
     protected float attackTimer = 0;
     protected float attackCooldown = 1.5f;
     protected int currentRow;
+
+    private final Sound[] shootSounds = {
+        Gdx.audio.newSound(Gdx.files.internal("sounds/shootSound.ogg")),
+        Gdx.audio.newSound(Gdx.files.internal("sounds/shootSound2.ogg"))
+    };
+
+    
 
     public ShooterPlant(float x, float y) {
         super(x, y);
@@ -67,6 +76,9 @@ public abstract class ShooterPlant extends Plant {
                 startAttack();
                 attackTimer = 0;
                 Projectile proj = createProjectile();
+
+                shootSounds[rand.nextInt(shootSounds.length)].play(0.5f);
+
                 if (proj != null) {
                     projectiles.add(proj);
                 }
@@ -83,6 +95,10 @@ public abstract class ShooterPlant extends Plant {
             proj.dispose();
         }
         projectiles.clear();
+
+        for (Sound sound : shootSounds) {
+            sound.dispose();
+        }
     }
 
     protected abstract Projectile createProjectile();
