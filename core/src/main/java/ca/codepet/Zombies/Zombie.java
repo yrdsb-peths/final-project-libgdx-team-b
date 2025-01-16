@@ -23,7 +23,7 @@ import ca.codepet.worlds.DayWorld;
 
 public abstract class Zombie implements Collidable {
 
-    private int hp;
+    protected int hp;
     private float x = Gdx.graphics.getWidth();
     private int y;
 
@@ -72,6 +72,8 @@ public abstract class Zombie implements Collidable {
     private long deathSoundId;
 
     private static final float MOVE_SPEED = 30f; 
+
+    protected boolean isAttacking;
 
     public Zombie(DayWorld theWorld, Texture zombieTexture, int hp, int damage, float atkDelay) {
         this.hp = hp;

@@ -50,10 +50,16 @@ public class WaveManager {
     private void createWaveZombies() {
         int baseZombies = 3 + (currentWave / 2);
         int bucketheadZombies = currentWave / 3;
+        int coneheadZombies = currentWave / 2; // Add coneheads
 
         // Add basic zombies
         for (int i = 0; i < baseZombies; i++) {
             waveZombies.add(new BasicZombie(world));
+        }
+
+        // Add conehead zombies
+        for (int i = 0; i < coneheadZombies; i++) {
+            waveZombies.add(new ConeheadZombie(world));
         }
 
         // Add buckethead zombies
