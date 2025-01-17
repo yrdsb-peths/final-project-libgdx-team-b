@@ -71,7 +71,7 @@ public class DayWorld implements Screen {
     // Add array to track suns
     private Array<Sun> suns = new Array<>();
 
-    private int sunBalance = 0;
+    private int sunBalance = 1000;
 
     private final GameRoot game;
 

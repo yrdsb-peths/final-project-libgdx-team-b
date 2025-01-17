@@ -62,18 +62,18 @@ public class Threepeater extends ShooterPlant {
         if (isAttacking && !firedShot) {
             shotTimer += delta;
             if (shotTimer >= shotDelay) {
-                // Create three projectiles, one for each row, using the plant's current row as center
-                for (int i = -1; i <= 1; i++) {
+                // Create three projectiles, one for each row, but invert the row offset
+                for (int i = 1; i >= -1; i--) {  // Changed iteration order
                     int targetRow = currentRow + i;
                     if (targetRow >= 0 && targetRow < getWorld().getLawnHeight()) {
-                        float rowOffset = i * getWorld().getLawnTileHeight();
+                        float rowOffset = -i * getWorld().getLawnTileHeight();  // Negated the offset
                         Projectile proj = new Projectile(
                             x + 30, 
-                            y + rowOffset, // Adjust Y position based on row offset
+                            y + rowOffset,
                             DEFAULT_DAMAGE, 
                             PROJECTILE_ATLAS, 
                             PROJECTILE_SCALE, 
-                            targetRow    // Important: use the correct target row for each projectile
+                            targetRow
                         );
                         projectiles.add(proj);
                     }
