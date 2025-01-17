@@ -7,6 +7,10 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
 import ca.codepet.worlds.DayWorld;
 
+/**
+ * The SnowPea class for the SnowPea plant.
+ * Shoots snow peas at zombies.
+ */
 public class SnowPea extends ShooterPlant {
     static int IDLE_FRAMES = 8;
     static int ATTACK_FRAMES = 3;
@@ -16,6 +20,13 @@ public class SnowPea extends ShooterPlant {
     public static final String PROJECTILE_ATLAS = "projectiles/snowpeaproj.atlas";
     public static final float PROJECTILE_SCALE = 3f;
 
+    /**
+     * Constructor for the SnowPea class.
+     * 
+     * @param world The world the SnowPea is in
+     * @param x The x position of the SnowPea
+     * @param y The y position of the SnowPea
+     */
     public SnowPea(DayWorld world, float x, float y) {
         super(world, x, y, DEFAULT_HEALTH);
 
@@ -48,6 +59,10 @@ public class SnowPea extends ShooterPlant {
         setAnimation("idle"); // Set initial animation
     }
 
+    /**
+     * Creates a snow pea projectile.
+     * @return The snow pea projectile
+     */
     @Override
     protected SnowProjectile createProjectile() {
         try {

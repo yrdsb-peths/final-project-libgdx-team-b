@@ -13,6 +13,10 @@ import com.badlogic.gdx.utils.Array;
 import ca.codepet.Zombies.Zombie;
 import ca.codepet.worlds.DayWorld;
 
+/**
+ * The Squash class for the Squash plant.
+ * Squashes zombies that come close to it.
+ */
 public class Squash extends Plant {
     static int IDLE_FRAMES = 4;
     static int ATTACK_FRAMES = 4;
@@ -50,6 +54,12 @@ public class Squash extends Plant {
             Gdx.audio.newSound(Gdx.files.internal("sounds/squash_hmm2.ogg"))
     };
 
+    /**
+     * Constructor for the Squash class.
+     * @param world The world the Squash is in
+     * @param x The x position of the Squash
+     * @param y The y position of the Squash
+     */
     public Squash(DayWorld world, float x, float y) {
         super(world, x, y, DEFAULT_HEALTH);
         setScale(2.5f);
@@ -75,6 +85,10 @@ public class Squash extends Plant {
         setAnimation("idle");
     }
 
+    /**
+     * Update the Squash plant. Check if it is attacking and if it is time to squash the zombie.
+     * @param delta The time since the last frame in seconds
+     */
     @Override
     public void update(float delta) {
         super.update(delta);
@@ -132,6 +146,9 @@ public class Squash extends Plant {
         }
     }
 
+    /**
+     * Squash the zombie.
+     */
     private void squash() {
         Array<Zombie> zombies = getWorld().getZombies();
         
@@ -149,11 +166,18 @@ public class Squash extends Plant {
         health = 0;
     }
 
-    // Add setter for row
+    /**
+     * Set the row the Squash is in.
+     * @param row The row
+     */
     public void setRow(int row) {
         this.row = row;
     }
 
+    /**
+     * Render the Squash plant.
+     * @param batch The SpriteBatch to render to
+     */
     @Override
     public void render(SpriteBatch batch) {
         super.render(batch);

@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
+/**
+ * The Shovel class for the shovel in the game.
+ */
 public class Shovel {
     private Texture iconTexture;
     private Texture dragTexture;
@@ -16,6 +19,11 @@ public class Shovel {
     private static final float SCALE = 0.5f; // Add scale constant
     private final Sound shovelSound;
 
+    /**
+     * Constructor for the Shovel class.
+     * @param x The x position of the shovel
+     * @param y The y position of the shovel
+     */
     public Shovel(float x, float y) {
         this.x = x;
         this.y = y;
@@ -26,6 +34,9 @@ public class Shovel {
         shovelSound = Gdx.audio.newSound(Gdx.files.internal("sounds/shovel.ogg"));
     }
 
+    /**
+     * Render the shovel.
+     */
     public void render() {
         batch.begin();
         if (isDragging) {
@@ -45,22 +56,42 @@ public class Shovel {
         batch.end();
     }
 
+    /**
+     * Check if the shovel was clicked.
+     * @param touchX The x position of the touch
+     * @param touchY The y position of the touch
+     * @return True if the shovel was clicked
+     */
     public boolean isClicked(float touchX, float touchY) {
         return bounds.contains(touchX, touchY);
     }
 
+    /**
+     * Set the dragging state of the shovel.
+     * @param dragging The dragging state of the shovel
+     */
     public void setDragging(boolean dragging) {
         isDragging = dragging;
     }
 
+    /**
+     * Get the dragging state of the shovel.
+     * @return The dragging state of the shovel
+     */
     public boolean isDragging() {
         return isDragging;
     }
 
+    /**
+     * Play the shovel sound.
+     */
     public void playShovelSound() {
         shovelSound.play(0.5f);
     }
 
+    /**
+     * Dispose of the shovel.
+     */
     public void dispose() {
         iconTexture.dispose();
         dragTexture.dispose();

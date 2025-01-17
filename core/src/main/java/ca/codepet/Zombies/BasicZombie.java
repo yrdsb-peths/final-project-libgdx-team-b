@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import ca.codepet.Plants.Plant;
 import ca.codepet.worlds.DayWorld;
 
+
 public class BasicZombie extends Zombie {
     static int WALK_FRAMES = 7; // Based on the atlas file which has 7 frames (tile000 to tile006)
     static int ATTACK_FRAMES = 7;

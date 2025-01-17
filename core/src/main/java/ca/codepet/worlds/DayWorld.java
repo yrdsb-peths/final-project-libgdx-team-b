@@ -37,6 +37,9 @@ import ca.codepet.ui.PlantBar;
 import ca.codepet.ui.PlantPicker;
 import ca.codepet.ui.Shovel;
 
+/**
+ * The DayWorld class for the day world in the game.
+ */
 public class DayWorld implements Screen {
     private Random rand = new Random();
 
@@ -109,10 +112,17 @@ public class DayWorld implements Screen {
 
     private BitmapFont waveFont;
 
+    /**
+     * Constructor for the DayWorld class.
+     * @param game The game root
+     */
     public DayWorld(GameRoot game) {
         this.game = game;
     }
 
+    /**
+     * Show the DayWorld screen.
+     */
     @Override
     public void show() {
 
@@ -157,6 +167,10 @@ public class DayWorld implements Screen {
         generator.dispose();
     }
 
+    /**
+     * Update the DayWorld screen.
+     * @param delta The time since the last frame in seconds
+     */
     @Override
     public void render(float delta) {
         if (gameOverPending) {
@@ -174,6 +188,10 @@ public class DayWorld implements Screen {
         }
     }
 
+    /**
+     * Render the DayWorld screen. Main game logic.
+     * @param delta The time since the last frame in seconds
+     */
     public void renderGame(float delta) {
 
         // Draw the background texture
@@ -375,6 +393,9 @@ public class DayWorld implements Screen {
         }
     }
 
+    /**
+     * Render the lawnmower. Also check for collisions with zombies.
+     */
     private void renderLawnmower() {
         batch.begin();
 
@@ -424,6 +445,10 @@ public class DayWorld implements Screen {
         batch.end();
     }
 
+    /**
+     * Render the zombies. Check when they reach the house.
+     * @param delta The time since the last frame in seconds
+     */
     private void renderZombie(float delta) {
         Array<Zombie> zombiesToRemove = new Array<>();
       
@@ -552,6 +577,10 @@ public class DayWorld implements Screen {
         batch.end();
     }
 
+    /**
+     * Render the suns. Check for collection and spawning.
+     * @param delta The time since the last frame in seconds
+     */
     public void renderSun(float delta) {
         batch.begin();
 
@@ -595,6 +624,9 @@ public class DayWorld implements Screen {
         batch.end();
     }
 
+    /**
+     * Render the shovel. Check for shovel clicks and plant removal.
+     */
     public void renderShovel() {
 
         // After plantBar.render(), add shovel handling
@@ -628,9 +660,19 @@ public class DayWorld implements Screen {
         }
     }
 
+    /**
+     * Add a zombie to the world.
+     * @param zombie The zombie to add
+     */
     public void addZombie(Zombie zombie) {
         zombies.add(zombie);
     }
+
+    /**
+     * Remove a zombie from the world.
+     * @param zombime The zombie to remove
+     * @param delta The time since the last frame in seconds
+     */
     public void removeZombie(Zombie zombime, float delta) {
         zombieDisposeTimer += delta;
         if(zombieDisposeTimer >= ZOMBIE_DISPOSE_DELAY) {
@@ -640,6 +682,10 @@ public class DayWorld implements Screen {
         }
     }
 
+    /**
+     * End the game.
+     * @param delta The time since the last frame in seconds
+     */
     public void gameOver(float delta) {
         if (!loseSoundPlayed) {
             backgroundMusic.stop(); // Stop background music when game over
@@ -673,10 +719,20 @@ public class DayWorld implements Screen {
         batch.end();
     }
 
+    /**
+     * Check for collision between two collidable objects.
+     * @param left The left object
+     * @param right The right object
+     * @return True if the objects collide, false otherwise
+     */
     private boolean checkCollision(Collidable left, Collidable right) {
         return (left.getRow() == right.getRow()) && (left.getX() + left.getWidth()) > right.getX() && left.getX() < (right.getX() + right.getWidth());
     }
 
+    /**
+     * Add a sun to the world.
+     * @param sun The sun to add
+     */
     public void addSun(Sun sun) {
         suns.add(sun);
     }
@@ -701,26 +757,49 @@ public class DayWorld implements Screen {
         // This method is called when another screen replaces this one.
     }
 
+    /**
+     * Get the height of the lawn.
+     * @return The height of the lawn
+     */
     public int getLawnHeight() {
         return LAWN_HEIGHT;
     }
 
+    /**
+     * Get the height of the lawn tiles.
+     * @return The height of the lawn tiles
+     */
     public int getLawnTileHeight() {
         return LAWN_TILEHEIGHT;
     }
 
+    /**
+     * Get the width of the lawn times.
+     * @return The width of the lawn tiles
+     */
     public int getLawnTileWidth() {
         return LAWN_TILEWIDTH;
     }
 
+    /**
+     * Get the y position of the lawn tiles.
+     * @return The y position of the lawn tiles
+     */
     public int getLawnTileY() {
         return LAWN_TILEY;
     }
 
+    /**
+     * Get the game root.
+     * @return The game root
+     */
     public GameRoot getGame() {
         return game;
     }
 
+    /**
+     * Dispose of everything in the world.
+     */
     @Override
     public void dispose() {
         // Destroy screen's assets here.
@@ -766,6 +845,10 @@ public class DayWorld implements Screen {
         waveFont.dispose();
     }
 
+    /**
+     * Update the plants in the world.
+     * @param delta The time since the last frame in seconds
+     */
     private void updatePlants(float delta) {
         for (int y = 0; y < LAWN_HEIGHT; y++) {
             for (int x = 0; x < LAWN_WIDTH; x++) {
@@ -821,7 +904,10 @@ public class DayWorld implements Screen {
         }
     }
 
-    // Add getter for zombies array
+    /**
+     * Get the zombies in the world.
+     * @return The zombies in the world
+     */
     public Array<Zombie> getZombies() {
         return zombies;
     }

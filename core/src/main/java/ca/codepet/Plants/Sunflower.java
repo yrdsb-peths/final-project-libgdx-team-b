@@ -9,6 +9,10 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import ca.codepet.characters.Sun;
 import ca.codepet.worlds.DayWorld;
 
+/**
+ * The Sunflower class for the Sun flower plant.
+ * Produces suns over time.
+ */
 public class Sunflower extends Plant {
     static int IDLE_FRAMES = 6;
     private float sunProductionTimer = INITIAL_SUN_PRODUCTION_INTERVAL;
@@ -17,6 +21,12 @@ public class Sunflower extends Plant {
     private static final float INITIAL_SUN_PRODUCTION_INTERVAL = 8f;
     private static final float AFTER_SUN_PRODUCTION_INTERVAL = 24f;
 
+    /**
+     * Constructor for the Sunflower class.
+     * @param world The world the Sunflower is in
+     * @param x The x position of the Sunflower
+     * @param y The y position of the Sunflower
+     */
     public Sunflower(DayWorld world, float x, float y) {
         super(world, x, y, 600);
         this.scale = 1.1f; // Make sunflower 50% bigger
@@ -40,6 +50,10 @@ public class Sunflower extends Plant {
         setAnimation("idle");
     }
 
+    /**
+     * Update the Sunflower plant. Check if it is time to produce suns.
+     * @param delta The time since the last frame in seconds
+     */
     @Override
     public void update(float delta) {
         super.update(delta);
@@ -61,6 +75,9 @@ public class Sunflower extends Plant {
         }
     }
 
+    /**
+     * Produce a sun at a random location around the Sunflower.
+     */
     private void produceSun() {
         if (getWorld() != null) {
             // Generate random angle in radians
@@ -76,6 +93,10 @@ public class Sunflower extends Plant {
         }
     }
 
+    /**
+     * Render the Sunflower plant. Add a flash effect when producing suns.
+     * @param batch The SpriteBatch to render to
+     */
     @Override
     public void render(SpriteBatch batch) {
         super.render(batch);

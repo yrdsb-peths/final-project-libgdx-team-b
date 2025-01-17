@@ -11,6 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import ca.codepet.GameRoot;
 import ca.codepet.ui.Button;
 
+/**
+ * The Menu class for the main menu of the game.
+ */
 public class Menu implements Screen {
     private final GameRoot game;
 
@@ -36,6 +39,10 @@ public class Menu implements Screen {
     private float buttonClickTimer = 0f;
     private static final float CLICK_SOUND_DURATION = 0.5f; // Adjust this value based on your sound length
 
+    /**
+     * Constructor for the Menu class.
+     * @param game The game object
+     */
     public Menu(GameRoot game) {
 
         System.out.println(buttonX);
@@ -57,6 +64,9 @@ public class Menu implements Screen {
         });
     }
 
+    /**
+     * Show the menu screen.
+     */
     @Override
     public void show() {
         game.assetManager.finishLoading();
@@ -64,6 +74,10 @@ public class Menu implements Screen {
         menuTexture = game.assetManager.get("images/menu.png");
     }
 
+    /**
+     * Render the menu screen.
+     * @param delta The time since the last frame in seconds
+     */
     @Override
     public void render(float delta) {
         if (buttonClicked) {
@@ -103,9 +117,11 @@ public class Menu implements Screen {
         // This method is called when another screen replaces this one.
     }
 
+    /**
+     * Dispose of the menu screen.
+     */
     @Override
     public void dispose() {
-        // Destroy screen's assets here.
         buttonClick.dispose();
         sound.dispose();
         button.dispose();

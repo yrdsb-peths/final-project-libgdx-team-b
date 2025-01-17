@@ -11,6 +11,10 @@ import ca.codepet.Collidable;
 import ca.codepet.Zombies.Zombie;
 import ca.codepet.worlds.DayWorld;
 
+/**
+ * The Spikeweed class for the Spikeweed plant.
+ * Damages zombies that walk over it.
+ */
 public class Spikeweed extends Plant implements Collidable {
     private static final int DEFAULT_HEALTH = 600;
 
@@ -23,6 +27,12 @@ public class Spikeweed extends Plant implements Collidable {
     protected boolean isAttacking = false;
     protected int row = -1;
     
+    /**
+     * Constructor for the Spikeweed class.
+     * @param world The world the Spikeweed is in
+     * @param x The x position of the Spikeweed
+     * @param y The y position of the Spikeweed
+     */
     public Spikeweed(DayWorld world, float x, float y) {
         super(world, x, y, DEFAULT_HEALTH);
         health = DEFAULT_HEALTH;
@@ -44,6 +54,10 @@ public class Spikeweed extends Plant implements Collidable {
         setAnimation("idle");
     }
 
+    /**
+     * Update the Spikeweed plant. Check if it is attacking and if the attack animation is done.
+     * @param delta The time since the last frame in seconds
+     */
     @Override
     public void update(float delta) {
         super.update(delta);
@@ -61,6 +75,10 @@ public class Spikeweed extends Plant implements Collidable {
         }
     }
 
+    /**
+     * Attack a zombie.
+     * @param zombie The zombie to attack
+     */
     public void attack(Zombie zombie) {
         if (attackTimer <= 0f) {
             startAttack = true;
@@ -70,22 +88,41 @@ public class Spikeweed extends Plant implements Collidable {
         }
     }
 
+    /**
+     * Get the x position of the Spikeweed.
+     * @return The x position
+     */
     public float getX() {
         return x - COLLIDE_MARGIN;
     }
 
+    /**
+     * Get the width of the Spikeweed.
+     * @return The width
+     */
     public float getWidth() {
         return getWorld().getLawnTileWidth() + COLLIDE_MARGIN * 2;
     }
 
+    /**
+     * Get the row the Spikeweed is in.
+     * @return The row
+     */
     public int getRow() {
         return row;
     }
     
+    /**
+     * Set the row the Spikeweed is in.
+     * @param row The row
+     */
     public void setRow(int row) {
         this.row = row;
     }
 
+    /**
+     * Dispose of the Spikeweed.
+     */
     public void dispose() {
         super.dispose();
     }

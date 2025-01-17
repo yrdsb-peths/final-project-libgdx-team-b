@@ -10,6 +10,9 @@ import com.badlogic.gdx.utils.Array;
 
 import ca.codepet.characters.PlantCard;
 
+/**
+ * Class for the plant picker UI component.
+ */
 public class PlantPicker {
     private Texture pickerTexture;
     private Texture buttonEnabledTexture;
@@ -29,6 +32,10 @@ public class PlantPicker {
 
     private final Sound buttonClickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/buttonClick.ogg"));
 
+    /**
+     * Constructor for the PlantPicker class.
+     * @param plantBar The plant bar to add selected cards to
+     */
     public PlantPicker(PlantBar plantBar) {
         this.plantBar = plantBar;
 
@@ -49,6 +56,9 @@ public class PlantPicker {
         initializePlantCards();
     }
 
+    /**
+     * Initialize the plant cards, all of the plants.
+     */
     private void initializePlantCards() {
         int row = 0;
         int col = 0;
@@ -203,6 +213,9 @@ public class PlantPicker {
         plantCards.add(threepeaterCard);
     }
 
+    /**
+     * Render the plant picker.
+     */
     public void render() {
         float aspectRatio = (float) pickerTexture.getWidth() / pickerTexture.getHeight();
         float newHeight = 500;
@@ -250,6 +263,10 @@ public class PlantPicker {
         }
     }
 
+    /**
+     * Handle the selection of a card.
+     * @param card The card to select
+     */
     private void handleCardSelection(PlantCard card) {
         if (!card.isSelected()) {
             card.setSelected(true);
@@ -263,6 +280,10 @@ public class PlantPicker {
         }
     }
 
+    /**
+     * Return a card to the picker. Used when a card is removed from the plant bar.
+     * @param plantType
+     */
     public void returnCard(String plantType) {
         for (PlantCard card : plantCards) {
             if (card.getPlantType().equals(plantType)) {
@@ -272,10 +293,17 @@ public class PlantPicker {
         }
     }
 
+    /**
+     * Check if the user has finished picking plants.
+     * @return True if the user has finished picking plants
+     */
     public boolean isPicked() {
         return picked;
     }
 
+    /**
+     * Dispose of the plant picker.
+     */
     public void dispose() {
         pickerTexture.dispose();
         buttonEnabledTexture.dispose();

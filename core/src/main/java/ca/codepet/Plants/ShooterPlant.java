@@ -8,6 +8,10 @@ import com.badlogic.gdx.utils.Array;
 import ca.codepet.Zombies.Zombie;
 import ca.codepet.worlds.DayWorld;
 
+/**
+ * The ShooterPlant class for the shooter plants in the game.
+ * Contains the base functionality for all shooter plants.
+ */
 public abstract class ShooterPlant extends Plant {
     protected Array<Projectile> projectiles = new Array<>();
     protected int range = 800; // Shooting range in pixels
@@ -21,10 +25,21 @@ public abstract class ShooterPlant extends Plant {
             Gdx.audio.newSound(Gdx.files.internal("sounds/shootSound2.mp3"))
     };
 
+    /**
+     * Constructor for the ShooterPlant class.
+     * @param world The world the ShooterPlant is in
+     * @param x The x position of the ShooterPlant
+     * @param y The y position of the ShooterPlant
+     * @param health The health of the ShooterPlant
+     */
     public ShooterPlant(DayWorld world, float x, float y, int health) {
         super(world, x, y, health);
     }
 
+    /**
+     * Update the ShooterPlant. Updates the animation and projectiles.
+     * @param delta The time since the last frame in seconds
+     */
     @Override
     public void update(float delta) {
         super.update(delta);
@@ -49,6 +64,10 @@ public abstract class ShooterPlant extends Plant {
         }
     }
 
+    /**
+     * Render the ShooterPlant. Renders the plant and projectiles.
+     * @param batch The SpriteBatch to render to
+     */
     @Override
     public void render(SpriteBatch batch) {
         super.render(batch);
@@ -59,16 +78,27 @@ public abstract class ShooterPlant extends Plant {
         }
     }
 
+    /**
+     * Start the attack animation.
+     */
     public void startAttack() {
         isAttacking = true;
         setAnimationUnique("attack");
     }
 
+    /**
+     * Stop the attack animation.
+     */
     public void stopAttack() {
         isAttacking = false;
         setAnimationUnique("idle");
     }
 
+    /**
+     * Try to attack a zombie in the same row as the plant.
+     * @param zombies The zombies to check for
+     * @param row The row to check for zombies
+     */
     public void tryAttack(Array<Zombie> zombies, int row) {
         this.currentRow = row; // Store current row
         if (attackTimer >= attackCooldown) {
@@ -100,6 +130,9 @@ public abstract class ShooterPlant extends Plant {
         }
     }
 
+    /**
+     * Dispose of the ShooterPlant and its projectiles.
+     */
     @Override
     public void dispose() {
         super.dispose();
@@ -114,8 +147,16 @@ public abstract class ShooterPlant extends Plant {
 
     }
 
+    /**
+     * Create a projectile for the ShooterPlant.
+     * @return The projectile
+     */
     protected abstract Projectile createProjectile();
 
+    /**
+     * Get the projectiles of the ShooterPlant.
+     * @return The projectiles
+     */
     public Array<Projectile> getProjectiles() {
         return projectiles;
     }
