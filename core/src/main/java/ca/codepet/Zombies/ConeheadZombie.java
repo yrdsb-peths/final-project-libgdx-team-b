@@ -26,7 +26,7 @@ public class ConeheadZombie extends Zombie {
     
 
     public ConeheadZombie(DayWorld theWorld) {
-        super(theWorld, new Texture("zombies/coneZombie/ConeheadZombie.png"), TOTAL_HP, 100, 1f, 18.8f);
+        super(theWorld, new Texture("zombies/coneZombie/ConeheadZombie.png"), TOTAL_HP, 0, 100, 1f, 18.8f);
 
         // Adjust scale
 
@@ -185,18 +185,6 @@ public class ConeheadZombie extends Zombie {
         isAttacking = false;
         updateAnimation();
         super.move(delta);
-    }
-
-    @Override
-    public void damage(int dmg) {
-        int oldHp = hp;
-        super.damage(dmg);
-
-        // Check if we crossed a health threshold
-        if ((oldHp > STAGE_1_HP + STAGE_2_HP && hp <= STAGE_1_HP + STAGE_2_HP) ||
-                (oldHp > STAGE_1_HP && hp <= STAGE_1_HP)) {
-            updateAnimation();
-        }
     }
 
     @Override

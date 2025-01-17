@@ -53,7 +53,7 @@ public class Threepeater extends ShooterPlant {
 
     @Override
     protected Projectile createProjectile() {
-        return new Projectile(x + 30, y + 15, DEFAULT_DAMAGE, PROJECTILE_ATLAS, PROJECTILE_SCALE, currentRow);
+        return new Projectile(x + 30, y + 15, DEFAULT_DAMAGE, false, PROJECTILE_ATLAS, PROJECTILE_SCALE, currentRow);
     }
 
     @Override
@@ -71,6 +71,7 @@ public class Threepeater extends ShooterPlant {
                             x + 30, 
                             y + rowOffset, // Adjust Y position based on row offset
                             DEFAULT_DAMAGE, 
+                            false,
                             PROJECTILE_ATLAS, 
                             PROJECTILE_SCALE, 
                             targetRow    // Important: use the correct target row for each projectile

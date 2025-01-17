@@ -52,7 +52,7 @@ public class SnowPea extends ShooterPlant {
     protected SnowProjectile createProjectile() {
         try {
             // Pass the row number to the projectile
-            SnowProjectile proj = new SnowProjectile(x + 30, y + 15, DEFAULT_DAMAGE, PROJECTILE_ATLAS, PROJECTILE_SCALE,
+            SnowProjectile proj = new SnowProjectile(x + 30, y + 15, DEFAULT_DAMAGE, false, PROJECTILE_ATLAS, PROJECTILE_SCALE,
                     currentRow);
             System.out.println("Created peashooter projectile in row: " + currentRow);
             return proj;

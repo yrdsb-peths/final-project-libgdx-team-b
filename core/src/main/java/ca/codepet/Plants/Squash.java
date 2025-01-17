@@ -141,7 +141,7 @@ public class Squash extends Plant {
         for (Zombie zombie : zombies) {
             if (zombie.getRow() == row && !zombie.isSquashed() && !zombie.isDead() 
                 && Math.abs(zombie.getX() - x) < SQUASH_RANGE) {
-                zombie.damage(SQUASH_DAMAGE);
+                zombie.damage(SQUASH_DAMAGE, true);
             }
         }
         

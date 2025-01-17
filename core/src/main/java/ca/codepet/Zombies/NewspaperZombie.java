@@ -25,7 +25,7 @@ public class NewspaperZombie extends Zombie {
     private static final float FAST_SPEED = 25f;
 
     public NewspaperZombie(DayWorld theWorld) {
-        super(theWorld, new Texture("zombies/newspaperZombie/NewspaperZombie.png"), TOTAL_HP, 50, 2.0f, NORMAL_SPEED);
+        super(theWorld, new Texture("zombies/newspaperZombie/NewspaperZombie.png"), TOTAL_HP, 0, 50, 2.0f, NORMAL_SPEED);
 
         // Adjust scale
         setScaleX(0.95f);
