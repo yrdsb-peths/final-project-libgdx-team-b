@@ -14,13 +14,13 @@ public class ScreenDoorZombie extends Zombie {
     static int ATTACK_FRAMES = 7;
     static int FRAMES_DEATH = 9;
 
-    static int STAGE_1_HP = 380; // Screendoor fresh
-    static int STAGE_2_HP = 360; // Screendoor damaged
-    static int STAGE_3_HP = 360; // Screendoor very damaged
-    static int STAGE_4_HP = 270; // Basic zombie form
-    static int STAGE_5_HP = 90; // Basic zombie form
+    static int SHIELD_1_HP = 380; // Screendoor fresh
+    static int SHIELD_2_HP = 360; // Screendoor damaged
+    static int SHIELD_3_HP = 360; // Screendoor very damaged
+    static int STAGE_1_HP = 270; // Basic zombie form
+    static int STAGE_2_HP = 90; // Basic zombie form
 
-    static int TOTAL_HP = STAGE_1_HP + STAGE_2_HP + STAGE_3_HP + STAGE_4_HP + STAGE_5_HP;
+    static int TOTAL_HP = SHIELD_1_HP + SHIELD_2_HP + SHIELD_3_HP + STAGE_1_HP + STAGE_2_HP;
 
     static float FRAME_DURATION = 0.7f;
 
@@ -89,9 +89,9 @@ public class ScreenDoorZombie extends Zombie {
         }
 
         String baseAnim = isAttacking ? "attack" : "walk";
-        if (hp > STAGE_1_HP + STAGE_2_HP + STAGE_3_HP + STAGE_4_HP) {
+        if (hp > SHIELD_2_HP + SHIELD_3_HP + STAGE_1_HP + STAGE_2_HP) {
             currentAnimation = baseAnim + "1";
-        } else if (hp > STAGE_1_HP + STAGE_2_HP + STAGE_3_HP) {
+        } else if (hp > SHIELD_3_HP + STAGE_1_HP + STAGE_2_HP) {
             currentAnimation = baseAnim + "2";
         } else if (hp > STAGE_1_HP + STAGE_2_HP) {
             currentAnimation = baseAnim + "3";

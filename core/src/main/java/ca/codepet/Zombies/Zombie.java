@@ -205,16 +205,13 @@ public abstract class Zombie implements Collidable {
     }
 
     public void update(float delta) {
+        flashTimer = Math.max(0, flashTimer - delta);
         slowTimer = Math.max(0, slowTimer - delta);
         float modDelta = delta;
         if (slowTimer > 0f)
             modDelta /= 2f;
         attackTimer += modDelta;
         stateTime += modDelta; // Update animation state time
-
-        flashTimer = Math.max(0, flashTimer - delta);
-        attackTimer += delta;
-        stateTime += delta; // Update animation state time
 
         // Handle death animation and timing
         if (isDying) {

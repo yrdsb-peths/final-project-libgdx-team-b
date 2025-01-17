@@ -159,15 +159,15 @@ public class BucketheadZombie extends Zombie {
         }
 
         String baseAnim = isAttacking ? "attack" : "walk";
-        if (hp > STAGE_1_HP + STAGE_2_HP + STAGE_3_HP + STAGE_4_HP) {
+        if (hp > STAGE_2_HP + STAGE_3_HP + STAGE_4_HP + STAGE_5_HP) {
             currentAnimation = baseAnim + "1";
-        } else if (hp > STAGE_1_HP + STAGE_2_HP + STAGE_3_HP) {
+        } else if (hp > STAGE_3_HP + STAGE_4_HP + STAGE_5_HP) {
             currentAnimation = baseAnim + "2";
-        } else if (hp > STAGE_1_HP + STAGE_2_HP) {
+        } else if (hp > STAGE_4_HP + STAGE_5_HP) {
             currentAnimation = baseAnim + "3";
-        } else if (hp > STAGE_1_HP) {
-            currentAnimation = baseAnim + "4";
         } else if (hp > STAGE_5_HP) {
+            currentAnimation = baseAnim + "4";
+        } else if (hp > 0) {
             currentAnimation = baseAnim + "5";
         } else {
             currentAnimation = "death";

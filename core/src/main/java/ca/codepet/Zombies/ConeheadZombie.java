@@ -33,10 +33,6 @@ public class ConeheadZombie extends Zombie {
         setScaleX(1f);
         setScaleY(0.9f);
 
-
-        // Initialize hp
-        this.hp = TOTAL_HP;
-
         // Set initial animation state
         currentAnimation = "walk1";
         isAttacking = false;
@@ -162,13 +158,13 @@ public class ConeheadZombie extends Zombie {
 
 
         String baseAnim = isAttacking ? "attack" : "walk";
-        if (hp > STAGE_1_HP + STAGE_2_HP + STAGE_3_HP + STAGE_4_HP) {
+        if (hp > STAGE_2_HP + STAGE_3_HP + STAGE_4_HP + STAGE_5_HP) {
             currentAnimation = baseAnim + "1";
-        } else if (hp > STAGE_1_HP + STAGE_2_HP + STAGE_3_HP) {
+        } else if (hp > STAGE_3_HP + STAGE_4_HP + STAGE_5_HP) {
             currentAnimation = baseAnim + "2";
-        } else if (hp > STAGE_1_HP + STAGE_2_HP) {
+        } else if (hp > STAGE_4_HP + STAGE_5_HP) {
             currentAnimation = baseAnim + "3";
-        } else if (hp > STAGE_1_HP) {
+        } else if (hp > STAGE_5_HP) {
             currentAnimation = baseAnim + "4";
         } else {
             currentAnimation = baseAnim + "5";

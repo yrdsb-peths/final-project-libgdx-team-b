@@ -90,7 +90,7 @@ public class BasicZombie extends Zombie {
         }
 
         String baseAnim = isAttacking ? "attack" : "walk";
-        if (hp > STAGE_1_HP) {
+        if (hp > STAGE_2_HP) {
             currentAnimation = baseAnim + "1";
         } else {
             currentAnimation = baseAnim + "2";
