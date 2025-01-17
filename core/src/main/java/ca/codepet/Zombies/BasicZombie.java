@@ -19,7 +19,7 @@ public class BasicZombie extends Zombie {
     static int STAGE_2_HP = 90;
 
     public BasicZombie(DayWorld theWorld) {
-        super(theWorld, new Texture("zombies/basicZombie/basiczombie-idle-1.png"), 190, 100, 1f, 18.8f);
+        super(theWorld, new Texture("zombies/basicZombie/basiczombie-idle-1.png"), 190, 0, 100, 1f, 18.8f);
 
         // Adjust scale
         setScaleX(0.95f);

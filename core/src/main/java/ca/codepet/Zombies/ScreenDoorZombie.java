@@ -20,12 +20,14 @@ public class ScreenDoorZombie extends Zombie {
     static int STAGE_1_HP = 270; // Basic zombie form
     static int STAGE_2_HP = 90; // Basic zombie form
 
-    static int TOTAL_HP = SHIELD_1_HP + SHIELD_2_HP + SHIELD_3_HP + STAGE_1_HP + STAGE_2_HP;
+    static int TOTAL_HP = STAGE_1_HP + STAGE_2_HP;
+    static int TOTAL_SHIELD = SHIELD_1_HP + SHIELD_2_HP + SHIELD_3_HP;
 
     static float FRAME_DURATION = 0.7f;
 
     public ScreenDoorZombie(DayWorld theWorld) {
-        super(theWorld, new Texture("zombies/screenDoorZombie/ScreenDoorZombie.png"), TOTAL_HP, 100, 1f, 18.8f);
+        super(theWorld, new Texture("zombies/screenDoorZombie/ScreenDoorZombie.png"), TOTAL_HP, TOTAL_SHIELD, 100, 1f, 18.8f);
+        shield = TOTAL_SHIELD;
 
         // Adjust scale
         setScaleX(0.95f);
@@ -89,9 +91,9 @@ public class ScreenDoorZombie extends Zombie {
         }
 
         String baseAnim = isAttacking ? "attack" : "walk";
-        if (hp > SHIELD_2_HP + SHIELD_3_HP + STAGE_1_HP + STAGE_2_HP) {
+        if (shield > SHIELD_2_HP + SHIELD_3_HP) {
             currentAnimation = baseAnim + "1";
-        } else if (hp > SHIELD_3_HP + STAGE_1_HP + STAGE_2_HP) {
+        } else if (shield > SHIELD_3_HP) {
             currentAnimation = baseAnim + "2";
         } else if (hp > STAGE_1_HP + STAGE_2_HP) {
             currentAnimation = baseAnim + "3";

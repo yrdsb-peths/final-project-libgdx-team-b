@@ -521,7 +521,7 @@ public class DayWorld implements Screen {
                                 PotatoMine mine = (PotatoMine) plant;
                                 if (mine.isArmed() && !mine.hasExploded()) {
                                     mine.explode();
-                                    zombie.damage(mine.getExplosionDamage());
+                                    zombie.damage(mine.getExplosionDamage(), true);
                                     continue;
                                 } else
                                     doAttack = true;
@@ -793,7 +793,7 @@ public class DayWorld implements Screen {
                             // Use Collidable interface for collision detection
                             for (Zombie zombie : zombies) {
                                 if (!zombie.isSquashed() && !proj.isHit() && checkCollision(proj, zombie) && !zombie.isDead()) {
-                                    zombie.damage(proj.getDamage());
+                                    zombie.damage(proj.getDamage(), proj.getBypassShield());
                                     proj.hit(zombie);
                                     break;
                                 }

@@ -24,7 +24,7 @@ import ca.codepet.worlds.DayWorld;
 
 public abstract class Zombie implements Collidable {
 
-    protected int hp;
+    protected int hp, shield;
     private float x = Gdx.graphics.getWidth();
     private float y;
 
@@ -96,8 +96,9 @@ public abstract class Zombie implements Collidable {
     private final Sound grassStepSound = Gdx.audio.newSound(Gdx.files.internal("sounds/grassStep.ogg"));
 
 
-    public Zombie(DayWorld theWorld, Texture zombieTexture, int hp, int damage, float atkDelay, float moveSpeed) {
+    public Zombie(DayWorld theWorld, Texture zombieTexture, int hp, int shield, int damage, float atkDelay, float moveSpeed) {
         this.hp = hp;
+        this.shield = shield;
         this.damage = damage;
         this.atkDelay = atkDelay;
         this.moveSpeed = moveSpeed;
@@ -317,11 +318,15 @@ public abstract class Zombie implements Collidable {
         slowTimer = 10f;
     }
 
-    public void damage(int dmg) {
-        hp -= dmg;
+    public void damage(int dmg, boolean bypassShield) {
         flashTimer = 0.2f;
-        if (hp <= 0 && !isDying) {
-            die();
+        if (!bypassShield && shield > 0)
+            shield -= dmg;
+        else {
+            hp -= dmg;
+            if (hp <= 0 && !isDying) {
+                die();
+            }
         }
     }
 

@@ -52,7 +52,7 @@ public class Peashooter extends ShooterPlant {
     protected Projectile createProjectile() {
         try {
             // Pass the row number to the projectile
-            Projectile proj = new Projectile(x + 30, y + 15, DEFAULT_DAMAGE, PROJECTILE_ATLAS, PROJECTILE_SCALE,
+            Projectile proj = new Projectile(x + 30, y + 15, DEFAULT_DAMAGE, false, PROJECTILE_ATLAS, PROJECTILE_SCALE,
                     currentRow);
             return proj;
         } catch (Exception e) {

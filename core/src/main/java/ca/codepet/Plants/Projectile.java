@@ -22,6 +22,7 @@ public class Projectile implements Collidable {
     protected float x, y;
     protected float speed = 300;
     protected int damage;
+    protected boolean bypassShield;
     protected Rectangle bounds;
     protected ObjectMap<String, Animation<AtlasRegion>> animations;
     protected String currentAnimation = "flying";
@@ -42,10 +43,11 @@ public class Projectile implements Collidable {
 
     private final Sound snowPeaSound = Gdx.audio.newSound(Gdx.files.internal("sounds/snow_pea_sparkles.ogg"));
 
-    public Projectile(float x, float y, int damage, String atlasPath, float scale, int row) {
+    public Projectile(float x, float y, int damage, boolean bypassShield, String atlasPath, float scale, int row) {
         this.x = x;
         this.y = y;
         this.damage = damage;
+        this.bypassShield = bypassShield;
         this.scale = scale;
         this.row = row;
         this.bounds = new Rectangle(x, y, 10 * scale, 10 * scale); // Smaller collision box
@@ -130,6 +132,10 @@ public class Projectile implements Collidable {
 
     public int getDamage() {
         return damage;
+    }
+
+    public boolean getBypassShield() {
+        return bypassShield;
     }
 
     public boolean isHit() {

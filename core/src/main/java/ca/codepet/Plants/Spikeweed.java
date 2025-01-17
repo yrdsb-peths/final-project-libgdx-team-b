@@ -66,7 +66,7 @@ public class Spikeweed extends Plant implements Collidable {
             startAttack = true;
             isAttacking = true;
             setAnimationUnique("attack");
-            zombie.damage(DEFAULT_DAMAGE);
+            zombie.damage(DEFAULT_DAMAGE, true);
         }
     }
 
