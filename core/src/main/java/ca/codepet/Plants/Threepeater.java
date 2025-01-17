@@ -9,6 +9,10 @@ import com.badlogic.gdx.utils.Array;
 import ca.codepet.worlds.DayWorld;
 import ca.codepet.Zombies.Zombie;
 
+/**
+ * The Threepeater class for the Threepeater plant.
+ * A plant that shoots peas in three lanes.
+ */
 public class Threepeater extends ShooterPlant {
     static int IDLE_FRAMES = 8;
     static int ATTACK_FRAMES = 2;
@@ -22,6 +26,12 @@ public class Threepeater extends ShooterPlant {
     private float shotDelay = 0.1f;
     private float shotTimer = 0;
 
+    /**
+     * Constructor for the Threepeater class.
+     * @param world The world the Threepeater is in
+     * @param x The x position of the Threepeater
+     * @param y The y position of the Threepeater
+     */
     public Threepeater(DayWorld world, float x, float y) {
         super(world, x, y + 50, DEFAULT_HEALTH);
 
@@ -51,11 +61,19 @@ public class Threepeater extends ShooterPlant {
         setAnimation("idle");
     }
 
+    /**
+     * Create a new projectile for the Threepeater.
+     * @return The new projectile
+     */
     @Override
     protected Projectile createProjectile() {
         return new Projectile(x + 30, y + 15, DEFAULT_DAMAGE, PROJECTILE_ATLAS, PROJECTILE_SCALE, currentRow);
     }
 
+    /**
+     * Update the Threepeater plant. Check if it is attacking and if it is time to fire the three shots.
+     * @param delta The time since the last frame in seconds
+     */
     @Override
     public void update(float delta) {
         super.update(delta);
@@ -83,6 +101,11 @@ public class Threepeater extends ShooterPlant {
         }
     }
 
+    /**
+     * Try to attack a zombie in the current row and the rows above and below.
+     * @param zombies The list of zombies
+     * @param row The row of the plant
+     */
     @Override
     public void tryAttack(Array<Zombie> zombies, int row) {
         if (attackTimer >= attackCooldown) {
@@ -110,6 +133,9 @@ public class Threepeater extends ShooterPlant {
         }
     }
 
+    /**
+     * Start the attack animation and create the first projectile.
+     */
     @Override
     public void startAttack() {
         super.startAttack();
@@ -118,6 +144,9 @@ public class Threepeater extends ShooterPlant {
         shotTimer = 0;
     }
 
+    /**
+     * Stop the attack animation and reset the shot timer.
+     */
     @Override
     public void stopAttack() {
         super.stopAttack();

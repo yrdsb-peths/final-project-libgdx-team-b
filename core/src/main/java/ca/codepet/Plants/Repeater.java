@@ -7,6 +7,10 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
 import ca.codepet.worlds.DayWorld;
 
+/**
+ * The Repeater class for the Repeater plant.
+ * Shoots two peas at zombies.
+ */
 public class Repeater extends ShooterPlant {
     static int IDLE_FRAMES = 5;
     static int ATTACK_FRAMES = 2;
@@ -46,6 +50,10 @@ public class Repeater extends ShooterPlant {
         setAnimation("idle"); // Set initial animation
     }
 
+    /**
+     * Update the Repeater plant. Check if it is attacking and if it is time to fire the second shot.
+     * @param delta The time since the last frame in seconds
+     */
     @Override
     public void update(float delta) {
         super.update(delta);
@@ -61,11 +69,18 @@ public class Repeater extends ShooterPlant {
         }
     }
 
+    /**
+     * Create a projectile for the Repeater.
+     * @return The projectile
+     */
     @Override
     protected Projectile createProjectile() {
         return new Projectile(x + 30, y + 15, DEFAULT_DAMAGE, PROJECTILE_ATLAS, PROJECTILE_SCALE, currentRow);
     }
 
+    /**
+     * Start the attack animation and create the first projectile.
+     */
     @Override
     public void startAttack() {
         super.startAttack();
@@ -78,6 +93,9 @@ public class Repeater extends ShooterPlant {
         secondShotTimer = 0;
     }
 
+    /**
+     * Stop the attack animation and reset the second shot timer.
+     */
     @Override
     public void stopAttack() {
         super.stopAttack();

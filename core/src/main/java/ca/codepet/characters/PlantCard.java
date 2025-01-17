@@ -9,6 +9,11 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.math.Rectangle;
 
+/**
+ * PlantCard class for the plant bar cards.
+ * Each card represents a plant that can be placed in the game.
+ * The card displays the plant's cost, cooldown, and icon.
+ */
 public class PlantCard {
     private static Texture cardBackground;
     private static BitmapFont font;
@@ -30,10 +35,16 @@ public class PlantCard {
     private boolean isAffordable = true;
     private float iconScale = 1.0f; // Add this field
 
-    public PlantCard(TextureRegion texture, int cost, float cooldown, String plantType, float x, float y) {
-        this(texture, cost, cooldown, plantType, x, y, 1.0f);
-    }
-
+    /**
+     * Constructor for PlantCard.
+     * @param texture The texture of the plant card background.
+     * @param cost The cost of the plant.
+     * @param cooldown The cooldown of the plant.
+     * @param plantType The type of plant.
+     * @param x The x-coordinate of the plant card.
+     * @param y The y-coordinate of the plant card.
+     * @param iconScale The scale of the plant icon.
+     */
     public PlantCard(TextureRegion texture, int cost, float cooldown, String plantType, float x, float y,
             float iconScale) {
         if (cardBackground == null) {
@@ -67,58 +78,115 @@ public class PlantCard {
         this.iconScale = iconScale;
     }
 
-    // Add this new constructor
+    /**
+     * Copy constructor for PlantCard.
+     * @param other The PlantCard to copy.
+     * @param x The x-coordinate of the new PlantCard.
+     * @param y The y-coordinate of the new PlantCard.
+     */
     public PlantCard(PlantCard other, float x, float y) {
         this(other.cardTexture, other.cost, other.cooldown, other.plantType, x, y, other.iconScale);
     }
 
-    // Add getter for iconScale
+    /**
+     * Get the scale of the plant icon.
+     * @return The scale of the plant icon.
+     */
     public float getIconScale() {
         return iconScale;
     }
 
+    /**
+     * Check if the coordinates are within the bounds of the card.
+     * @param x The x-coordinate to check.
+     * @param y The y-coordinate to check.
+     * @return True if the coordinates are within the bounds of the card, false otherwise.
+     */
     public boolean contains(float x, float y) {
         return bounds.contains(x, y);
     }
 
+    /**
+     * Set the selected state of the card.
+     * @param selected The new selected state.
+     */
     public void setSelected(boolean selected) {
         isSelected = selected;
     }
 
+    /**
+     * Check if the card is selected.
+     * @return True if the card is selected, false otherwise.
+     */
     public boolean isSelected() {
         return isSelected;
     }
 
+    /**
+     * Set the position of the card.
+     * @param x The new x-coordinate.
+     * @param y The new y-coordinate.
+     */
     public void setPosition(float x, float y) {
         bounds.setPosition(x, y);
     }
 
+    /**
+     * Get the TextureRegion of the card.
+     * @return The card's TextureRegion.
+     */
     public TextureRegion getCardTexture() {
         return cardTexture;
     }
 
+    /**
+     * Get the cost of the plant.
+     * @return The cost of the plant.
+     */
     public int getCost() {
         return cost;
     }
 
+    /**
+     * Get the cooldown of the plant.
+     * @return The cooldown of the plant.
+     */
     public float getCooldown() {
         return cooldown;
     }
 
+    /**
+     * Get the type of plant.
+     * @return The type of plant.
+     */
     public String getPlantType() {
         return plantType;
     }
 
+    /**
+     * Get the bounds of the card.
+     * @return The bounds of the card as a Rectangle.
+     */
     public Rectangle getBounds() {
         return bounds;
     }
 
+    /**
+     * Start the dragging behaviour of the card.
+     * @param mouseX The x-coordinate of the mouse.
+     * @param mouseY The y-coordinate of the mouse.
+     */
     public void startDragging(float mouseX, float mouseY) {
         isDragging = true;
         dragOffsetX = mouseX - bounds.x;
         dragOffsetY = mouseY - bounds.y;
     }
 
+    /**
+     * Update the position of the card while dragging.
+     * @param mouseX The x-coordinate of the mouse.
+     * @param mouseY The y-coordinate of the mouse.
+     */
     public void updateDragPosition(float mouseX, float mouseY) {
         if (isDragging) {
             bounds.x = mouseX - dragOffsetX;
@@ -126,42 +194,76 @@ public class PlantCard {
         }
     }
 
+    /**
+     * Stop the dragging behaviour of the card.
+     */
     public void stopDragging() {
         isDragging = false;
     }
 
+    /**
+     * Check if the card is being dragged.
+     * @return True if the card is being dragged, false otherwise.
+     */
     public boolean isDragging() {
         return isDragging;
     }
 
+    /**
+     * Reset the position of the card to its original position.
+     */
     public void resetPosition() {
         bounds.x = originalX;
         bounds.y = originalY;
     }
 
+    /**
+     * Update the original position of the card.
+     * @param x The new x-coordinate.
+     * @param y The new y-coordinate.
+     */
     public void updateOriginalPosition(float x, float y) {
         this.originalX = x;
         this.originalY = y;
     }
 
+    /**
+     * Check if the card is on cooldown.
+     * @return True if the card is on cooldown, false otherwise.
+     */
     public boolean isOnCooldown() {
         return cooldownTimer > 0;
     }
 
+    /**
+     * Start the cooldown of the card.
+     */
     public void startCooldown() {
         cooldownTimer = cooldown;
     }
 
+    /**
+     * Update the cooldown of the card.
+     * @param delta The time since the last update.
+     */
     public void updateCooldown(float delta) {
         if (cooldownTimer > 0) {
             cooldownTimer = Math.max(0, cooldownTimer - delta);
         }
     }
 
+    /**
+     * Set the affordability of the card.
+     * @param affordable The new affordability of the card.
+     */
     public void setAffordable(boolean affordable) {
         this.isAffordable = affordable;
     }
 
+    /**
+     * Render the card.
+     * @param batch The SpriteBatch to render to.
+     */
     public void render(SpriteBatch batch) {
         float originalR = batch.getColor().r;
         float originalG = batch.getColor().g;
@@ -218,6 +320,9 @@ public class PlantCard {
         font.setColor(originalR, originalG, originalB, originalA);
     }
 
+    /**
+     * Dispose of resources used by PlantCard.
+     */
     public void dispose() {
         if (cardBackground != null) {
             cardBackground.dispose();

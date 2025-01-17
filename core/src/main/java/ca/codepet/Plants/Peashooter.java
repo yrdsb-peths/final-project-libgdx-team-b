@@ -7,6 +7,10 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
 import ca.codepet.worlds.DayWorld;
 
+/**
+ * The Peashooter class for the Peashooter plant.
+ * Shoots peas at zombies.
+ */
 public class Peashooter extends ShooterPlant {
     static int IDLE_FRAMES = 5;
     static int ATTACK_FRAMES = 3;
@@ -16,6 +20,13 @@ public class Peashooter extends ShooterPlant {
     public static final String PROJECTILE_ATLAS = "projectiles/pea.atlas";
     public static final float PROJECTILE_SCALE = 3f;
 
+    /**
+     * Constructor for the Peashooter class.
+     * 
+     * @param world The world the Peashooter is in
+     * @param x The x position of the Peashooter
+     * @param y The y position of the Peashooter
+     */
     public Peashooter(DayWorld world, float x, float y) {
         super(world, x, y, DEFAULT_HEALTH);
 
@@ -48,6 +59,10 @@ public class Peashooter extends ShooterPlant {
         setAnimation("idle"); // Set initial animation
     }
 
+    /**
+     * Create a projectile for the Peashooter.
+     * @return The projectile
+     */
     @Override
     protected Projectile createProjectile() {
         try {

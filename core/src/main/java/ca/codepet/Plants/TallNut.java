@@ -7,6 +7,10 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
 import ca.codepet.worlds.DayWorld;
 
+/**
+ * The TallNut class for the TallNut plant.
+ * A tall plant that blocks zombies.
+ */
 public class TallNut extends Plant {
     private static final int FRAMES = 4;
     private static final int DEFAULT_HEALTH = 2400;
@@ -15,6 +19,12 @@ public class TallNut extends Plant {
 
     private static final int TOTAL_HP = DEFAULT_HEALTH + STAGE2_HEALTH + STAGE3_HEALTH;
 
+    /**
+     * Constructor for the TallNut class.
+     * @param world The world the TallNut is in
+     * @param x The x position of the TallNut
+     * @param y The y position of the TallNut
+     */
     public TallNut(DayWorld world, float x, float y) {
         super(world, x, y, TOTAL_HP);
         setScale(2.3f);
@@ -46,6 +56,10 @@ public class TallNut extends Plant {
         setAnimation("stage1");
     }
 
+    /**
+     * Update the TallNut plant. Check health and update animation.
+     * @param delta The time since the last frame in seconds
+     */
     @Override
     public void update(float delta) {
         super.update(delta);

@@ -7,6 +7,10 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
 import ca.codepet.worlds.DayWorld;
 
+/**
+ * The Walnut class for the Walnut plant.
+ * A plant that blocks zombies.
+ */
 public class Walnut extends Plant {
     private static final int FRAMES = 5;
     private static final int DEFAULT_HEALTH = 1000;
@@ -14,6 +18,12 @@ public class Walnut extends Plant {
     private static final int STAGE3_HEALTH = 2000;
     private static final int TOTAL_HP = DEFAULT_HEALTH + STAGE2_HEALTH + STAGE3_HEALTH;
 
+    /**
+     * Constructor for the Walnut class.
+     * @param world The world the Walnut is in
+     * @param x The x position of the Walnut
+     * @param y The y position of the Walnut
+     */
     public Walnut(DayWorld world, float x, float y) {
         super(world, x, y, TOTAL_HP);
         setScale(2.3f);
@@ -45,6 +55,10 @@ public class Walnut extends Plant {
         setAnimation("stage1");
     }
 
+    /**
+     * Update the Walnut plant. Check health and update animation.
+     * @param delta The time since the last frame
+     */
     @Override
     public void update(float delta) {
         super.update(delta);

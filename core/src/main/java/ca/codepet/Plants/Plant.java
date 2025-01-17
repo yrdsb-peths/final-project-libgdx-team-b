@@ -13,6 +13,10 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.audio.Sound;
 import java.util.Random;
 
+/**
+ * The Plant class for the plants in the game.
+ * Contains the base functionality for all plants.
+ */
 public abstract class Plant {
     private DayWorld world;
     protected float x, y;
@@ -28,6 +32,13 @@ public abstract class Plant {
     protected Sound[] deathSounds;
     protected Random rand = new Random();
 
+    /**
+     * Constructor for the Plant class.
+     * @param world
+     * @param x
+     * @param y
+     * @param health
+     */
     public Plant(DayWorld world, float x, float y, int health) {
         this.world = world;
         this.x = x;
@@ -35,28 +46,53 @@ public abstract class Plant {
         this.health = health;
     }
 
+    /**
+     * Set the current animation.
+     * @param spr The name of the animation
+     */
     protected void setAnimation(String spr) {
         currentAnimation = spr;
     }
 
+    /**
+     * Set the current animation if it is different from the current one.
+     * @param spr The name of the animation
+     */
     protected void setAnimationUnique(String spr) {
         if (currentAnimation == null || !currentAnimation.equals(spr))
             imageIndex = 0f;
         setAnimation(spr);
     }
 
+    /**
+     * Get the world the plant is in.
+     * @return The world
+     */
     public DayWorld getWorld() {
         return world;
     }
 
+    /**
+     * Get the texture of the current animation.
+     * @return The texture
+     */
     public AtlasRegion getTexture() {
         return animations.get(currentAnimation).getKeyFrame(imageIndex, true);
     }
 
+    /**
+     * Get the rectangle of the plant.
+     * @return The rectangle
+     */
     public Rectangle getRect() {
         return rect;
     }
 
+    /**
+     * Damage the plant, play sound, and return if the plant is dead.
+     * @param dmg The amount of damage
+     * @return True if the plant is dead
+     */
     public boolean damage(int dmg) {
         flash = 0.2f;
         health -= dmg;
@@ -69,10 +105,17 @@ public abstract class Plant {
         return false;
     }
 
+    /**
+     * Check if the plant is dead.
+     * @return True if the plant is dead
+     */
     public boolean isDead() {
         return health <= 0;
     }
 
+    /**
+     * Dispose of the plant.
+     */
     public void dispose() {
         for (Entry<String, Animation<AtlasRegion>> entry : animations.entries()) {
             for (AtlasRegion atlas : entry.value.getKeyFrames()) {
@@ -85,19 +128,36 @@ public abstract class Plant {
         }
     }
 
+    /**
+     * Set the transparency of the plant. Used for the ghost effect.
+     * @param alpha The alpha value
+     */
     public void setAlpha(float alpha) {
         this.alpha = alpha;
     }
 
+    /**
+     * Set the position of the plant.
+     * @param x The x position
+     * @param y The y position
+     */
     public void setPosition(float x, float y) {
         this.x = x;
         this.y = y;
     }
 
+    /**
+     * Set the scale of the plant.
+     * @param scale The scale
+     */
     public void setScale(float scale) {
         this.scale = scale;
     }
 
+    /**
+     * Render the plant.
+     * @param batch The SpriteBatch to render the plant
+     */
     public void render(SpriteBatch batch) {
         AtlasRegion tex = getTexture();
         if (tex == null || health <= 0)
@@ -117,6 +177,10 @@ public abstract class Plant {
         batch.setColor(batch.getColor().r, batch.getColor().g, batch.getColor().b, oldAlpha);
     }
 
+    /**
+     * Update the plant. Used for the hit flash effect.
+     * @param delta The time since the last update
+     */
     public void update(float delta) {
         flash = Math.max(0f, flash - delta);
     }

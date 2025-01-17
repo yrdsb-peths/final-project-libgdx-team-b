@@ -9,6 +9,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import ca.codepet.worlds.DayWorld;
 
+/**
+ * The PotatoMine class for the Potato Mine plant.
+ * Explodes when a zombie steps on it.
+ */
 public class PotatoMine extends Plant {
     private static final int POPUP_FRAMES = 3;
     private static final int IDLE_FRAMES = 5;
@@ -27,6 +31,12 @@ public class PotatoMine extends Plant {
 
     private static final float EXPLOSION_Y_OFFSET = 40f; // Add this constant
 
+    /**
+     * Constructor for the PotatoMine class.
+     * @param world The world the PotatoMine is in
+     * @param x The x position of the PotatoMine
+     * @param y The y position of the PotatoMine
+     */
     public PotatoMine(DayWorld world, float x, float y) {
         super(world, x, y, 200);
         health = DEFAULT_HEALTH;
@@ -69,6 +79,10 @@ public class PotatoMine extends Plant {
         setAnimation("popup");
     }
 
+    /**
+     * Update the PotatoMine, checking for arming and explosion.
+     * @param delta The time since the last frame
+     */
     @Override
     public void update(float delta) {
         super.update(delta);
@@ -96,11 +110,6 @@ public class PotatoMine extends Plant {
             setAnimation("idle");
             imageIndex = 0;
             hasCheckedAfterArming = true;
-            // Force an explosion check after becoming armed in case there's already a
-            // zombie
-            if (System.getProperty("isTest") == null) { // Skip during tests
-                notifyArmed();
-            }
         }
 
         if (isArmed) { // Only advance animation after arming
@@ -109,6 +118,10 @@ public class PotatoMine extends Plant {
         }
     }
 
+    /**
+     * Render the PotatoMine.
+     * @param batch The SpriteBatch to render the PotatoMine
+     */
     @Override
     public void render(SpriteBatch batch) {
         if (hasExploded) {
@@ -122,16 +135,17 @@ public class PotatoMine extends Plant {
         }
     }
 
-    // Add this method to notify that the mine is armed
-    private void notifyArmed() {
-        // This is just a hook - the explosion logic is handled by the zombie collision
-        // in DayWorld
-    }
-
+    /**
+     * Check if the PotatoMine is armed.
+     * @return True if the PotatoMine is armed
+     */
     public boolean isArmed() {
         return isArmed;
     }
 
+    /**
+     * Explode the PotatoMine.
+     */
     public void explode() {
         explodeSound.play(0.8f);
 
@@ -142,14 +156,25 @@ public class PotatoMine extends Plant {
         }
     }
 
+    /**
+     * Get the explosion damage of the PotatoMine.
+     * @return The explosion damage
+     */
     public int getExplosionDamage() {
         return explosionDamage;
     }
 
+    /**
+     * Check if the PotatoMine has exploded.
+     * @return True if the PotatoMine has exploded
+     */
     public boolean hasExploded() {
         return hasExploded;
     }
 
+    /**
+     * Dispose of the PotatoMine.
+     */
     public void dispose() {
         super.dispose();
         explodeSound.dispose();

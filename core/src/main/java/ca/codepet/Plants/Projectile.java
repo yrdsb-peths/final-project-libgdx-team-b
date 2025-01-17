@@ -17,7 +17,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.utils.Array;
 
-
+/**
+ * The Projectile class for the projectiles fired by plants.
+ * Contains the base functionality for all projectiles.
+ */
 public class Projectile implements Collidable {
     protected float x, y;
     protected float speed = 300;
@@ -42,6 +45,15 @@ public class Projectile implements Collidable {
 
     private final Sound snowPeaSound = Gdx.audio.newSound(Gdx.files.internal("sounds/snow_pea_sparkles.ogg"));
 
+    /**
+     * Constructor for the Projectile class.
+     * @param x The x position of the projectile
+     * @param y The y position of the projectile
+     * @param damage The damage the projectile does 
+     * @param atlasPath The path to the atlas file for the projectile
+     * @param scale The scale of the projectile
+     * @param row The row the projectile is in
+     */
     public Projectile(float x, float y, int damage, String atlasPath, float scale, int row) {
         this.x = x;
         this.y = y;
@@ -72,6 +84,10 @@ public class Projectile implements Collidable {
         }
     }
 
+    /**
+     * Update the projectile's position.
+     * @param delta The time since the last frame
+     */
     public void update(float delta) {
         if (!isHit) {
             x += speed * delta;
@@ -81,6 +97,10 @@ public class Projectile implements Collidable {
         stateTime += delta;
     }
 
+    /**
+     * Render the projectile.
+     * @param batch The SpriteBatch to render to
+     */
     public void render(SpriteBatch batch) {
         if (!isHit && flyingFrame != null) {
             // Render static flying frame
@@ -103,6 +123,10 @@ public class Projectile implements Collidable {
         }
     }
 
+    /**
+     * Hit action for the projectile.
+     * @param zombie The zombie that was hit
+     */
     public void hit(Zombie zombie) {
         if (animations.containsKey("splat")) {
 
@@ -118,24 +142,43 @@ public class Projectile implements Collidable {
         }
     }
 
+    /**
+     * Check if the projectile is finished.
+     * @return True if the projectile is finished
+     */
     public boolean isFinished() {
         if (!isHit)
             return false;
         return animations.get(currentAnimation).isAnimationFinished(stateTime);
     }
 
+    /**
+     * Get the bounds of the projectile.
+     * @return The bounds of the projectile
+     */
     public Rectangle getBounds() {
         return bounds;
     }
 
+    /**
+     * Get the damage of the projectile.
+     * @return The damage of the projectile
+     */
     public int getDamage() {
         return damage;
     }
 
+    /**
+     * Check if the projectile has hit.
+     * @return True if the projectile has hit
+     */
     public boolean isHit() {
         return isHit;
     }
 
+    /**
+     * Dispose of the projectile.
+     */
     public void dispose() {
         for (Animation<AtlasRegion> anim : animations.values()) {
             anim.getKeyFrame(0).getTexture().dispose();
@@ -146,16 +189,28 @@ public class Projectile implements Collidable {
         }
     }
 
+    /**
+     * Get the x position of the projectile.
+     * @return The x position of the projectile
+     */
     @Override
     public float getX() {
         return (int) x;
     }
 
+    /**
+     * Get the width of the projectile.
+     * @return The width of the projectile
+    */
     @Override
     public float getWidth() {
         return 10 * scale;
     }
 
+    /**
+     * Get the row the projectile is in.
+     * @return The row of the projectile
+     */
     @Override
     public int getRow() {
         return row;
