@@ -22,9 +22,12 @@ import ca.codepet.worlds.DayWorld;
 // https://plantsvszombies.fandom.com/wiki/Plants_(PvZ)#List_of_plants
 // https://pvzstrategy.fandom.com/wiki/Plant_Stats
 
+// Abstract base class for all zombie types in the game
 public abstract class Zombie implements Collidable {
 
+    // Zombie health points
     protected int hp;
+    // Position on screen
     private float x = Gdx.graphics.getWidth();
     private float y;
 
@@ -96,6 +99,7 @@ public abstract class Zombie implements Collidable {
     private final Sound grassStepSound = Gdx.audio.newSound(Gdx.files.internal("sounds/grassStep.ogg"));
 
 
+    // Constructor initializes zombie with specific attributes and loads resources
     public Zombie(DayWorld theWorld, Texture zombieTexture, int hp, int damage, float atkDelay, float moveSpeed) {
         this.hp = hp;
         this.damage = damage;
@@ -189,6 +193,7 @@ public abstract class Zombie implements Collidable {
         return x;
     }
 
+    // Movement logic handling
     public void move(float delta) {
         float speed = moveSpeed * delta;
         if (slowTimer > 0.0f)
@@ -204,6 +209,7 @@ public abstract class Zombie implements Collidable {
         return x <= world.getLawnTileWidth(); // Add this method
     }
 
+    //update the state of zombie
     public void update(float delta) {
         flashTimer = Math.max(0, flashTimer - delta);
         slowTimer = Math.max(0, slowTimer - delta);
@@ -285,6 +291,7 @@ public abstract class Zombie implements Collidable {
         return false;
     }
 
+    // Combat and state methods
     public void attack(Plant plant) {
         if (plant != null) {
             plant.damage(damage);
@@ -307,6 +314,7 @@ public abstract class Zombie implements Collidable {
         chompSounds[rand.nextInt(chompSounds.length)].play(0.4f);
     }
 
+    // Sound effect methods
     private void playGroanSound() {
         if (!isSquashed && !isDying) {
             groanSounds[rand.nextInt(groanSounds.length)].play(0.2f);
@@ -347,6 +355,7 @@ public abstract class Zombie implements Collidable {
         return yOffset;
     }
 
+    // Resource cleanup
     public void dispose() {
         if (!isDeathSoundPlaying) {
             // Play death sound and set flag
@@ -363,6 +372,7 @@ public abstract class Zombie implements Collidable {
         // Death sounds will be disposed after they finish playing
     }
 
+    // Animation and visual effect methods
     public void squash() {
         isSquashed = true;
         squashTimer = 0;
@@ -392,6 +402,7 @@ public abstract class Zombie implements Collidable {
         return flashTimer;
     }
 
+    // Collision detection
     public Rectangle getBounds() {
         return new Rectangle(x + xOffset, y, width / 2, height); // Adjust collision box
     }

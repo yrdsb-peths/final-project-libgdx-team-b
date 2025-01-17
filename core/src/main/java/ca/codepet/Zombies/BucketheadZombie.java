@@ -9,7 +9,10 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import ca.codepet.Plants.Plant;
 import ca.codepet.worlds.DayWorld;
 
+// Buckethead Zombie class - A zombie protected by a metal bucket helmet
+// Has multiple stages of damage as the bucket degrades
 public class BucketheadZombie extends Zombie {
+    // Animation frame counts for different states
     static int WALK_FRAMES = 7;
     static int ATTACK_FRAMES = 7;
     static int FRAMES_DEATH = 9;

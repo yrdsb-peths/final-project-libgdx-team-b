@@ -9,7 +9,10 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import ca.codepet.Plants.Plant;
 import ca.codepet.worlds.DayWorld;
 
+// Conehead Zombie class - A zombie protected by a traffic cone helmet
+// Has multiple stages of damage as the cone degrades
 public class ConeheadZombie extends Zombie {
+    // Animation frame counts for different states
     static int WALK_FRAMES = 7;
     static int ATTACK_FRAMES = 7;
     static int FRAMES_DEATH = 9;

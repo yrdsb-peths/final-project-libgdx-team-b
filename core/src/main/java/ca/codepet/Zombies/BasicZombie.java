@@ -9,7 +9,10 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import ca.codepet.Plants.Plant;
 import ca.codepet.worlds.DayWorld;
 
+// Basic Zombie class - The standard zombie with no special protection
+// Has two stages of damage before death
 public class BasicZombie extends Zombie {
+    // Animation frame counts for different states
     static int WALK_FRAMES = 7; // Based on the atlas file which has 7 frames (tile000 to tile006)
     static int ATTACK_FRAMES = 7;
     static int FRAMES_DEATH = 9;
