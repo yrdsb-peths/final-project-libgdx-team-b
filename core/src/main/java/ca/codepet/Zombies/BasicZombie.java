@@ -81,7 +81,7 @@ public class BasicZombie extends Zombie {
         deathWidth = 51 * 3; // Match original width from atlas
         deathHeight = 40 * 3; // Match original height from atlas
 
-        currentAnimation = "walk";
+        currentAnimation = "walk1";
     }
 
     private void updateAnimation() {
@@ -100,7 +100,7 @@ public class BasicZombie extends Zombie {
     @Override
     public void attack(Plant plant) {
         if (plant != null) {
-            currentAnimation = "attack";
+            isAttacking = true;
             updateAnimation();
             super.attack(plant);
         }
@@ -108,7 +108,7 @@ public class BasicZombie extends Zombie {
 
     @Override
     public void move(float delta) {
-        currentAnimation = "walk";
+        isAttacking = false;
         updateAnimation();
         super.move(delta);
     }
